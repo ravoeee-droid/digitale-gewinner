@@ -1,23 +1,37 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ZIP_FILE="dg-website-final-netlify-postprocessing-fix.zip"
-TMP_DIR=".tmp-site"
-OUT_DIR="dist"
+python3 - <<'PY'
+from pathlib import Path
+import shutil
+import zipfile
 
-rm -rf "$TMP_DIR" "$OUT_DIR"
-mkdir -p "$TMP_DIR" "$OUT_DIR"
+archive = Path("dg-website-final-netlify-postprocessing-fix.zip")
+tmp = Path(".tmp-site")
+out = Path("dist")
 
-unzip -q "$ZIP_FILE" -d "$TMP_DIR"
+shutil.rmtree(tmp, ignore_errors=True)
+shutil.rmtree(out, ignore_errors=True)
+tmp.mkdir()
+out.mkdir()
 
-mapfile -t ROOT_ENTRIES < <(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -print)
-if [[ ${#ROOT_ENTRIES[@]} -eq 1 && -d "${ROOT_ENTRIES[0]}" ]]; then
-  cp -a "${ROOT_ENTRIES[0]}/." "$OUT_DIR/"
-else
-  cp -a "$TMP_DIR/." "$OUT_DIR/"
-fi
+with zipfile.ZipFile(archive) as package:
+    package.extractall(tmp)
 
-rm -rf "$TMP_DIR"
+index_files = sorted(tmp.rglob("index.html"), key=lambda path: len(path.parts))
+if not index_files:
+    raise SystemExit("No index.html found in original website package")
 
-test -f "$OUT_DIR/index.html"
-echo "Website restored successfully."
+source = index_files[0].parent
+for item in source.iterdir():
+    target = out / item.name
+    if item.is_dir():
+        shutil.copytree(item, target)
+    else:
+        shutil.copy2(item, target)
+
+shutil.rmtree(tmp, ignore_errors=True)
+print("Original website restored successfully.")
+PY
+
+test -f dist/index.html
