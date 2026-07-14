@@ -1,0 +1,18 @@
+/* Individual brand worlds for the ten long-form case studies. */
+body.dg-case-page article.case{--accent:#f1ce84;--ink:#fff;--soft:#b6aa9b;position:relative;isolation:isolate}
+body.dg-case-page article.case:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 88% 10%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 31rem)}
+body.dg-case-page #strong-relationship{--accent:#71304f;--ink:#2c1721;--soft:#755f68;background:linear-gradient(135deg,#fbf8f4,#eadfd5)}
+body.dg-case-page #asmr-time{--accent:#e44f9e;--ink:#30162a;--soft:#775b70;background:linear-gradient(135deg,#ffe8f7,#d9b1ed)}
+body.dg-case-page #dj-walli{--accent:#9d54ff;--ink:#fff;--soft:#c7b9d5;background:linear-gradient(135deg,#08070a,#241336)}
+body.dg-case-page #jj-media{--accent:#ff5478;--ink:#141116;--soft:#6b6067;background:linear-gradient(135deg,#fff,#f5e8ed)}
+body.dg-case-page #defi-intelligence{--accent:#d7ad38;--ink:#fff;--soft:#b9ae91;background:linear-gradient(135deg,#050505,#1b170a)}
+body.dg-case-page #kitan-design{--accent:#ff3434;--ink:#fff;--soft:#d1b2b2;background:linear-gradient(135deg,#120405,#490d13)}
+body.dg-case-page #koerperkult{--accent:#b49a67;--ink:#27231e;--soft:#746c61;background:linear-gradient(135deg,#fbfaf6,#e8e1d7)}
+body.dg-case-page #libi-elektronik{--accent:#b8ff6b;--ink:#fff;--soft:#b7c3ce;background:linear-gradient(135deg,#06101d,#13233b)}
+body.dg-case-page #fuehrungskraefte{--accent:#e53729;--ink:#211c1b;--soft:#6f6460;background:linear-gradient(135deg,#fff,#eeeae8)}
+body.dg-case-page #neuromind{--accent:#ff5a19;--ink:#fff;--soft:#c6b5aa;background:linear-gradient(135deg,#080604,#261006)}
+body.dg-case-page article.case h2,body.dg-case-page article.case h3{color:var(--ink)}
+body.dg-case-page article.case .summary,body.dg-case-page article.case .focus span{color:var(--soft)}
+body.dg-case-page article.case .number,body.dg-case-page article.case .sector,body.dg-case-page article.case .focus i{color:var(--accent)}
+body.dg-case-page article.case .focus div{border-color:color-mix(in srgb,var(--accent) 24%,transparent)}
+body.dg-case-page .dg-result-map-card b{color:#b9de7c}
