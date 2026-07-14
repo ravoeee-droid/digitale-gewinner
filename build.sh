@@ -3,7 +3,6 @@ set -euo pipefail
 
 python3 - <<'PY'
 from pathlib import Path
-import base64
 import shutil
 import zipfile
 
@@ -16,7 +15,7 @@ shutil.rmtree(out, ignore_errors=True)
 tmp.mkdir()
 out.mkdir()
 
-# Keep all existing legal pages and specialist pages from the previous package.
+# Preserve the existing legal and specialist pages.
 with zipfile.ZipFile(archive) as package:
     package.extractall(tmp)
 index_files = sorted(tmp.rglob('index.html'), key=lambda p: len(p.parts))
@@ -30,21 +29,17 @@ for item in source.iterdir():
     else:
         shutil.copy2(item, target)
 
-# Overlay the new authority website and portfolio page.
-for name in ('index.html','case-studies.html','robots.txt','sitemap.xml'):
+# Overlay the new authority website without touching the retained pages.
+files = [
+    'index.html', 'case-studies.html',
+    'site-images-1.js', 'site-images-2.js', 'site-images-3.js', 'site-images-4.js',
+    'robots.txt', 'sitemap.xml'
+]
+for name in files:
     shutil.copy2(name, out / name)
 
-assets = out / 'assets'
-assets.mkdir(exist_ok=True)
-for bundle in ('founder-assets.zip','case-assets.zip'):
-    encoded = Path(bundle + '.b64').read_text().strip()
-    binary = tmp / bundle
-    binary.write_bytes(base64.b64decode(encoded))
-    with zipfile.ZipFile(binary) as package:
-        package.extractall(assets)
-
 shutil.rmtree(tmp, ignore_errors=True)
-required = [out/'index.html', out/'case-studies.html', assets/'hero-raphael.webp', assets/'strong-relationship.webp']
+required = [out / name for name in files]
 missing = [str(p) for p in required if not p.exists()]
 if missing:
     raise SystemExit('Missing required files: ' + ', '.join(missing))
