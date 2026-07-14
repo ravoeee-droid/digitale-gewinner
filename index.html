@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digitale Gewinner – Vertrauen online sichtbar machen</title>
+  <meta name="description" content="Digitale Gewinner macht Vertrauen über Google, Website und Social Media sichtbar – damit potenzielle Kunden und Mitarbeiter innerhalb von 30 Sekunden erkennen, dass Ihr Unternehmen die sicherste Wahl ist.">
+  <meta name="theme-color" content="#080b10">
+  <meta property="og:title" content="Digitale Gewinner – Vertrauen online sichtbar machen">
+  <meta property="og:description" content="Über Google, Website und Social Media zur sichtbar sichersten Wahl für Kunden und Mitarbeiter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://digitale-gewinner.de/">
+  <link rel="canonical" href="https://digitale-gewinner.de/">
+  <style>
+    :root{
+      --bg:#080b10;
+      --bg-soft:#0f141c;
+      --panel:rgba(255,255,255,.055);
+      --panel-strong:rgba(255,255,255,.085);
+      --line:rgba(255,255,255,.11);
+      --text:#f5f4ef;
+      --muted:#a8afba;
+      --accent:#d9ff68;
+      --accent-2:#72e7d4;
+      --warm:#f5c96f;
+      --danger:#ff8b8b;
+      --radius:26px;
+      --shadow:0 26px 80px rgba(0,0,0,.36);
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 8% 7%, rgba(114,231,212,.12), transparent 30%),
+        radial-gradient(circle at 88% 4%, rgba(217,255,104,.13), transparent 30%),
+        linear-gradient(180deg,#080b10 0%,#090d13 48%,#070a0e 100%);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0; pointer-events:none; z-index:-1;
+      opacity:.2;
+      background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+      background-size:64px 64px;
+      mask-image:linear-gradient(to bottom,black,transparent 72%);
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    img,svg{display:block;max-width:100%}
+    .container{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+    .section{padding:110px 0;position:relative}
+    .section-tight{padding:74px 0}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:9px;
+      padding:8px 12px;border:1px solid var(--line);border-radius:999px;
+      color:#d8dde5;font-size:.78rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase;
+      background:rgba(255,255,255,.035);backdrop-filter:blur(12px)
+    }
+    .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px var(--accent)}
+    h1,h2,h3,p{margin-top:0}
+    h1,h2,h3{letter-spacing:-.045em;line-height:1.03}
+    h1{font-size:clamp(3.1rem,8vw,7.6rem);max-width:980px;margin-bottom:28px}
+    h2{font-size:clamp(2.25rem,5vw,4.8rem);max-width:880px;margin-bottom:24px}
+    h3{font-size:clamp(1.35rem,2.4vw,2rem);margin-bottom:12px}
+    .gradient-text{background:linear-gradient(110deg,#fff 0%,#d8ff72 44%,#73e8d4 92%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:clamp(1.12rem,2vw,1.42rem);color:#c9ced6;max-width:810px;line-height:1.65}
+    .muted{color:var(--muted)}
+    .btns{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+    .btn{
+      min-height:54px;padding:0 22px;border-radius:999px;border:1px solid var(--line);
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      font-weight:780;transition:.25s ease;cursor:pointer;background:rgba(255,255,255,.04);color:var(--text)
+    }
+    .btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.24)}
+    .btn-primary{color:#0b0e12;background:var(--accent);border-color:var(--accent);box-shadow:0 16px 42px rgba(217,255,104,.16)}
+    .btn-primary:hover{box-shadow:0 20px 55px rgba(217,255,104,.25)}
+    .btn svg{width:18px;height:18px}
+    .nav-wrap{position:fixed;top:16px;left:0;right:0;z-index:50;pointer-events:none}
+    nav{
+      pointer-events:auto;width:min(1160px,calc(100% - 28px));margin:auto;
+      display:flex;align-items:center;justify-content:space-between;gap:20px;
+      padding:12px 14px 12px 18px;border:1px solid rgba(255,255,255,.1);border-radius:22px;
+      background:rgba(8,11,16,.72);backdrop-filter:blur(22px);box-shadow:0 18px 50px rgba(0,0,0,.22)
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:-.03em}
+    .brand-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(140deg,var(--accent),var(--accent-2));color:#091016;font-weight:950;box-shadow:0 10px 30px rgba(114,231,212,.18)}
+    .brand small{display:block;color:var(--muted);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+    .nav-links{display:flex;align-items:center;gap:22px;color:#c9ced5;font-size:.91rem;font-weight:680}
+    .nav-links a:hover{color:white}
+    .nav-cta{padding:10px 16px;min-height:auto;font-size:.88rem}
+    .hero{padding:172px 0 90px;min-height:100vh;display:flex;align-items:center;position:relative}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.7fr);gap:58px;align-items:center}
+    .hero h1 span{display:block}
+    .hero-copy{position:relative;z-index:2}
+    .hero-note{display:flex;align-items:center;gap:12px;color:#c5cad2;margin-top:22px;font-size:.92rem}
+    .hero-note i{width:28px;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+    .trust-orbit{position:relative;min-height:580px;display:grid;place-items:center}
+    .orbit-glow{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(217,255,104,.18),rgba(114,231,212,.07) 45%,transparent 72%);filter:blur(6px)}
+    .core{
+      width:255px;height:255px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:40px;
+      background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.13),rgba(255,255,255,.04) 45%,rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.13);box-shadow:inset 0 0 70px rgba(255,255,255,.035),0 30px 90px rgba(0,0,0,.4);
+      backdrop-filter:blur(20px);position:relative;z-index:3
+    }
+    .core strong{font-size:3.35rem;line-height:.9;letter-spacing:-.07em;display:block;color:var(--accent)}
+    .core span{display:block;font-size:.9rem;color:#d4d9df;margin-top:10px}
+    .orbit{position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;animation:spin 24s linear infinite}
+    .orbit.one{width:410px;height:410px}.orbit.two{width:540px;height:540px;animation-direction:reverse;animation-duration:34s;border-style:dashed}
+    .orbit-item{
+      position:absolute;left:50%;top:-23px;transform:translateX(-50%);
+      min-width:118px;padding:12px 15px;border-radius:16px;border:1px solid rgba(255,255,255,.13);
+      background:rgba(12,16,23,.88);backdrop-filter:blur(18px);text-align:center;font-weight:780;font-size:.87rem;box-shadow:0 14px 42px rgba(0,0,0,.28)
+    }
+    .orbit.one .orbit-item:nth-child(2){top:auto;bottom:-22px}.orbit.two .orbit-item:nth-child(2){top:50%;right:-55px;left:auto;transform:translateY(-50%)}
+    .orbit.two .orbit-item:nth-child(3){top:50%;left:-58px;transform:translateY(-50%)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .orbit-item span{display:block;animation:counter 24s linear infinite}
+    .orbit.two .orbit-item span{animation-duration:34s;animation-direction:reverse}
+    @keyframes counter{to{transform:rotate(-360deg)}}
+    .trust-strip{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .strip-item{border-top:1px solid var(--line);padding-top:15px;display:flex;justify-content:space-between;gap:16px;color:#c8cdd4;font-size:.9rem}
+    .strip-item b{color:white}
+    .statement{padding:34px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:var(--shadow)}
+    .statement p{font-size:clamp(1.55rem,3.2vw,3.1rem);line-height:1.2;letter-spacing:-.04em;margin:0;max-width:1000px}
+    .statement em{color:var(--accent);font-style:normal}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{
+      border:1px solid var(--line);border-radius:var(--radius);padding:30px;
+      background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));
+      box-shadow:0 20px 60px rgba(0,0,0,.18);position:relative;overflow:hidden
+    }
+    .card::after{content:"";position:absolute;inset:auto -20% -58% 15%;height:180px;background:radial-gradient(circle,rgba(217,255,104,.11),transparent 66%);pointer-events:none}
+    .icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;margin-bottom:54px;background:rgba(217,255,104,.09);border:1px solid rgba(217,255,104,.2);color:var(--accent)}
+    .icon svg{width:23px;height:23px}
+    .card ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px;color:#c1c7cf;font-size:.94rem}
+    .card li{display:flex;gap:10px}.card li::before{content:"↗";color:var(--accent);font-weight:900}
+    .section-head{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:46px}
+    .section-head p{max-width:430px;margin-bottom:4px;color:var(--muted)}
+    .audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .audience-card{min-height:430px;display:flex;flex-direction:column;justify-content:space-between;padding:38px}
+    .audience-card .question{font-size:clamp(2rem,4vw,4rem);font-weight:860;line-height:1.05;letter-spacing:-.05em;max-width:470px}
+    .audience-card.customer{background:linear-gradient(150deg,rgba(217,255,104,.13),rgba(255,255,255,.035) 48%)}
+    .audience-card.employee{background:linear-gradient(150deg,rgba(114,231,212,.13),rgba(255,255,255,.035) 48%)}
+    .answer{display:flex;gap:13px;align-items:flex-start;color:#d5d9df;max-width:500px}.answer b{color:white}
+    .answer-dot{width:13px;height:13px;flex:0 0 13px;border-radius:50%;background:var(--accent);box-shadow:0 0 22px rgba(217,255,104,.5);margin-top:5px}
+    .employee .answer-dot{background:var(--accent-2);box-shadow:0 0 22px rgba(114,231,212,.5)}
+    .system-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:58px;align-items:start}
+    .sticky{position:sticky;top:115px}
+    .steps{display:grid;gap:12px;counter-reset:step}
+    .step{counter-increment:step;display:grid;grid-template-columns:58px 1fr;gap:20px;padding:24px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.035)}
+    .step::before{content:"0" counter(step);width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(217,255,104,.09);border:1px solid rgba(217,255,104,.18);color:var(--accent);font-size:.85rem;font-weight:850}
+    .step p{margin:7px 0 0;color:var(--muted)}
+    .proof-wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
+    .metric-panel{padding:42px;background:linear-gradient(145deg,rgba(217,255,104,.1),rgba(255,255,255,.035) 50%)}
+    .metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:34px}
+    .metric{padding:22px;border-radius:18px;border:1px solid var(--line);background:rgba(5,8,12,.33)}
+    .metric strong{font-size:clamp(2rem,4vw,3.6rem);line-height:1;letter-spacing:-.06em;display:block}
+    .metric span{font-size:.87rem;color:var(--muted);display:block;margin-top:8px}
+    .profile-card{padding:0;min-height:100%;display:flex;flex-direction:column}
+    .profile-art{min-height:250px;position:relative;overflow:hidden;background:
+      radial-gradient(circle at 64% 28%,rgba(217,255,104,.3),transparent 15%),
+      radial-gradient(circle at 35% 58%,rgba(114,231,212,.16),transparent 25%),
+      linear-gradient(145deg,#131a22,#090c11)}
+    .profile-art::before{content:"RH";position:absolute;right:22px;bottom:-32px;font-size:10rem;line-height:1;font-weight:950;letter-spacing:-.1em;color:rgba(255,255,255,.06)}
+    .profile-art::after{content:"VERTRAUEN / SICHTBARKEIT / WIRKUNG";position:absolute;left:28px;bottom:26px;font-size:.72rem;letter-spacing:.18em;color:#cfd6dc}
+    .profile-body{padding:30px}
+    .profile-body p{color:var(--muted)}
+    .profile-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.tag{padding:8px 10px;border-radius:999px;border:1px solid var(--line);font-size:.78rem;color:#d2d7de}
+    .check-shell{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}
+    .score-card{padding:38px;background:linear-gradient(150deg,rgba(114,231,212,.1),rgba(255,255,255,.025))}
+    .score-ring{width:190px;height:190px;border-radius:50%;margin:28px 0;display:grid;place-items:center;position:relative;background:conic-gradient(var(--accent) 0deg,rgba(255,255,255,.08) 0deg)}
+    .score-ring::after{content:"";position:absolute;inset:13px;border-radius:50%;background:#0b1016;border:1px solid var(--line)}
+    .score-value{position:relative;z-index:2;text-align:center}.score-value strong{font-size:3.6rem;letter-spacing:-.07em;line-height:1}.score-value span{display:block;font-size:.75rem;color:var(--muted);letter-spacing:.11em;text-transform:uppercase}
+    .score-result{font-size:1.05rem;color:#d1d6dc;min-height:76px}
+    .check-card{padding:38px}
+    .question-list{display:grid;gap:12px;margin-top:24px}
+    .check-question{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:16px 17px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
+    .check-question span{font-size:.94rem;color:#d4d8dd}
+    .toggle{display:flex;gap:6px}
+    .toggle button{width:42px;height:34px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;font-weight:800}
+    .toggle button.active-yes{background:rgba(217,255,104,.14);color:var(--accent);border-color:rgba(217,255,104,.35)}
+    .toggle button.active-no{background:rgba(255,139,139,.1);color:#ffaaa9;border-color:rgba(255,139,139,.3)}
+    .form-panel{margin-top:18px;padding:30px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.035)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.82rem;color:#c5cad1;font-weight:720}
+    .field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:rgba(7,10,14,.68);color:white;border-radius:14px;padding:14px 15px;outline:none;transition:.2s}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(217,255,104,.5);box-shadow:0 0 0 4px rgba(217,255,104,.07)}
+    .field textarea{min-height:112px;resize:vertical}
+    .consent{font-size:.78rem;color:var(--muted);display:flex;gap:9px;align-items:flex-start;margin:15px 0}.consent input{margin-top:3px}
+    .faq{display:grid;gap:10px;max-width:920px;margin:40px auto 0}
+    details{border:1px solid var(--line);border-radius:18px;padding:0 20px;background:rgba(255,255,255,.025)}
+    summary{cursor:pointer;list-style:none;padding:20px 34px 20px 0;font-weight:780;position:relative}
+    summary::-webkit-details-marker{display:none}summary::after{content:"+";position:absolute;right:0;top:17px;font-size:1.45rem;color:var(--accent)}details[open] summary::after{content:"–"}
+    details p{color:var(--muted);padding:0 0 20px;margin:0;max-width:760px}
+    .final-cta{padding:70px;border-radius:34px;border:1px solid rgba(217,255,104,.2);background:
+      radial-gradient(circle at 80% 0%,rgba(217,255,104,.18),transparent 28%),
+      radial-gradient(circle at 8% 100%,rgba(114,231,212,.12),transparent 32%),
+      rgba(255,255,255,.045);box-shadow:var(--shadow);text-align:center}
+    .final-cta h2{margin-inline:auto;max-width:900px}.final-cta .lead{margin-inline:auto}
+    footer{padding:34px 0 48px;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem}
+    .footer-grid{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:none}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.orbit,.orbit-item span{animation:none}.reveal{opacity:1;transform:none;transition:none}}
+    @media(max-width:980px){
+      .nav-links a:not(.nav-cta){display:none}.hero-grid,.system-grid,.proof-wrap,.check-shell{grid-template-columns:1fr}.hero{padding-top:145px}.hero-copy{text-align:center}.hero .lead,.hero h1{margin-inline:auto}.btns,.hero-note{justify-content:center}.trust-orbit{min-height:510px}.sticky{position:static}.section-head{display:block}.section-head p{margin-top:18px}.grid-3{grid-template-columns:1fr}.audience-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:680px){
+      .container{width:min(100% - 24px,var(--max))}.section{padding:78px 0}.hero{padding-top:128px}.brand small{display:none}.nav-cta{padding:9px 12px}.trust-orbit{min-height:420px;transform:scale(.78);margin:-40px 0}.trust-strip{grid-template-columns:1fr}.statement,.card,.audience-card,.score-card,.check-card,.form-panel{padding:24px}.metrics,.form-grid{grid-template-columns:1fr}.final-cta{padding:42px 22px}.orbit.two{width:500px;height:500px}.orbit.one{width:360px;height:360px}.core{width:220px;height:220px}.question-list{gap:9px}.check-question{grid-template-columns:1fr}.toggle{justify-content:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-wrap">
+    <nav aria-label="Hauptnavigation">
+      <a class="brand" href="#top" aria-label="Digitale Gewinner Startseite">
+        <span class="brand-mark">DG</span>
+        <span>DIGITALE GEWINNER<small>Vertrauen online sichtbar</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#problem">Warum</a>
+        <a href="#system">System</a>
+        <a href="#nachweise">Nachweise</a>
+        <a class="btn btn-primary nav-cta" href="#vertrauenscheck">Vertrauenscheck</a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy reveal">
+            <span class="eyebrow">Digitaler Vertrauensaufbau · DACH</span>
+            <h1><span>Ich mache</span><span class="gradient-text">Vertrauen online sichtbar.</span></h1>
+            <p class="lead">Über Google, Website und Social Media – damit potenzielle Kunden und Mitarbeiter innerhalb von 30 Sekunden erkennen: <strong>Sie sind die sicherste Wahl.</strong></p>
+            <div class="btns">
+              <a class="btn btn-primary" href="#vertrauenscheck">30-Sekunden-Vertrauenscheck
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn" href="#system">Das Vertrauenssystem ansehen</a>
+            </div>
+            <div class="hero-note"><i></i><span>Keine austauschbare Agenturleistung. Eine klare Vertrauensarchitektur.</span></div>
+          </div>
+
+          <div class="trust-orbit reveal" aria-label="Google, Website und Social Media bilden gemeinsam ein Vertrauenssystem">
+            <div class="orbit-glow"></div>
+            <div class="orbit one"><div class="orbit-item"><span>Google</span></div><div class="orbit-item"><span>Website</span></div></div>
+            <div class="orbit two"><div class="orbit-item"><span>Social Media</span></div><div class="orbit-item"><span>Kunden</span></div><div class="orbit-item"><span>Mitarbeiter</span></div></div>
+            <div class="core"><div><strong>30</strong><span>Sekunden bis zur ersten Vertrauensentscheidung</span></div></div>
+          </div>
+        </div>
+
+        <div class="trust-strip reveal">
+          <div class="strip-item"><b>Google</b><span>Reputation & lokale Sicherheit</span></div>
+          <div class="strip-item"><b>Website</b><span>Klarheit & Beweisführung</span></div>
+          <div class="strip-item"><b>Social Media</b><span>Nähe & kontinuierliche Glaubwürdigkeit</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" id="problem">
+      <div class="container">
+        <div class="statement reveal">
+          <p>Das Problem ist oft nicht Ihre Qualität. Sondern dass potenzielle Kunden und Mitarbeiter sie online <em>nicht schnell genug erkennen.</em></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">Die drei Vertrauensflächen</span><h2>Einzeln sind es Kanäle. Zusammen werden sie zur Entscheidung.</h2></div>
+          <p>Menschen prüfen Unternehmen nicht linear. Sie springen zwischen Google, Website und Social Media. Jeder Bruch erzeugt Zweifel. Jede Übereinstimmung verstärkt Vertrauen.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <h3>Google wird zum ersten Sicherheitsbeweis.</h3>
+            <p class="muted">Bewertungen, Aktualität, Antworten und lokaler Auftritt entscheiden oft, ob jemand überhaupt weiterprüft.</p>
+            <ul><li>Bewertungsstrategie & Reputation</li><li>Lokale Sichtbarkeit</li><li>Antworten, Bilder und Beweise</li></ul>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
+            <h3>Die Website macht Qualität sofort verständlich.</h3>
+            <p class="muted">Sie beantwortet in Sekunden: Was macht dieses Unternehmen anders, warum ist es glaubwürdig und was ist der sichere nächste Schritt?</p>
+            <ul><li>Positionierung & Vertrauensstory</li><li>Cases, Menschen und Nachweise</li><li>Conversion ohne Druck</li></ul>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+            <h3>Social Media macht Kompetenz menschlich.</h3>
+            <p class="muted">Regelmäßige Einblicke, echte Gesichter und klare Haltung verwandeln ein anonymes Unternehmen in eine vertraute Entscheidung.</p>
+            <ul><li>Expertenstatus & Persönlichkeit</li><li>Team- und Arbeitgeberwirkung</li><li>Kontinuität statt Einzelposts</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">Zwei Zielgruppen · ein Prinzip</span><h2>Menschen entscheiden sich dort, wo Unsicherheit am schnellsten verschwindet.</h2></div>
+        </div>
+        <div class="audience-grid">
+          <article class="card audience-card customer reveal">
+            <div><span class="eyebrow">Potenzielle Kunden</span><div class="question">„Kann ich diesem Unternehmen wirklich vertrauen?“</div></div>
+            <div class="answer"><span class="answer-dot"></span><div><b>Ihre digitale Präsenz muss die Antwort vorwegnehmen.</b><br><span class="muted">Durch sichtbare Erfahrung, echte Beweise, klare Positionierung und einen risikoarmen nächsten Schritt.</span></div></div>
+          </article>
+          <article class="card audience-card employee reveal">
+            <div><span class="eyebrow">Potenzielle Mitarbeiter</span><div class="question">„Ist das ein Arbeitgeber, bei dem ich sicher wechseln kann?“</div></div>
+            <div class="answer"><span class="answer-dot"></span><div><b>Ihre Arbeitgeberqualität muss spürbar werden.</b><br><span class="muted">Durch echte Menschen, glaubwürdige Einblicke, klare Erwartungen und einen einfachen ersten Kontakt.</span></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="system">
+      <div class="container system-grid">
+        <div class="sticky reveal">
+          <span class="eyebrow">DG Vertrauenssystem™</span>
+          <h2>Wir bauen keine Kanäle. Wir bauen eine konsistente Entscheidung.</h2>
+          <p class="lead">Jeder Berührungspunkt erhält eine klare Aufgabe: Zweifel reduzieren, Qualität beweisen und den nächsten Schritt sicher machen.</p>
+          <div class="btns"><a class="btn btn-primary" href="#vertrauenscheck">Vertrauenslücke prüfen</a></div>
+        </div>
+        <div class="steps">
+          <article class="step reveal"><div><h3>Digitale Vertrauensanalyse</h3><p>Wir prüfen Google, Website, Social Media, Bewertungen, Beweise, Positionierung und den Weg zur Anfrage oder Bewerbung.</p></div></article>
+          <article class="step reveal"><div><h3>Vertrauensarchitektur</h3><p>Wir definieren, welche Botschaften, Nachweise und emotionalen Signale an welchem Kontaktpunkt sichtbar sein müssen.</p></div></article>
+          <article class="step reveal"><div><h3>Beweise sichtbar machen</h3><p>Kundenstimmen, Ergebnisse, Team, Prozesse, Erfahrung und echte Einblicke werden strukturiert statt zufällig präsentiert.</p></div></article>
+          <article class="step reveal"><div><h3>Google, Website & Social verbinden</h3><p>Alle drei Flächen erzählen dieselbe glaubwürdige Geschichte – angepasst an die jeweilige Entscheidungssituation.</p></div></article>
+          <article class="step reveal"><div><h3>Messen und verstärken</h3><p>Wir beobachten Anfragen, Bewerbungen, Kontaktwege und Vertrauenssignale und verbessern die stärksten Hebel fortlaufend.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="nachweise">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">Nachweis statt Behauptung</span><h2>Vertrauen entsteht nicht durch große Worte. Sondern durch sichtbare Substanz.</h2></div>
+          <p>Die Kennzahlen stammen aus einer anonymisierten regionalen Recruiting-Kampagnenstruktur. Sie belegen die Verbindung von Positionierung, Funnel und messbarem nächsten Schritt – ohne Ergebnisgarantie.</p>
+        </div>
+        <div class="proof-wrap">
+          <article class="card metric-panel reveal">
+            <h3>Aus digitaler Arbeitgeberwirkung wurden messbare Gespräche.</h3>
+            <p class="muted">Ein Beispiel dafür, was passiert, wenn Botschaft, Beweise, Landingpage und Kampagne als System statt als Einzelmaßnahmen funktionieren.</p>
+            <div class="metrics">
+              <div class="metric"><strong>451</strong><span>Formular-Leads</span></div>
+              <div class="metric"><strong>142</strong><span>qualifizierte Bewerber</span></div>
+              <div class="metric"><strong>58</strong><span>gebuchte Gespräche</span></div>
+              <div class="metric"><strong>33,70 €</strong><span>Ø Kosten pro gebuchtem Call</span></div>
+            </div>
+          </article>
+          <article class="card profile-card reveal">
+            <div class="profile-art"></div>
+            <div class="profile-body">
+              <span class="eyebrow">Raphael Hermann</span>
+              <h3 style="margin-top:18px">Stratege für digitalen Vertrauensaufbau</h3>
+              <p>Ich verbinde Positionierung, CRO-Webdesign, Reputation, Social Media, Kampagnen und Automatisierung zu einem System, das reale Qualität online schneller erkennbar macht.</p>
+              <div class="profile-tags"><span class="tag">8+ Jahre Erfahrung</span><span class="tag">180.000 €+ Werbebudget</span><span class="tag">Google · Web · Social</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="vertrauenscheck">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">Kostenloser Selbstcheck</span><h2>Wie sicher wirkt Ihr Unternehmen in den ersten 30 Sekunden?</h2></div>
+          <p>Beantworten Sie sechs einfache Fragen. Der Score ist eine erste Orientierung – keine automatische Vollanalyse.</p>
+        </div>
+        <div class="check-shell">
+          <article class="card score-card reveal">
+            <span class="eyebrow">Ihr Vertrauensscore</span>
+            <div class="score-ring" id="scoreRing"><div class="score-value"><strong id="scoreValue">0</strong><span>von 100</span></div></div>
+            <div class="score-result" id="scoreResult">Beantworten Sie die Fragen, um eine erste Einschätzung zu erhalten.</div>
+            <p class="muted" style="font-size:.82rem;margin-bottom:0">Hinweis: Eine belastbare Analyse berücksichtigt zusätzlich Branche, Wettbewerb, Zielgruppe, Standort, Bewertungen und reale Nutzerführung.</p>
+          </article>
+          <article class="card check-card reveal">
+            <h3>Sechs Signale, die fast jede Online-Entscheidung beeinflussen.</h3>
+            <div class="question-list" id="questionList">
+              <div class="check-question" data-answer=""><span>Ist innerhalb von fünf Sekunden klar, für wen Sie welche Lösung anbieten?</span><div class="toggle"><button type="button" data-value="1">Ja</button><button type="button" data-value="0">Nein</button></div></div>
+              <div class="check-question" data-answer=""><span>Zeigt Ihr Google-Profil aktuelle Bewertungen, Bilder und professionelle Antworten?</span><div class="toggle"><button type="button" data-value="1">Ja</button><button type="button" data-value="0">Nein</button></div></div>
+              <div class="check-question" data-answer=""><span>Sind echte Menschen, Team oder Ansprechpartner sichtbar?</span><div class="toggle"><button type="button" data-value="1">Ja</button><button type="button" data-value="0">Nein</button></div></div>
+              <div class="check-question" data-answer=""><span>Gibt es konkrete Nachweise wie Cases, Ergebnisse oder Kundenstimmen?</span><div class="toggle"><button type="button" data-value="1">Ja</button><button type="button" data-value="0">Nein</button></div></div>
+              <div class="check-question" data-answer=""><span>Wirken Google, Website und Social Media wie dieselbe starke Marke?</span><div class="toggle"><button type="button" data-value="1">Ja</button><button type="button" data-value="0">Nein</button></div></div>
+              <div class="check-question" data-answer=""><span>Ist der nächste Schritt einfach, risikoarm und sofort verständlich?</span><div class="toggle"><button type="button" data-value="1">Ja</button><button type="button" data-value="0">Nein</button></div></div>
+            </div>
+          </article>
+        </div>
+
+        <form class="form-panel reveal" name="vertrauensanalyse" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="vertrauensanalyse">
+          <p hidden><label>Nicht ausfüllen: <input name="bot-field"></label></p>
+          <input type="hidden" name="selbstcheck-score" id="formScore" value="0">
+          <div class="section-head" style="margin-bottom:24px">
+            <div><span class="eyebrow">Persönliche Analyse</span><h3 style="margin:16px 0 0">Die drei größten Vertrauenslücken kostenlos prüfen lassen.</h3></div>
+            <p>Sie erhalten eine konkrete Einschätzung statt einer Standardpräsentation.</p>
+          </div>
+          <div class="form-grid">
+            <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div>
+            <div class="field"><label for="company">Unternehmen</label><input id="company" name="unternehmen" autocomplete="organization" required></div>
+            <div class="field"><label for="website">Website</label><input id="website" name="website" type="url" placeholder="https://" required></div>
+            <div class="field"><label for="email">E-Mail</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="phone">Telefon</label><input id="phone" name="telefon" type="tel" autocomplete="tel"></div>
+            <div class="field"><label for="goal">Wofür soll mehr Vertrauen entstehen?</label><select id="goal" name="ziel" required><option value="">Bitte auswählen</option><option>Mehr Kundenanfragen</option><option>Mehr passende Mitarbeiter</option><option>Kunden und Mitarbeiter</option><option>Markenpositionierung allgemein</option></select></div>
+            <div class="field full"><label for="message">Was soll online endlich klarer sichtbar werden?</label><textarea id="message" name="nachricht" placeholder="Zum Beispiel: unsere Erfahrung, unsere Qualität, unser Team oder unsere Spezialisierung"></textarea></div>
+          </div>
+          <label class="consent"><input type="checkbox" required><span>Ich habe die <a href="/datenschutz.html" style="text-decoration:underline">Datenschutzerklärung</a> zur Kenntnis genommen und bin mit der Verarbeitung meiner Angaben zur Kontaktaufnahme einverstanden.</span></label>
+          <button class="btn btn-primary" type="submit">Kostenlose Vertrauensanalyse anfordern
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal"><div><span class="eyebrow">Häufige Fragen</span><h2>Was digitaler Vertrauensaufbau konkret bedeutet.</h2></div></div>
+        <div class="faq">
+          <details class="reveal"><summary>Ist das einfach nur neues Webdesign?</summary><p>Nein. Webdesign ist nur eine sichtbare Ebene. Entscheidend ist, welche Zweifel Ihre Zielgruppe hat, welche Beweise sie benötigt und wie Google, Website und Social Media gemeinsam dieselbe glaubwürdige Antwort geben.</p></details>
+          <details class="reveal"><summary>Funktioniert die Positionierung für Kunden und Mitarbeiter gleichzeitig?</summary><p>Ja, wenn die gemeinsame Klammer stimmt: Vertrauen. Kunden prüfen Kompetenz und Sicherheit, Mitarbeiter prüfen Kultur und Wechselrisiko. Die Beweise unterscheiden sich, das strategische Prinzip bleibt gleich.</p></details>
+          <details class="reveal"><summary>Müssen alle drei Bereiche gleichzeitig neu gemacht werden?</summary><p>Nicht zwingend. Die Analyse zeigt, wo der größte Vertrauensbruch liegt. Häufig reicht es, zuerst den stärksten Engpass zu beheben und die anderen Kontaktpunkte anschließend konsistent anzubinden.</p></details>
+          <details class="reveal"><summary>Wie schnell kann man eine Verbesserung erkennen?</summary><p>Einige Effekte entstehen sofort durch klarere Botschaften und bessere Nutzerführung. Reputation, Content und organische Sichtbarkeit bauen sich über Zeit auf. Deshalb kombinieren wir schnelle Vertrauenshebel mit nachhaltiger Systemarbeit.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="final-cta reveal">
+          <span class="eyebrow">Die sicherste Wahl muss auch so wirken</span>
+          <h2>Ihre Qualität ist bereits da. Jetzt muss sie online innerhalb von 30 Sekunden erkennbar werden.</h2>
+          <p class="lead">Starten Sie mit einer kostenlosen Analyse Ihrer sichtbarsten Vertrauenslücken.</p>
+          <div class="btns" style="justify-content:center"><a class="btn btn-primary" href="#vertrauenscheck">Vertrauenscheck starten</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="brand"><span class="brand-mark">DG</span><span>DIGITALE GEWINNER<small>Ich mache Vertrauen online sichtbar.</small></span></div>
+      <div class="footer-links"><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a><a href="#top">Nach oben ↑</a></div>
+      <div>© <span id="year"></span> Digitale Gewinner</div>
+    </div>
+  </footer>
+
+  <script>
+    const questions=[...document.querySelectorAll('.check-question')];
+    const scoreValue=document.getElementById('scoreValue');
+    const scoreRing=document.getElementById('scoreRing');
+    const scoreResult=document.getElementById('scoreResult');
+    const formScore=document.getElementById('formScore');
+    function updateScore(){
+      const answered=questions.filter(q=>q.dataset.answer!=="");
+      const yes=answered.reduce((sum,q)=>sum+Number(q.dataset.answer),0);
+      const score=answered.length?Math.round((yes/questions.length)*100):0;
+      scoreValue.textContent=score;
+      formScore.value=score;
+      scoreRing.style.background=`conic-gradient(var(--accent) ${score*3.6}deg,rgba(255,255,255,.08) 0deg)`;
+      if(!answered.length) scoreResult.textContent='Beantworten Sie die Fragen, um eine erste Einschätzung zu erhalten.';
+      else if(answered.length<questions.length) scoreResult.textContent=`${answered.length} von ${questions.length} Signalen bewertet. Vervollständigen Sie den Check für ein klareres Bild.`;
+      else if(score>=84) scoreResult.textContent='Starke Basis: Ihr Unternehmen sendet bereits viele klare Vertrauenssignale. Jetzt geht es um Konsistenz und Differenzierung.';
+      else if(score>=50) scoreResult.textContent='Solide Substanz, aber sichtbare Brüche: Einige Kontaktpunkte bauen Vertrauen auf, andere lassen unnötige Zweifel offen.';
+      else scoreResult.textContent='Hohe Vertrauenslücke: Ihre reale Qualität wird online wahrscheinlich deutlich schwächer wahrgenommen, als sie tatsächlich ist.';
+    }
+    questions.forEach(q=>q.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
+      q.dataset.answer=btn.dataset.value;
+      q.querySelectorAll('button').forEach(b=>b.className='');
+      btn.classList.add(btn.dataset.value==='1'?'active-yes':'active-no');
+      updateScore();
+    })));
+    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
