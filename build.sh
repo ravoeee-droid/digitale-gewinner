@@ -33,9 +33,24 @@ for item in source.iterdir():
 for name in ('index.html', 'case-studies.html', 'robots.txt', 'sitemap.xml'):
     shutil.copy2(name, out / name)
 
-shutil.rmtree(tmp, ignore_errors=True)
+# Add the sales-psychology, results and immersive case-study upgrade.
+for name in ('trust-upgrade.css', 'case-worlds.css', 'trust-upgrade.js'):
+    shutil.copy2(name, out / name)
+
 for name in ('index.html', 'case-studies.html'):
+    page = out / name
+    html = page.read_text(encoding='utf-8')
+    if 'trust-upgrade.css' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="trust-upgrade.css"><link rel="stylesheet" href="case-worlds.css"></head>')
+    elif 'case-worlds.css' not in html:
+        html = html.replace('</head>', '<link rel="stylesheet" href="case-worlds.css"></head>')
+    if 'trust-upgrade.js' not in html:
+        html = html.replace('</body>', '<script src="trust-upgrade.js" defer></script></body>')
+    page.write_text(html, encoding='utf-8')
+
+shutil.rmtree(tmp, ignore_errors=True)
+for name in ('index.html', 'case-studies.html', 'trust-upgrade.css', 'case-worlds.css', 'trust-upgrade.js'):
     if not (out / name).exists():
         raise SystemExit(f'Missing {name}')
-print('New Digitale Gewinner authority website built successfully.')
+print('Digitale Gewinner results and case-study upgrade built successfully.')
 PY
