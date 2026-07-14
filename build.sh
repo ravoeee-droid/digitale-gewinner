@@ -15,7 +15,7 @@ shutil.rmtree(out, ignore_errors=True)
 tmp.mkdir()
 out.mkdir()
 
-# Preserve the existing legal and specialist pages.
+# Preserve all existing assets, legal pages and specialist pages.
 with zipfile.ZipFile(archive) as package:
     package.extractall(tmp)
 index_files = sorted(tmp.rglob('index.html'), key=lambda p: len(p.parts))
@@ -29,19 +29,13 @@ for item in source.iterdir():
     else:
         shutil.copy2(item, target)
 
-# Overlay the new authority website without touching the retained pages.
-files = [
-    'index.html', 'case-studies.html',
-    'site-images-1.js', 'site-images-2.js', 'site-images-3.js', 'site-images-4.js',
-    'robots.txt', 'sitemap.xml'
-]
-for name in files:
+# Replace only the brand homepage and add the case-study page.
+for name in ('index.html', 'case-studies.html', 'robots.txt', 'sitemap.xml'):
     shutil.copy2(name, out / name)
 
 shutil.rmtree(tmp, ignore_errors=True)
-required = [out / name for name in files]
-missing = [str(p) for p in required if not p.exists()]
-if missing:
-    raise SystemExit('Missing required files: ' + ', '.join(missing))
-print(f'Built {sum(1 for p in out.rglob("*") if p.is_file())} files.')
+for name in ('index.html', 'case-studies.html'):
+    if not (out / name).exists():
+        raise SystemExit(f'Missing {name}')
+print('New Digitale Gewinner authority website built successfully.')
 PY
