@@ -4,6 +4,7 @@
   "private": true,
   "description": "Payload CMS admin for Digitale Gewinner",
   "type": "module",
+  "packageManager": "pnpm@10.15.0",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
