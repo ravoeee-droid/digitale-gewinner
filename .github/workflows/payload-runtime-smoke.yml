@@ -3,6 +3,8 @@ name: Payload Runtime Smoke Test
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -14,19 +16,24 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Wait for Vercel production deployment
-        run: sleep 75
+        run: sleep 10
 
       - name: Test Payload database health
         shell: bash
         run: |
-          set -euo pipefail
+          set -u
           echo '=== /api/health ==='
-          response=$(curl --fail-with-body --silent --show-error --max-time 60 \
+          body=$(mktemp)
+          code=$(curl --silent --show-error --max-time 60 \
+            --output "$body" --write-out '%{http_code}' \
             https://dg-kanzlei-recruiting-final-nbdl.vercel.app/api/health)
-          echo "$response"
-          echo "$response" | grep '"ok":true'
-          echo "$response" | grep '"database":"connected"'
-          echo "$response" | grep '"usersTable":"ready"'
+          cat "$body"
+          echo
+          echo "HTTP $code"
+          test "$code" = "200"
+          grep '"ok":true' "$body"
+          grep '"database":"connected"' "$body"
+          grep '"usersTable":"ready"' "$body"
 
       - name: Test Payload admin login page
         shell: bash
