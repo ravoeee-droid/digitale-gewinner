@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
   pull-requests: write
 
 jobs:
@@ -44,7 +45,8 @@ jobs:
               echo '```'
             } > build-comment.md
             if [ "${{ github.event_name }}" = "pull_request" ]; then
-              gh pr comment "${{ github.event.pull_request.number }}" --body-file build-comment.md
+              jq -Rs '{body: .}' build-comment.md > build-comment.json
+              gh api --method PATCH "repos/${{ github.repository }}/issues/comments/4977527142" --input build-comment.json
             fi
             cat build-comment.md
             exit $status
