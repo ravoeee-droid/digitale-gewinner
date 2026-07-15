@@ -1,0 +1,8 @@
+/* Local WebP asset rendering fixes */
+.hero-photo img{object-fit:cover;object-position:center 22%}
+.about-img img{object-fit:cover;object-position:center 18%}
+.process-img img{object-fit:cover;object-position:center}
+.case-image,.dg-screen,body.dg-case-page .screen{aspect-ratio:1575/723;background:rgba(8,7,5,.65)}
+.case-image img,.dg-screen img,body.dg-case-page .screen img{width:100%;height:100%;object-fit:contain;object-position:center}
+.pillar:before{background-position:center}
+@media(max-width:640px){.hero-photo img{object-position:center 18%}.case-image,.dg-screen,body.dg-case-page .screen{aspect-ratio:1575/760}}
