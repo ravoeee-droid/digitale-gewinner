@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,6 +16,7 @@ jobs:
     env:
       VERCEL_ENV: preview
       NODE_OPTIONS: --max-old-space-size=8000
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,8 +36,17 @@ jobs:
           npm run build > build.log 2>&1
           status=$?
           if [ $status -ne 0 ]; then
-            echo "===== RELEVANT BUILD ERROR ====="
-            tail -n 100 build.log
+            {
+              echo '### Unified build error'
+              echo
+              echo '```text'
+              tail -n 100 build.log
+              echo '```'
+            } > build-comment.md
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              gh pr comment "${{ github.event.pull_request.number }}" --body-file build-comment.md
+            fi
+            cat build-comment.md
             exit $status
           fi
           tail -n 40 build.log
