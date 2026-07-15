@@ -1,0 +1,218 @@
+name: Seed Live Payload Content
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Seed current production CMS
+        env:
+          CMS_URL: https://dg-kanzlei-recruiting-final-nbdl.vercel.app
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from pathlib import Path
+
+          base = os.environ['CMS_URL'].rstrip('/')
+
+          def request(method, path, data=None):
+              body = None if data is None else json.dumps(data, ensure_ascii=False).encode('utf-8')
+              req = urllib.request.Request(
+                  base + path,
+                  data=body,
+                  method=method,
+                  headers={'Accept': 'application/json', 'Content-Type': 'application/json'},
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=60) as response:
+                      raw = response.read().decode('utf-8')
+                      return response.status, json.loads(raw) if raw else {}
+              except urllib.error.HTTPError as error:
+                  raw = error.read().decode('utf-8', errors='replace')
+                  print(method, path, 'HTTP', error.code, raw[:1000])
+                  return error.code, {}
+
+          def list_docs(collection):
+              status, payload = request('GET', f'/api/{collection}?limit=100&depth=0')
+              if status != 200:
+                  raise SystemExit(f'Could not read {collection}: HTTP {status}')
+              return payload.get('docs', [])
+
+          def create_missing(collection, unique_field, items):
+              existing = list_docs(collection)
+              known = {str(doc.get(unique_field, '')): doc for doc in existing}
+              for item in items:
+                  key = str(item[unique_field])
+                  if key in known:
+                      continue
+                  status, created = request('POST', f'/api/{collection}', item)
+                  if status not in (200, 201):
+                      raise SystemExit(f'Could not create {collection}/{key}: HTTP {status}')
+                  known[key] = created.get('doc', created)
+                  print('Created', collection, key)
+              return known
+
+          cases_raw = json.loads(Path('case-data.json').read_text(encoding='utf-8'))
+          featured_slugs = {'jj-media', 'defi-intelligence', 'neuromind'}
+          cases = []
+          for index, item in enumerate(cases_raw):
+              website = item['url']
+              if '.' in website and not website.startswith('http'):
+                  website = 'https://' + website
+              elif '.' not in website:
+                  website = ''
+              cases.append({
+                  'title': item['name'],
+                  'slug': item['id'],
+                  'sector': item['sector'],
+                  'order': index + 1,
+                  'featured': item['id'] in featured_slugs,
+                  'summary': item['summary'],
+                  'problem': item['problem'],
+                  'solution': item['solution'],
+                  'impact': item['impact'],
+                  'resultLabel': item['result'],
+                  'websiteUrl': website,
+                  'accentColor': item['accent'],
+                  '_status': 'published',
+              })
+
+          reviews = [
+              ('Julian Arndt', 'Danke an Raphael für den mega Support! Wir hatten viele Probleme mit anderen Anbietern beim Thema Landingpages. Raphael hat es übernommen und innerhalb von 3 Tagen eine perfekte Website für uns gebaut!'),
+              ('Andreas Walkenhorst', 'Großartige Arbeit, das besprochene Projekt sehr zeitnah und in enger Abstimmung umgesetzt. Freue mich auf die weitere Zusammenarbeit.'),
+              ('Lider Yilmaz', 'Homepage und Webshop 1A, Support sehr schnell und freundlich. Echtes Know-how mit hilfreichen Tipps.'),
+              ('Miriam Braunmüller', 'Ich habe mich sehr gut aufgehoben gefühlt. Meine Wünsche und Ideen wurden einfach super gut umgesetzt.'),
+              ('Rainer Deckert', 'Außergewöhnlicher Webdesigner! Raphael baut nicht einfach nur Websites, sondern echte Verkaufssysteme mit Rechner, Chatbot und CRM. Top!'),
+              ('KrentzWorks Studio', 'Web-App und Paid-Ads-Kampagne – beides 1A umgesetzt. Schnell, professionell und mit echtem Mehrwert. Raphael weiß, was er tut. Sehr gerne wieder!'),
+              ('Annika Fischer', 'Ich bin wirklich rundum begeistert von der Zusammenarbeit mit Raphael!'),
+              ('Massoud Weissi', 'Sehr professionelle und zuverlässige Arbeit. Die Erstellung meiner Webseite lief reibungslos und auf meine Wünsche wurde eingegangen.'),
+              ('DJ Walli', 'Gutes Angebot und schnell. Die Homepage ist genau nach meinen Angaben gemacht worden. TOP.'),
+          ]
+          review_items = [{'name': name, 'text': text, 'rating': 5, 'published': True} for name, text in reviews]
+
+          faq_pairs = [
+              ('Was bedeutet digitaler Vertrauensaufbau?', 'Digitaler Vertrauensaufbau bedeutet, dass Google-Profil, Website und Social Media die tatsächliche Qualität eines Unternehmens klar, glaubwürdig und konsistent zeigen.'),
+              ('Woran erkenne ich, dass mein Unternehmen online ein Vertrauensproblem hat?', 'Typische Signale sind zu wenige oder stark schwankende Anfragen, viel Preisvergleich, gute Reichweite ohne Abschlüsse oder wenige passende Bewerbungen.'),
+              ('Warum bringt eine Website Besucher, aber keine Anfragen?', 'Häufig fehlen eine klare Positionierung, sichtbare Beweise, verständliche Leistungen, persönliche Ansprechpartner oder ein sicherer nächster Schritt.'),
+              ('Kann ein schwacher Online-Auftritt auch die Mitarbeitergewinnung bremsen?', 'Ja. Bewerber prüfen Führung, Kultur, Sicherheit, Entwicklung und die Glaubwürdigkeit des Arbeitgebers.'),
+              ('Warum müssen Google, Website und Social Media zusammenpassen?', 'Widersprechen sich Bewertungen, Website, Bilder und Social-Media-Auftritt, entsteht Unsicherheit. Ein konsistenter Eindruck reduziert Zweifel.'),
+              ('Was enthält die kostenlose Vertrauensanalyse?', 'Raphael Hermann prüft Google, Website und Social Media, identifiziert die drei größten Vertrauenslücken und priorisiert den sinnvollsten nächsten Schritt.'),
+              ('Für welche Unternehmen ist Digitale Gewinner geeignet?', 'Das Angebot richtet sich an Unternehmen, Dienstleister, Experten und Arbeitgeber im deutschsprachigen Raum, deren reale Qualität online noch nicht schnell genug verstanden wird.'),
+          ]
+          faq_items = [{'question': q, 'answer': a, 'order': i + 1, 'published': True} for i, (q, a) in enumerate(faq_pairs)]
+
+          pages = [
+              {
+                  'title': 'Digitalen Vertrauensaufbau verstehen',
+                  'slug': 'vertrauensaufbau-online',
+                  'eyebrow': 'Ratgeber für digitalen Vertrauensaufbau',
+                  'headline': 'Digitaler Vertrauensaufbau: Warum gute Unternehmen online trotzdem verlieren',
+                  'intro': 'Menschen entscheiden selten nur nach Leistung. Sie entscheiden danach, welche Leistung sie schnell verstehen und als sichere Wahl empfinden können.',
+                  'sections': [
+                      {'heading': 'Vertrauen ist der Filter vor jeder Anfrage', 'text': 'Interessenten prüfen Klarheit, Kompetenz, Beweise, Persönlichkeit und Risiko.'},
+                      {'heading': 'Google schafft den ersten Eindruck', 'text': 'Bewertungen, Bilder und Aktualität beeinflussen, ob ein Unternehmen seriös und relevant wirkt.'},
+                      {'heading': 'Die Website übersetzt Qualität in eine Entscheidung', 'text': 'Eine vertrauensstarke Website erklärt Problem, Lösung, Beweise und den nächsten sicheren Schritt.'},
+                  ],
+                  '_status': 'published',
+              },
+              {
+                  'title': 'Website bringt keine Anfragen?',
+                  'slug': 'website-keine-anfragen',
+                  'eyebrow': 'Ratgeber für digitalen Vertrauensaufbau',
+                  'headline': 'Ihre Website bringt Besucher, aber keine Anfragen?',
+                  'intro': 'Mehr Traffic löst nicht automatisch das Problem. Häufig fehlt nicht Aufmerksamkeit, sondern Entscheidungssicherheit.',
+                  'sections': [
+                      {'heading': 'Die Zielgruppe erkennt sich nicht sofort', 'text': 'Eine starke Startseite benennt Problem, Veränderung und Zielgruppe.'},
+                      {'heading': 'Der Wert bleibt abstrakt', 'text': 'Leistungen müssen zeigen, was sie praktisch verändern.'},
+                      {'heading': 'Beweise fehlen am richtigen Ort', 'text': 'Bewertungen und Case Studies müssen dort erscheinen, wo Zweifel entstehen.'},
+                  ],
+                  '_status': 'published',
+              },
+              {
+                  'title': 'Zu wenig oder schlechte Bewerber?',
+                  'slug': 'zu-wenig-bewerber',
+                  'eyebrow': 'Ratgeber für digitalen Vertrauensaufbau',
+                  'headline': 'Zu wenig Bewerber oder zu viele unpassende Bewerbungen?',
+                  'intro': 'Passende Fachkräfte prüfen Führung, Kultur, Sicherheit, Entwicklung und die Glaubwürdigkeit des Arbeitgebers.',
+                  'sections': [
+                      {'heading': 'Eine Stellenanzeige allein baut kaum Vertrauen auf', 'text': 'Bewerber prüfen zusätzlich Website, Google und Social Media.'},
+                      {'heading': 'Arbeitgeberqualität muss sichtbar werden', 'text': 'Kultur, Entwicklung und Sicherheit brauchen konkrete Belege.'},
+                      {'heading': 'Klare Positionierung verbessert die Vorqualifizierung', 'text': 'Je klarer Anspruch und Zusammenarbeit beschrieben sind, desto eher bewerben sich passende Menschen.'},
+                  ],
+                  '_status': 'published',
+              },
+          ]
+
+          case_docs = create_missing('case-studies', 'slug', cases)
+          review_docs = create_missing('reviews', 'name', review_items)
+          faq_docs = create_missing('faqs', 'question', faq_items)
+          create_missing('pages', 'slug', pages)
+
+          trust_problems = [
+              {'title': 'Zu wenig Kundenanfragen', 'description': 'Interessenten erkennen online nicht schnell genug, warum sie gerade diesem Unternehmen vertrauen sollten.'},
+              {'title': 'Schwankende Kundenanfragen', 'description': 'Der Online-Auftritt erzeugt keine verlässlich starke Entscheidungssicherheit.'},
+              {'title': 'Zu viele unpassende Anfragen', 'description': 'Positionierung, Anspruch und Arbeitsweise sind nicht klar genug.'},
+              {'title': 'Zu wenig Bewerber', 'description': 'Passende Fachkräfte sehen online zu wenig von Kultur, Führung, Sicherheit und Zukunft.'},
+              {'title': 'Zu viele schlechte Bewerber', 'description': 'Ohne sichtbaren Arbeitgeberwert fehlt die natürliche Vorqualifizierung.'},
+              {'title': 'Ständiger Preisvergleich', 'description': 'Wird der Unterschied nicht verstanden, bleibt der Preis als einziges klares Kriterium.'},
+              {'title': 'Werbung bringt Klicks, aber keine Abschlüsse', 'description': 'Trifft bezahlte Aufmerksamkeit auf einen unsicheren Auftritt, geht Nachfragewirkung verloren.'},
+              {'title': 'Empfehlungen versanden nach dem Online-Check', 'description': 'Bestätigt der digitale Eindruck das gute Gefühl nicht, entsteht Zweifel statt Kontakt.'},
+          ]
+
+          homepage = {
+              'hero': {
+                  'eyebrow': 'Spezialist für digitalen Vertrauensaufbau',
+                  'headline': 'Ich mache Vertrauen online sichtbar.',
+                  'subline': 'Über Google, Website und Social Media – damit potenzielle Kunden und Mitarbeiter innerhalb weniger Sekunden erkennen, warum Ihr Unternehmen die richtige Wahl ist.',
+                  'primaryCtaLabel': 'Meine Vertrauenslücken prüfen lassen',
+                  'secondaryCtaLabel': 'Case Studies ansehen',
+              },
+              'trustProblems': trust_problems,
+              'featuredCaseStudies': [case_docs[s]['id'] for s in ('jj-media', 'defi-intelligence', 'neuromind')],
+              'featuredReviews': [review_docs[name]['id'] for name, _ in reviews],
+              'faqs': [faq_docs[q]['id'] for q, _ in faq_pairs],
+              '_status': 'published',
+          }
+          status, _ = request('POST', '/api/globals/homepage', homepage)
+          print('Homepage update HTTP', status)
+
+          settings = {
+              'brandName': 'Digitale Gewinner',
+              'expertName': 'Raphael Hermann',
+              'phone': '+49 711 34063951',
+              'positioning': 'Digitale Gewinner macht Vertrauen online sichtbar – über Google, Website und Social Media – damit Unternehmen mehr passende Kundenanfragen und bessere Bewerbungen gewinnen.',
+              'proof': {'yearsExperience': 8, 'managedAdBudget': 200000, 'googleRating': 5, 'googleReviewCount': 9},
+              'defaultSeo': {
+                  'metaTitle': 'Mehr Kundenanfragen & bessere Bewerber | Digitale Gewinner',
+                  'metaDescription': 'Raphael Hermann macht Vertrauen über Google, Website und Social Media sichtbar – für mehr qualifizierte Kundenanfragen, bessere Bewerber und weniger Preisvergleich.',
+                  'canonicalBaseUrl': 'https://digitale-gewinner.de',
+              },
+              'aiSummary': 'Raphael Hermann ist seit acht Jahren im digitalen Marketing tätig und hat mehr als 200.000 Euro Werbebudget verwaltet. Digitale Gewinner verbindet Google, Website und Social Media, um die reale Qualität von Unternehmen für Kunden und Bewerber sichtbar zu machen.',
+          }
+          status, _ = request('POST', '/api/globals/site-settings', settings)
+          print('Site settings update HTTP', status)
+
+          expected = {'case-studies': 10, 'reviews': 9, 'faqs': 7, 'pages': 3}
+          for collection, minimum in expected.items():
+              status, payload = request('GET', f'/api/{collection}?limit=1&depth=0')
+              total = int(payload.get('totalDocs', 0)) if status == 200 else 0
+              print(collection, total)
+              if total < minimum:
+                  raise SystemExit(f'{collection}: expected at least {minimum}, found {total}')
+
+          print('LIVE PAYLOAD SEED COMPLETED')
+          PY
