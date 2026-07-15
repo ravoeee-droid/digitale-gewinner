@@ -3,6 +3,8 @@ name: Payload Runtime Smoke Test
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -14,7 +16,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Wait for Vercel production deployment
-        run: sleep 75
+        run: sleep 20
 
       - name: Test Payload database health
         shell: bash
