@@ -1,0 +1,50 @@
+/* Homepage brand lock: outside #cases only Digitale Gewinner black, cream and gold. */
+body.home-case-style{--dg-black:#080705;--dg-panel:#15110d;--dg-cream:#f6efe5;--dg-muted:#b8ad9f;--dg-gold:#d9aa50;--dg-gold2:#f2cf85;--dg-line:rgba(242,207,133,.18);background:#080705;color:var(--dg-cream)}
+body.home-case-style .cs-scene:not(#cases),body.home-case-style .dg-impact-section{background:radial-gradient(circle at 88% 6%,rgba(217,170,80,.12),transparent 27rem),linear-gradient(135deg,#15110d,#080705)!important;color:var(--dg-cream)!important;border-color:rgba(242,207,133,.14)!important}
+body.home-case-style .cs-scene:not(#cases):before{color:rgba(255,255,255,.025)!important}
+body.home-case-style .cs-scene:not(#cases) .eyebrow,body.home-case-style .cs-scene:not(#cases) .gold,body.home-case-style .dg-impact-section .eyebrow,body.home-case-style .dg-impact-section .gold{color:var(--dg-gold2)!important}
+body.home-case-style .cs-scene:not(#cases) .eyebrow:before,body.home-case-style .dg-impact-section .eyebrow:before{background:linear-gradient(90deg,var(--dg-gold),transparent)!important}
+body.home-case-style .cs-scene:not(#cases) h2,body.home-case-style .cs-scene:not(#cases) h3,body.home-case-style .dg-impact-section h2,body.home-case-style .dg-impact-section h3{color:var(--dg-cream)!important}
+body.home-case-style .cs-scene:not(#cases) p,body.home-case-style .cs-scene:not(#cases) .lead,body.home-case-style .cs-scene:not(#cases) .muted,body.home-case-style .cs-scene:not(#cases) .section-head>p,body.home-case-style .dg-impact-section p{color:var(--dg-muted)!important}
+
+/* 3 Orte. 1 Eindruck. — same brand, three distinct jobs. */
+body.home-case-style #system{background:radial-gradient(circle at 85% 8%,rgba(217,170,80,.14),transparent 28rem),linear-gradient(135deg,#14110d,#080705)!important}
+body.home-case-style #system .pillars{grid-template-columns:1.08fr .92fr;grid-template-rows:1fr 1fr;gap:18px}
+body.home-case-style #system .pillar{border-color:rgba(242,207,133,.2)!important;background:#12100d!important;min-height:305px;border-radius:30px;overflow:hidden}
+body.home-case-style #system .pillar:first-child{grid-row:1/3;min-height:660px}
+body.home-case-style #system .pillar:before{background-image:linear-gradient(180deg,rgba(8,7,5,.05) 8%,rgba(8,7,5,.94) 82%),var(--image)!important;filter:saturate(.74) contrast(1.04)}
+body.home-case-style #system .pillar:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(320px circle at var(--spot-x,70%) var(--spot-y,20%),rgba(242,207,133,.15),transparent 70%);z-index:1}
+body.home-case-style #system .pillar>*{position:relative;z-index:2}
+body.home-case-style #system .pillar-label{color:var(--dg-gold2)!important;border-color:rgba(242,207,133,.35)!important;background:rgba(8,7,5,.76)!important}
+body.home-case-style #system .pillar h3{color:#fff!important;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.3rem,3.5vw,4.4rem);line-height:.92}
+body.home-case-style #system .pillar p,body.home-case-style #system .dg-flow span{color:#d2c6b8!important}
+body.home-case-style #system .dg-flow{border-top:1px solid rgba(242,207,133,.15);padding-top:14px}
+body.home-case-style #system .dg-flow b{color:var(--dg-gold2)!important}
+body.home-case-style #system .pillar a{color:var(--dg-gold2)!important}
+
+/* All normal homepage cards remain in DG branding. */
+body.home-case-style .cs-scene:not(#cases) .card,body.home-case-style .cs-scene:not(#cases) .review,body.home-case-style .cs-scene:not(#cases) .step,body.home-case-style .cs-scene:not(#cases) .stat,body.home-case-style .dg-impact-card,body.home-case-style .dg-outcome{background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(217,170,80,.025))!important;border-color:rgba(242,207,133,.16)!important;color:var(--dg-cream)!important}
+body.home-case-style .cs-scene:not(#cases) .review p,body.home-case-style .cs-scene:not(#cases) .review-foot,body.home-case-style .cs-scene:not(#cases) .step p,body.home-case-style .cs-scene:not(#cases) .stat span,body.home-case-style .dg-impact-bottom span,body.home-case-style .dg-outcome span{color:var(--dg-muted)!important}
+body.home-case-style .cs-scene:not(#cases) .avatar,body.home-case-style .cs-scene:not(#cases) .step-num,body.home-case-style .dg-impact-number{background:rgba(217,170,80,.08)!important;color:var(--dg-gold2)!important;border-color:rgba(242,207,133,.25)!important}
+body.home-case-style .cs-scene:not(#cases) .stat b,body.home-case-style .dg-outcome b,body.home-case-style .dg-process-result{color:var(--dg-gold2)!important}
+body.home-case-style .cs-reviews .review:first-child{background:linear-gradient(145deg,rgba(217,170,80,.16),rgba(255,255,255,.035))!important;color:#fff!important}
+body.home-case-style .cs-reviews .review:first-child p{color:#eee3d5!important}
+body.home-case-style .cs-reviews .score{background:rgba(255,255,255,.045)!important;color:var(--dg-cream)!important;border-color:rgba(242,207,133,.18)!important}
+
+/* Founder, audit, FAQ and final CTA stay on-brand. */
+body.home-case-style .cs-about .stat{background:rgba(217,170,80,.07)!important;border-color:rgba(242,207,133,.2)!important}
+body.home-case-style .cs-audit .audit{background:rgba(255,255,255,.035)!important;border-color:rgba(242,207,133,.15)!important}
+body.home-case-style .cs-audit .field input,body.home-case-style .cs-audit .field textarea{background:rgba(8,7,5,.6)!important;border-color:rgba(242,207,133,.16)!important}
+body.home-case-style .cs-faq .faq details{background:rgba(255,255,255,.035)!important;border-color:rgba(242,207,133,.14)!important;color:var(--dg-cream)!important}
+body.home-case-style .cs-faq .faq p{color:var(--dg-muted)!important}
+body.home-case-style .cs-final{background:linear-gradient(135deg,#f2cf85,#d7a448)!important;color:#211607!important}
+body.home-case-style .cs-final h2,body.home-case-style .cs-final p{color:#211607!important}
+body.home-case-style .cs-final .eyebrow{color:#5b3708!important}
+body.home-case-style .cs-final .btn-primary{background:#211607!important;color:#fff!important;border-color:#211607!important}
+
+/* The case-study section alone keeps project-specific colors. */
+body.home-case-style #cases .dg-showcase{isolation:isolate}
+body.home-case-style #cases .dg-case-float{color:#fff!important}
+
+@media(max-width:1100px){body.home-case-style #system .pillars{grid-template-columns:1fr 1fr;grid-template-rows:auto}body.home-case-style #system .pillar:first-child{grid-column:1/-1;grid-row:auto;min-height:560px}}
+@media(max-width:760px){body.home-case-style #system .pillars{grid-template-columns:1fr}body.home-case-style #system .pillar:first-child{grid-column:auto;min-height:440px}body.home-case-style #system .pillar{min-height:360px}}
