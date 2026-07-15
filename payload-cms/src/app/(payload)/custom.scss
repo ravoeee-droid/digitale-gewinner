@@ -1,0 +1,22 @@
+:root {
+  --theme-elevation-0: #0b0907;
+  --theme-elevation-50: #12100d;
+  --theme-elevation-100: #19150f;
+  --theme-elevation-150: #211a12;
+  --theme-elevation-200: #2a2116;
+  --theme-elevation-800: #f1e8da;
+  --theme-elevation-900: #faf6ef;
+  --theme-elevation-1000: #ffffff;
+  --theme-success-500: #d8a648;
+}
+
+.template-default .nav__brand {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.template-default .nav__brand::after {
+  content: 'Digitale Gewinner';
+  margin-left: 0.5rem;
+  color: #f1ce84;
+}
