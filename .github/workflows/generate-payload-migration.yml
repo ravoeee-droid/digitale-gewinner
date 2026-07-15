@@ -1,0 +1,41 @@
+name: Generate Payload Migration
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --silent
+
+      - name: Generate initial Postgres migration
+        env:
+          PAYLOAD_SECRET: migration-generation-secret-only
+          VERCEL_ENV: preview
+        run: npm --workspace payload-cms run payload -- migrate:create initial --force-accept-warning
+
+      - name: Show generated migration files
+        run: find payload-cms/src/migrations -maxdepth 2 -type f -print -exec sed -n '1,260p' {} \;
+
+      - name: Upload migration
+        uses: actions/upload-artifact@v4
+        with:
+          name: payload-initial-migration
+          path: payload-cms/src/migrations
+          if-no-files-found: error
