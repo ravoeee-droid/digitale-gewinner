@@ -1,3 +1,4 @@
+@import url('/assets/images/ui/case-studies-v2.css');
 /* Individual brand worlds for the ten long-form case studies. */
 body.dg-case-page article.case{--accent:#f1ce84;--ink:#fff;--soft:#b6aa9b;position:relative;isolation:isolate}
 body.dg-case-page article.case:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 88% 10%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 31rem)}
