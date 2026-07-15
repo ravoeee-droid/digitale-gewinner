@@ -16,3 +16,4 @@ body.dg-case-page article.case .summary,body.dg-case-page article.case .focus sp
 body.dg-case-page article.case .number,body.dg-case-page article.case .sector,body.dg-case-page article.case .focus i{color:var(--accent)}
 body.dg-case-page article.case .focus div{border-color:color-mix(in srgb,var(--accent) 24%,transparent)}
 body.dg-case-page .dg-result-map-card b{color:#b9de7c}
+@import url('/assets/images/ui/case-studies-v2.css');
