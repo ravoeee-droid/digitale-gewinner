@@ -1,0 +1,48 @@
+name: Payload Runtime Smoke Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Wait for Vercel production deployment
+        run: sleep 75
+
+      - name: Test Payload database health
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== /api/health ==='
+          response=$(curl --fail-with-body --silent --show-error --max-time 60 \
+            https://dg-kanzlei-recruiting-final-nbdl.vercel.app/api/health)
+          echo "$response"
+          echo "$response" | grep '"ok":true'
+          echo "$response" | grep '"database":"connected"'
+          echo "$response" | grep '"usersTable":"ready"'
+
+      - name: Test Payload admin login page
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== /admin/login ==='
+          headers=$(mktemp)
+          body=$(mktemp)
+          code=$(curl --silent --show-error --location --max-time 60 \
+            --dump-header "$headers" --output "$body" --write-out '%{http_code}' \
+            https://dg-kanzlei-recruiting-final-nbdl.vercel.app/admin/login)
+          cat "$headers"
+          echo "HTTP $code"
+          test "$code" = "200"
+          ! grep -q "This page couldn.t load" "$body"
+          grep -Eqi "login|create.first.user|payload" "$body"
+
+      - name: Test public website
+        run: curl --fail --silent --show-error --max-time 60 https://dg-kanzlei-recruiting-final-nbdl.vercel.app/ > /dev/null
