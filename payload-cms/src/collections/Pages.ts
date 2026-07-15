@@ -11,6 +11,9 @@ export const Pages: CollectionConfig = {
     defaultColumns: ['title', 'slug', 'status', 'updatedAt'],
     group: 'Website-Inhalte',
   },
+  access: {
+    read: () => true,
+  },
   versions: {
     drafts: true,
     maxPerDoc: 25,
