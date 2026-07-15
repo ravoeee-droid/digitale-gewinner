@@ -19,30 +19,51 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const isProduction = process.env.VERCEL_ENV === 'production'
-const databaseURL = process.env.DATABASE_URL
-const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+
+// Automatically support the variable names created by Vercel/Neon.
+// This removes the need to manually duplicate the Neon connection string.
+const databaseURL =
+  process.env.DATABASE_URL ||
+  process.env.DATABASE_POSTGRES_PRISMA_URL ||
+  process.env.DATABASE_POSTGRES_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL_UNPOOLED
+
+// Preview deployments use their own current URL. Production uses the stable
+// project URL. PAYLOAD_PUBLIC_SERVER_URL remains an optional override only.
+const vercelHost = isProduction
+  ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+  : process.env.VERCEL_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL
+
 const serverURL =
   process.env.PAYLOAD_PUBLIC_SERVER_URL ||
   (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000')
+
 const websiteURL = process.env.PUBLIC_WEBSITE_URL || serverURL
 const payloadSecret =
   process.env.PAYLOAD_SECRET ||
   (isProduction ? '' : 'digitale-gewinner-preview-only-secret-change-before-production')
 
 if (isProduction && !databaseURL) {
-  throw new Error('DATABASE_URL is required before the unified Payload deployment can go live.')
+  throw new Error(
+    'No Neon/Postgres connection was found. Connect the Neon database to this Vercel project.',
+  )
 }
 
 if (isProduction && !payloadSecret) {
   throw new Error('PAYLOAD_SECRET is required before the unified Payload deployment can go live.')
 }
 
+// For the initial setup, schema syncing is enabled automatically. It can later
+// be disabled explicitly with PAYLOAD_DB_PUSH=false when migrations are used.
+const pushSchema = process.env.PAYLOAD_DB_PUSH !== 'false'
+
 const database = databaseURL
   ? postgresAdapter({
       pool: {
         connectionString: databaseURL,
       },
-      push: process.env.PAYLOAD_DB_PUSH === 'true',
+      push: pushSchema,
     })
   : sqliteAdapter({
       client: {
@@ -50,6 +71,19 @@ const database = databaseURL
       },
       push: true,
     })
+
+const allowedOrigins = Array.from(
+  new Set(
+    [
+      serverURL,
+      websiteURL,
+      process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+      process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : undefined,
+    ].filter((value): value is string => Boolean(value)),
+  ),
+)
 
 export default buildConfig({
   admin: {
@@ -66,8 +100,8 @@ export default buildConfig({
   editor: lexicalEditor(),
   secret: payloadSecret,
   serverURL,
-  cors: [serverURL, websiteURL].filter(Boolean),
-  csrf: [serverURL, websiteURL].filter(Boolean),
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
