@@ -1,0 +1,1 @@
+Alle zehn Case Studies werden auf /case-studies einzeln als vollwertige Premium-Kapitel präsentiert. Keine Bento-Zusammenfassung und keine versteckten Detailansichten.
