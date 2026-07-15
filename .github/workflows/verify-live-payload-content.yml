@@ -1,0 +1,44 @@
+name: Verify Live Payload Content
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify seeded collections and homepage
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.request
+
+          base = 'https://dg-kanzlei-recruiting-final-nbdl.vercel.app'
+
+          def get(path):
+              with urllib.request.urlopen(base + path, timeout=60) as response:
+                  return json.loads(response.read().decode('utf-8'))
+
+          expected = {'case-studies': 10, 'reviews': 9, 'faqs': 7, 'pages': 3}
+          for collection, minimum in expected.items():
+              payload = get(f'/api/{collection}?limit=1&depth=0')
+              total = int(payload.get('totalDocs', 0))
+              print(f'{collection}: {total}')
+              if total < minimum:
+                  raise SystemExit(f'{collection}: expected at least {minimum}, found {total}')
+
+          homepage = get('/api/globals/homepage?depth=0')
+          featured = homepage.get('featuredCaseStudies') or []
+          problems = homepage.get('trustProblems') or []
+          print('featuredCaseStudies:', len(featured))
+          print('trustProblems:', len(problems))
+          if len(featured) < 3 or len(problems) < 8:
+              raise SystemExit('Homepage content is incomplete')
+
+          print('LIVE CMS CONTENT VERIFIED')
+          PY
