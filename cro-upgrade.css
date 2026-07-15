@@ -1,0 +1,44 @@
+/* Digitale Gewinner — homepage CRO system. Case-study pages intentionally untouched. */
+body.home-case-style .cro-offer{margin-top:22px;padding:18px 20px;border:1px solid rgba(242,207,133,.2);border-radius:20px;background:linear-gradient(145deg,rgba(242,207,133,.09),rgba(255,255,255,.025));max-width:760px;box-shadow:0 20px 55px rgba(0,0,0,.18)}
+body.home-case-style .cro-offer>strong{display:block;color:#f6efe5;font-size:.88rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+body.home-case-style .cro-offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+body.home-case-style .cro-offer-item{display:flex;gap:9px;align-items:flex-start;padding:11px 12px;border:1px solid rgba(242,207,133,.13);border-radius:13px;background:rgba(8,7,5,.3);color:#d7ccbf;font-size:.82rem;line-height:1.45}
+body.home-case-style .cro-offer-item i{font-style:normal;color:#f2cf85;font-weight:900}
+body.home-case-style .cro-offer-note{display:flex;flex-wrap:wrap;gap:7px 18px;margin-top:11px;color:#a99e90;font-size:.74rem}
+body.home-case-style .cro-offer-note span:before{content:"✓";color:#f2cf85;margin-right:6px}
+body.home-case-style .cro-google-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:11px;min-height:39px;padding:0 14px;border-radius:999px;border:1px solid rgba(242,207,133,.23);color:#f2cf85;font-size:.76rem;font-weight:850;letter-spacing:.03em;transition:.25s}
+body.home-case-style .cro-google-link:hover{transform:translateY(-2px);background:rgba(242,207,133,.08);border-color:rgba(242,207,133,.45)}
+body.home-case-style .cro-form-intro{grid-column:1/-1;padding:15px 16px;border:1px solid rgba(242,207,133,.16);border-radius:15px;background:rgba(242,207,133,.055);color:#d6cbbd;font-size:.84rem}
+body.home-case-style .cro-form-intro b{display:block;color:#f2cf85;margin-bottom:3px}
+body.home-case-style .cro-field-help{font-size:.71rem;color:#8f8579;margin-top:-1px}
+body.home-case-style .cro-form-status{grid-column:1/-1;display:none;padding:15px 17px;border-radius:15px;border:1px solid rgba(242,207,133,.18);background:rgba(8,7,5,.5);color:#d8cdbf;font-size:.84rem;line-height:1.55}
+body.home-case-style .cro-form-status.is-visible{display:block}
+body.home-case-style .cro-form-status.is-working{border-color:rgba(242,207,133,.28)}
+body.home-case-style .cro-form-status.is-success{border-color:rgba(145,204,98,.38);background:rgba(145,204,98,.08)}
+body.home-case-style .cro-form-status.is-error{border-color:rgba(238,128,97,.4);background:rgba(238,128,97,.07)}
+body.home-case-style .cro-form-status b{display:block;color:#fff;margin-bottom:3px}
+body.home-case-style .cro-form-status a{color:#f2cf85;font-weight:850;text-decoration:underline;text-underline-offset:3px}
+body.home-case-style #trustForm.is-submitting .btn{opacity:.72;pointer-events:none}
+body.home-case-style #trustForm select{width:100%;border:1px solid rgba(242,207,133,.16);background:rgba(8,7,5,.6);color:#fff;border-radius:13px;padding:14px;outline:none}
+body.home-case-style #trustForm select:focus,body.home-case-style #trustForm input:focus,body.home-case-style #trustForm textarea:focus{border-color:rgba(242,207,133,.55);box-shadow:0 0 0 4px rgba(242,207,133,.07)}
+body.home-case-style .cro-followup{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+body.home-case-style .cro-followup article{padding:15px;border:1px solid rgba(242,207,133,.14);border-radius:15px;background:rgba(255,255,255,.025)}
+body.home-case-style .cro-followup b{display:block;color:#f2cf85;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+body.home-case-style .cro-followup span{display:block;color:#b8ad9f;font-size:.79rem;line-height:1.45}
+body.dg-thankyou{margin:0;min-height:100svh;color:#f6efe5;background:radial-gradient(circle at 76% 10%,rgba(217,170,80,.19),transparent 28rem),linear-gradient(135deg,#171109,#080705 60%,#0e0c09);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center;padding:30px}
+body.dg-thankyou *{box-sizing:border-box}
+body.dg-thankyou a{color:inherit;text-decoration:none}
+.dg-thanks-shell{width:min(1080px,100%);border:1px solid rgba(242,207,133,.17);border-radius:38px;background:rgba(10,8,5,.74);box-shadow:0 45px 140px rgba(0,0,0,.48);overflow:hidden;display:grid;grid-template-columns:1.02fr .98fr}
+.dg-thanks-copy{padding:clamp(35px,6vw,76px)}
+.dg-thanks-copy .eyebrow{display:inline-flex;align-items:center;gap:10px;color:#f2cf85;font-size:.7rem;font-weight:900;letter-spacing:.17em;text-transform:uppercase}
+.dg-thanks-copy h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3.3rem,7vw,7.2rem);font-weight:400;line-height:.88;letter-spacing:-.07em;margin:22px 0 25px}
+.dg-thanks-copy h1 em{display:block;color:#f2cf85;font-style:italic}
+.dg-thanks-copy>p{color:#cfc4b6;font-size:1.03rem;max-width:650px;line-height:1.65}
+.dg-thanks-steps{display:grid;gap:9px;margin:27px 0}
+.dg-thanks-step{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start;padding:14px;border:1px solid rgba(242,207,133,.13);border-radius:15px;background:rgba(255,255,255,.025)}
+.dg-thanks-step i{width:38px;height:38px;border-radius:12px;border:1px solid rgba(242,207,133,.24);display:grid;place-items:center;color:#f2cf85;font-style:normal;font-weight:900}
+.dg-thanks-step b{display:block;margin-bottom:3px}.dg-thanks-step span{color:#aa9f92;font-size:.83rem;line-height:1.45}
+.dg-thanks-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.dg-thanks-btn{min-height:54px;padding:0 21px;border-radius:999px;border:1px solid rgba(242,207,133,.22);display:inline-flex;align-items:center;justify-content:center;font-weight:850}.dg-thanks-btn.primary{background:linear-gradient(135deg,#f2cf85,#d8a648);color:#160f06;border-color:transparent}
+.dg-thanks-image{min-height:620px;background:#15110d;position:relative;overflow:hidden}.dg-thanks-image img{width:100%;height:100%;object-fit:cover;object-position:center 18%}.dg-thanks-image:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,7,5,.22),transparent 45%),linear-gradient(180deg,transparent 60%,rgba(8,7,5,.55))}
+@media(max-width:900px){body.home-case-style .cro-offer-grid,body.home-case-style .cro-followup{grid-template-columns:1fr}.dg-thanks-shell{grid-template-columns:1fr}.dg-thanks-image{min-height:480px;order:-1}}
+@media(max-width:640px){body.home-case-style .cro-offer{padding:15px}.dg-thanks-shell{border-radius:26px}.dg-thanks-copy{padding:34px 22px}.dg-thanks-image{min-height:390px}}
