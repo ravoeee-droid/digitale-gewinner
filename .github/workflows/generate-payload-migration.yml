@@ -28,6 +28,7 @@ jobs:
         env:
           PAYLOAD_SECRET: migration-generation-secret-only
           VERCEL_ENV: preview
+          DATABASE_URL: postgresql://payload:payload@localhost:5432/payload
         run: npm --workspace payload-cms run payload -- migrate:create initial --force-accept-warning
 
       - name: Show generated migration files
@@ -36,6 +37,6 @@ jobs:
       - name: Upload migration
         uses: actions/upload-artifact@v4
         with:
-          name: payload-initial-migration
+          name: payload-initial-postgres-migration
           path: payload-cms/src/migrations
           if-no-files-found: error
