@@ -6,6 +6,9 @@ export const Homepage: GlobalConfig = {
   admin: {
     group: 'Website-Inhalte',
   },
+  access: {
+    read: () => true,
+  },
   versions: {
     drafts: true,
     max: 25,
@@ -16,9 +19,16 @@ export const Homepage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'eyebrow', type: 'text', defaultValue: 'Spezialist für digitalen Vertrauensaufbau' },
-        { name: 'headline', type: 'text', required: true, defaultValue: 'Ich mache Vertrauen online sichtbar.' },
+        { name: 'headline', type: 'text', required: true, defaultValue: 'Ich mache Vertrauen' },
+        { name: 'headlineHighlight', label: 'Hervorgehobener Teil', type: 'text', defaultValue: 'online sichtbar.' },
         { name: 'subline', type: 'textarea', required: true },
         { name: 'image', type: 'upload', relationTo: 'media' },
+        {
+          name: 'heroImagePath',
+          label: 'Bestehendes Hero-Bild',
+          type: 'text',
+          defaultValue: '/assets/images/raphael/raphael-hermann-hero.webp',
+        },
         { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Meine Vertrauenslücken prüfen lassen' },
         { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'Case Studies ansehen' },
       ],
