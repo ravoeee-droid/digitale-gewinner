@@ -10,7 +10,8 @@
 
   function sessionId(){
     let id=sessionStorage.getItem('dg_session_id');
-    if(!id){id=(crypto&&crypto.randomUUID)?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`;sessionStorage.setItem('dg_session_id',id)}
+    const randomUUID=window.crypto&&typeof window.crypto.randomUUID==='function'?window.crypto.randomUUID.bind(window.crypto):null;
+    if(!id){id=randomUUID?randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`;sessionStorage.setItem('dg_session_id',id)}
     return id;
   }
 
@@ -29,15 +30,7 @@
   const attr=attribution();
 
   function track(eventName,details={}){
-    const payload={
-      event:eventName,
-      dg_event:eventName,
-      page_path:location.pathname,
-      page_title:document.title,
-      session_id:sessionId(),
-      ...attr,
-      ...details
-    };
+    const payload={event:eventName,dg_event:eventName,page_path:location.pathname,page_title:document.title,session_id:sessionId(),...attr,...details};
     window.dataLayer=window.dataLayer||[];
     window.dataLayer.push(payload);
     if(typeof window.gtag==='function')window.gtag('event',eventName,{...details,page_path:location.pathname});
@@ -77,6 +70,12 @@
     const submit=qs('button[type="submit"]',form);
     if(submit)submit.textContent='Analyse anfragen und WhatsApp öffnen →';
 
+    const trackingFields={...attr,session_id:sessionId()};
+    Object.entries(trackingFields).forEach(([name,value])=>{
+      const field=form.elements.namedItem(name);
+      if(field)field.value=String(value||'');
+    });
+
     if(!qs('.cro-form-intro',form)){
       form.insertAdjacentHTML('afterbegin','<div class="cro-form-intro"><b>Nach dem Absenden passiert Folgendes:</b>Ihre Angaben werden sicher als Anfrage gespeichert. Danach öffnet sich WhatsApp mit einer vorbereiteten Nachricht, die Sie nur noch absenden müssen.</div>');
     }
@@ -95,6 +94,7 @@
     form.addEventListener('submit',async(e)=>{
       e.preventDefault();
       e.stopImmediatePropagation();
+      if(submit&&submit.dataset.waUrl){window.open(submit.dataset.waUrl,'_blank','noopener');track('whatsapp_reopen',{form_name:'trust-analysis'});return}
       if(!form.reportValidity()){track('lead_form_validation_error',{form_name:'trust-analysis'});return}
 
       const data=new FormData(form);
@@ -105,15 +105,21 @@
       status.innerHTML='<b>Anfrage wird vorbereitet …</b>Ihre Angaben werden gespeichert und WhatsApp wird anschließend geöffnet.';
 
       const values=Object.fromEntries(data.entries());
-      const lead={
-        name:String(values.name||''),
-        company:String(values.company||''),
-        website:String(values.website||''),
-        priority:String(values.priority||''),
-        goal:String(values.goal||''),
-        created_at:new Date().toISOString(),
-        attribution:attr
-      };
+      const lead={name:String(values.name||''),company:String(values.company||''),website:String(values.website||''),priority:String(values.priority||''),goal:String(values.goal||''),created_at:new Date().toISOString(),attribution:attr};
+
+      const source=[attr.utm_source,attr.utm_campaign].filter(Boolean).join(' / ');
+      const message=[
+        'Hallo Raphael, ich möchte eine kostenlose Vertrauensanalyse anfragen.',
+        '',
+        `Name: ${lead.name}`,
+        `Unternehmen: ${lead.company}`,
+        `Website / Google-Profil: ${lead.website||'nicht angegeben'}`,
+        `Aktuelle Priorität: ${lead.priority||'nicht angegeben'}`,
+        `Ziel / Herausforderung: ${lead.goal||'nicht angegeben'}`,
+        source?`Quelle: ${source}`:''
+      ].filter(Boolean).join('\n');
+      const waUrl=`https://wa.me/4971134063951?text=${encodeURIComponent(message)}`;
+      lead.wa_url=waUrl;
       localStorage.setItem(LEAD_KEY,JSON.stringify(lead));
 
       const encoded=new URLSearchParams();
@@ -128,33 +134,15 @@
         stored=response.ok;
       }catch(_){stored=false}
 
-      const source=[attr.utm_source,attr.utm_campaign].filter(Boolean).join(' / ');
-      const message=[
-        'Hallo Raphael, ich möchte eine kostenlose Vertrauensanalyse anfragen.',
-        '',
-        `Name: ${lead.name}`,
-        `Unternehmen: ${lead.company}`,
-        `Website / Google-Profil: ${lead.website||'nicht angegeben'}`,
-        `Aktuelle Priorität: ${lead.priority||'nicht angegeben'}`,
-        `Ziel / Herausforderung: ${lead.goal||'nicht angegeben'}`,
-        source?`Quelle: ${source}`:''
-      ].filter(Boolean).join('\n');
-      const waUrl=`https://wa.me/4971134063951?text=${encodeURIComponent(message)}`;
-
       track('lead_submit',{form_name:'trust-analysis',lead_priority:lead.priority,netlify_stored:stored});
       const popup=window.open(waUrl,'_blank','noopener');
       status.className='cro-form-status is-visible is-success';
       status.innerHTML=`<b>Ihre Anfrage ist vorbereitet.</b>${stored?'Die Angaben wurden gespeichert. ':''}Bitte senden Sie die vorbereitete Nachricht jetzt in WhatsApp ab. <a href="${waUrl}" target="_blank" rel="noopener">WhatsApp erneut öffnen</a>.`;
       if(submit){submit.disabled=false;submit.textContent='WhatsApp erneut öffnen →';submit.dataset.waUrl=waUrl}
       form.classList.remove('is-submitting');
-
       if(!popup)track('whatsapp_popup_blocked',{form_name:'trust-analysis'});
-      setTimeout(()=>{if(document.visibilityState==='visible')location.href='/danke.html'},1500);
+      setTimeout(()=>{location.href='/danke.html'},1800);
     },true);
-
-    if(submit)submit.addEventListener('click',()=>{
-      if(submit.dataset.waUrl){window.open(submit.dataset.waUrl,'_blank','noopener');track('whatsapp_reopen',{form_name:'trust-analysis'})}
-    });
   }
 
   function bindClickTracking(){
@@ -178,6 +166,8 @@
     try{lead=JSON.parse(localStorage.getItem(LEAD_KEY)||'{}')}catch(_){lead={}}
     const name=qs('[data-lead-name]');
     if(name&&lead.name)name.textContent=`, ${lead.name.split(' ')[0]}`;
+    const waLink=qs('[data-track="whatsapp_thankyou_click"]');
+    if(waLink&&lead.wa_url)waLink.href=lead.wa_url;
   }
 
   ready(()=>{
