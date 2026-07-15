@@ -1,3 +1,4 @@
+@import url('/assets/images/ui/home-brand-lock.css');
 body.home-case-style .hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx,72%) var(--my,20%),rgba(242,205,122,.11),transparent 24rem);mix-blend-mode:screen}
 body.home-case-style .hero>.container{position:relative;z-index:2}
 body.home-case-style .cs-cream .statement{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
