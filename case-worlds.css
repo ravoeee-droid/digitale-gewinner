@@ -1,3 +1,4 @@
+@import url('/assets/images/ui/case-studies-v2.css');
 /* Individual brand worlds for the ten long-form case studies. */
 body.dg-case-page article.case{--accent:#f1ce84;--ink:#fff;--soft:#b6aa9b;position:relative;isolation:isolate}
 body.dg-case-page article.case:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 88% 10%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 31rem)}
@@ -16,4 +17,3 @@ body.dg-case-page article.case .summary,body.dg-case-page article.case .focus sp
 body.dg-case-page article.case .number,body.dg-case-page article.case .sector,body.dg-case-page article.case .focus i{color:var(--accent)}
 body.dg-case-page article.case .focus div{border-color:color-mix(in srgb,var(--accent) 24%,transparent)}
 body.dg-case-page .dg-result-map-card b{color:#b9de7c}
-@import url('/assets/images/ui/case-studies-v2.css');
