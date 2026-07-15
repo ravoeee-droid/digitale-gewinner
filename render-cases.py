@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import html
 import json
+import runpy
+import shutil
 from pathlib import Path
 
 root = Path(__file__).parent
@@ -48,3 +50,8 @@ if marker not in page:
 rendered = "<main id=\"case-list\">\n" + "\n".join(render_case(case, index) for index, case in enumerate(cases)) + "\n</main>"
 page_path.write_text(page.replace(marker, rendered), encoding="utf-8")
 print("Rendered 10 individual case studies.")
+
+# Copy and apply the isolated trust-problem, SEO/GEO and case-format layer only
+# after the static homepage and all ten cases exist in dist.
+shutil.copy2(root / "seo-geo-upgrade.css", root / "dist" / "seo-geo-upgrade.css")
+runpy.run_path(str(root / "seo-geo-upgrade.py"), run_name="__main__")
