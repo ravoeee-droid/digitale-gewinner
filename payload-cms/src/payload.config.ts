@@ -20,24 +20,27 @@ const dirname = path.dirname(filename)
 
 const isProduction = process.env.VERCEL_ENV === 'production'
 
-// Automatically support the variable names created by Vercel/Neon.
-// This removes the need to manually duplicate the Neon connection string.
+// Prefer Neon's direct/unpooled URL for schema initialization and Payload's
+// node-postgres adapter. Fall back to every variable name used by Vercel/Neon.
 const databaseURL =
+  process.env.DATABASE_URL_UNPOOLED ||
+  process.env.DATABASE_POSTGRES_URL_NON_POOLING ||
+  process.env.POSTGRES_URL_NON_POOLING ||
   process.env.DATABASE_URL ||
-  process.env.DATABASE_POSTGRES_PRISMA_URL ||
   process.env.DATABASE_POSTGRES_URL ||
   process.env.POSTGRES_URL ||
-  process.env.DATABASE_URL_UNPOOLED
+  process.env.DATABASE_POSTGRES_PRISMA_URL
 
-// Preview deployments use their own current URL. Production uses the stable
-// project URL. PAYLOAD_PUBLIC_SERVER_URL remains an optional override only.
+// Always derive the active Vercel address automatically. This prevents stale
+// manually entered server URLs from breaking the Payload admin in previews or
+// on the stable project domain.
 const vercelHost = isProduction
   ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
   : process.env.VERCEL_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL
 
-const serverURL =
-  process.env.PAYLOAD_PUBLIC_SERVER_URL ||
-  (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000')
+const serverURL = vercelHost
+  ? `https://${vercelHost}`
+  : process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
 const websiteURL = process.env.PUBLIC_WEBSITE_URL || serverURL
 const payloadSecret =
@@ -54,14 +57,17 @@ if (isProduction && !payloadSecret) {
   throw new Error('PAYLOAD_SECRET is required before the unified Payload deployment can go live.')
 }
 
-// For the initial setup, schema syncing is enabled automatically. It can later
-// be disabled explicitly with PAYLOAD_DB_PUSH=false when migrations are used.
+// Keep automatic schema synchronization enabled until migrations are
+// explicitly introduced. This makes a new Neon database immediately usable.
 const pushSchema = process.env.PAYLOAD_DB_PUSH !== 'false'
 
 const database = databaseURL
   ? postgresAdapter({
       pool: {
         connectionString: databaseURL,
+        max: 5,
+        connectionTimeoutMillis: 15000,
+        idleTimeoutMillis: 10000,
       },
       push: pushSchema,
     })
