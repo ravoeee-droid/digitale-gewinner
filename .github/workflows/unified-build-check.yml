@@ -1,0 +1,54 @@
+name: Unified Next Payload Build Check
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VERCEL_ENV: preview
+      NODE_OPTIONS: --max-old-space-size=8000
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps --silent
+
+      - name: Build website and Payload
+        shell: bash
+        run: |
+          set +e
+          npm run build > build.log 2>&1
+          status=$?
+          if [ $status -ne 0 ]; then
+            {
+              echo '### Unified build error'
+              echo
+              echo '```text'
+              tail -n 100 build.log
+              echo '```'
+            } > build-comment.md
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              jq -Rs '{body: .}' build-comment.md > build-comment.json
+              gh api --method PATCH "repos/${{ github.repository }}/issues/comments/4977527142" --input build-comment.json
+            fi
+            cat build-comment.md
+            exit $status
+          fi
+          tail -n 40 build.log

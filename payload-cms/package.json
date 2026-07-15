@@ -4,9 +4,8 @@
   "private": true,
   "description": "Payload CMS admin for Digitale Gewinner",
   "type": "module",
-  "packageManager": "pnpm@10.15.0",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload build",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
@@ -15,6 +14,7 @@
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.86.0",
+    "@payloadcms/db-sqlite": "3.86.0",
     "@payloadcms/next": "3.86.0",
     "@payloadcms/richtext-lexical": "3.86.0",
     "@payloadcms/ui": "3.86.0",
@@ -35,8 +35,5 @@
   },
   "engines": {
     "node": ">=20.9.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": ["sharp"]
   }
 }

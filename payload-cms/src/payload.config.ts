@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -17,8 +18,38 @@ import { SiteSettings } from './globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const serverURL = process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3000'
-const websiteURL = process.env.PUBLIC_WEBSITE_URL || 'https://digitale-gewinner.de'
+const isProduction = process.env.VERCEL_ENV === 'production'
+const databaseURL = process.env.DATABASE_URL
+const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+const serverURL =
+  process.env.PAYLOAD_PUBLIC_SERVER_URL ||
+  (vercelHost ? `https://${vercelHost}` : 'http://localhost:3000')
+const websiteURL = process.env.PUBLIC_WEBSITE_URL || serverURL
+const payloadSecret =
+  process.env.PAYLOAD_SECRET ||
+  (isProduction ? '' : 'digitale-gewinner-preview-only-secret-change-before-production')
+
+if (isProduction && !databaseURL) {
+  throw new Error('DATABASE_URL is required before the unified Payload deployment can go live.')
+}
+
+if (isProduction && !payloadSecret) {
+  throw new Error('PAYLOAD_SECRET is required before the unified Payload deployment can go live.')
+}
+
+const database = databaseURL
+  ? postgresAdapter({
+      pool: {
+        connectionString: databaseURL,
+      },
+      push: process.env.PAYLOAD_DB_PUSH === 'true',
+    })
+  : sqliteAdapter({
+      client: {
+        url: 'file:./payload-preview.db',
+      },
+      push: true,
+    })
 
 export default buildConfig({
   admin: {
@@ -33,18 +64,13 @@ export default buildConfig({
   collections: [Users, Media, CaseStudies, Reviews, FAQs, Pages],
   globals: [Homepage, SiteSettings],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: payloadSecret,
   serverURL,
   cors: [serverURL, websiteURL].filter(Boolean),
   csrf: [serverURL, websiteURL].filter(Boolean),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URL || '',
-    },
-    push: process.env.PAYLOAD_DB_PUSH === 'true',
-  }),
+  db: database,
   sharp,
 })

@@ -5,8 +5,10 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
+const workspaceRoot = path.resolve(dirname, '..')
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: workspaceRoot,
   images: {
     localPatterns: [{ pathname: '/api/media/file/**' }],
   },
@@ -19,7 +21,7 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   turbopack: {
-    root: path.resolve(dirname),
+    root: workspaceRoot,
   },
 }
 
