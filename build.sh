@@ -30,11 +30,11 @@ for item in source.iterdir():
     else:
         shutil.copy2(item, target)
 
-# Overlay the new authority pages.
-for name in ('index.html', 'case-studies.html', 'robots.txt', 'sitemap.xml'):
+# Overlay the authority pages and conversion completion page.
+for name in ('index.html', 'case-studies.html', 'danke.html', 'robots.txt', 'sitemap.xml'):
     shutil.copy2(name, out / name)
 
-# Copy the sales psychology, local assets and editorial homepage styles.
+# Copy visual layers, local assets and the homepage CRO system.
 style_and_script_files = (
     'trust-upgrade.css',
     'case-worlds.css',
@@ -43,6 +43,8 @@ style_and_script_files = (
     'home-case-style.css',
     'home-case-polish.css',
     'home-case-style.js',
+    'cro-upgrade.css',
+    'cro-upgrade.js',
 )
 for name in style_and_script_files:
     shutil.copy2(name, out / name)
@@ -113,17 +115,55 @@ for name in ('index.html', 'case-studies.html'):
         html = html.replace('</head>', '<link rel="stylesheet" href="local-assets.css"></head>')
 
     if name == 'index.html':
+        # Netlify Forms stores the lead before WhatsApp is opened. Hidden attribution
+        # fields are populated by cro-upgrade.js and remain available for GTM/GA4.
+        html = html.replace(
+            '<form class="form" id="trustForm">',
+            '<form class="form" id="trustForm" name="trust-analysis" method="POST" '
+            'data-netlify="true" netlify-honeypot="bot-field" action="/danke.html">'
+            '<input type="hidden" name="form-name" value="trust-analysis">'
+            '<p hidden><label>Nicht ausfüllen: <input name="bot-field"></label></p>'
+            '<input type="hidden" name="session_id">'
+            '<input type="hidden" name="utm_source">'
+            '<input type="hidden" name="utm_medium">'
+            '<input type="hidden" name="utm_campaign">'
+            '<input type="hidden" name="utm_content">'
+            '<input type="hidden" name="utm_term">'
+            '<input type="hidden" name="gclid">'
+            '<input type="hidden" name="fbclid">'
+        )
+        priority_field = (
+            '<div class="field full"><label for="priority">Was ist aktuell wichtiger?</label>'
+            '<select id="priority" name="priority" required>'
+            '<option value="" selected disabled>Bitte auswählen</option>'
+            '<option value="Mehr qualifizierte Kundenanfragen">Mehr qualifizierte Kundenanfragen</option>'
+            '<option value="Passende Mitarbeiter gewinnen">Passende Mitarbeiter gewinnen</option>'
+            '<option value="Hochwertiger und vertrauenswürdiger wirken">Hochwertiger und vertrauenswürdiger wirken</option>'
+            '<option value="Werbung und Website besser konvertieren">Werbung und Website besser konvertieren</option>'
+            '<option value="Mehrere Bereiche gleichzeitig">Mehrere Bereiche gleichzeitig</option>'
+            '</select><span class="cro-field-help">Damit Raphael die Analyse auf Ihr wichtigstes Ziel ausrichten kann.</span></div>'
+        )
+        goal_marker = '<div class="field full"><label for="goal">Was soll online stärker werden?</label>'
+        if 'name="priority"' not in html:
+            html = html.replace(goal_marker, priority_field + goal_marker)
+
         if 'home-case-style.css' not in html:
             html = html.replace(
                 '</head>',
                 '<link rel="stylesheet" href="home-case-style.css">'
-                '<link rel="stylesheet" href="home-case-polish.css"></head>'
+                '<link rel="stylesheet" href="home-case-polish.css">'
+                '<link rel="stylesheet" href="cro-upgrade.css"></head>'
             )
+        elif 'cro-upgrade.css' not in html:
+            html = html.replace('</head>', '<link rel="stylesheet" href="cro-upgrade.css"></head>')
         if 'trust-upgrade.js' not in html:
             html = html.replace('</body>', '<script src="trust-upgrade.js" defer></script></body>')
         if 'home-case-style.js' not in html:
             html = html.replace('</body>', '<script src="home-case-style.js" defer></script></body>')
+        if 'cro-upgrade.js' not in html:
+            html = html.replace('</body>', '<script src="cro-upgrade.js" defer></script></body>')
     else:
+        # Case Studies intentionally remain unchanged except for their existing isolated system.
         if 'trust-upgrade.js' not in html:
             html = html.replace('</body>', '<script src="trust-upgrade.js" defer></script></body>')
 
@@ -172,6 +212,7 @@ for rel in expected:
 required_publish_files = (
     'index.html',
     'case-studies.html',
+    'danke.html',
     'trust-upgrade.css',
     'case-worlds.css',
     'local-assets.css',
@@ -179,11 +220,13 @@ required_publish_files = (
     'home-case-style.css',
     'home-case-polish.css',
     'home-case-style.js',
+    'cro-upgrade.css',
+    'cro-upgrade.js',
 )
 for name in required_publish_files:
     if not (out / name).exists():
         raise SystemExit(f'Missing publish file: {name}')
 
 shutil.rmtree(tmp, ignore_errors=True)
-print('Digitale Gewinner built in immersive case-study style with 16 verified WebP assets.')
+print('Digitale Gewinner built with measurable CRO lead flow and unchanged case studies.')
 PY
