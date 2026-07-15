@@ -34,8 +34,17 @@ for item in source.iterdir():
 for name in ('index.html', 'case-studies.html', 'robots.txt', 'sitemap.xml'):
     shutil.copy2(name, out / name)
 
-# Copy the sales-psychology upgrade and local asset rendering rules.
-for name in ('trust-upgrade.css', 'case-worlds.css', 'local-assets.css', 'trust-upgrade.js'):
+# Copy the sales psychology, local assets and editorial homepage styles.
+style_and_script_files = (
+    'trust-upgrade.css',
+    'case-worlds.css',
+    'local-assets.css',
+    'trust-upgrade.js',
+    'home-case-style.css',
+    'home-case-polish.css',
+    'home-case-style.js',
+)
+for name in style_and_script_files:
     shutil.copy2(name, out / name)
 
 # Copy the uploaded WebP files into the actual publish directory.
@@ -93,18 +102,30 @@ for name in ('index.html', 'case-studies.html'):
         ".p-social{--image:url('/assets/images/raphael/raphael-hermann-praesentation.webp')}"
     )
 
+    base_links = (
+        '<link rel="stylesheet" href="trust-upgrade.css">'
+        '<link rel="stylesheet" href="case-worlds.css">'
+        '<link rel="stylesheet" href="local-assets.css">'
+    )
     if 'trust-upgrade.css' not in html:
-        html = html.replace(
-            '</head>',
-            '<link rel="stylesheet" href="trust-upgrade.css">'
-            '<link rel="stylesheet" href="case-worlds.css">'
-            '<link rel="stylesheet" href="local-assets.css"></head>'
-        )
+        html = html.replace('</head>', base_links + '</head>')
     elif 'local-assets.css' not in html:
         html = html.replace('</head>', '<link rel="stylesheet" href="local-assets.css"></head>')
 
-    if 'trust-upgrade.js' not in html:
-        html = html.replace('</body>', '<script src="trust-upgrade.js" defer></script></body>')
+    if name == 'index.html':
+        if 'home-case-style.css' not in html:
+            html = html.replace(
+                '</head>',
+                '<link rel="stylesheet" href="home-case-style.css">'
+                '<link rel="stylesheet" href="home-case-polish.css"></head>'
+            )
+        if 'trust-upgrade.js' not in html:
+            html = html.replace('</body>', '<script src="trust-upgrade.js" defer></script></body>')
+        if 'home-case-style.js' not in html:
+            html = html.replace('</body>', '<script src="home-case-style.js" defer></script></body>')
+    else:
+        if 'trust-upgrade.js' not in html:
+            html = html.replace('</body>', '<script src="trust-upgrade.js" defer></script></body>')
 
     page.write_text(html, encoding='utf-8')
 
@@ -148,10 +169,21 @@ for rel in expected:
     if header[:4] != b'RIFF' or header[8:12] != b'WEBP':
         raise SystemExit(f'Invalid WebP file: {rel}')
 
-for name in ('index.html', 'case-studies.html', 'trust-upgrade.css', 'case-worlds.css', 'local-assets.css', 'trust-upgrade.js'):
+required_publish_files = (
+    'index.html',
+    'case-studies.html',
+    'trust-upgrade.css',
+    'case-worlds.css',
+    'local-assets.css',
+    'trust-upgrade.js',
+    'home-case-style.css',
+    'home-case-polish.css',
+    'home-case-style.js',
+)
+for name in required_publish_files:
     if not (out / name).exists():
         raise SystemExit(f'Missing publish file: {name}')
 
 shutil.rmtree(tmp, ignore_errors=True)
-print('Digitale Gewinner built with 16 verified local WebP assets.')
+print('Digitale Gewinner built in immersive case-study style with 16 verified WebP assets.')
 PY

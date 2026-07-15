@@ -1,0 +1,157 @@
+/* Homepage redesign: the visual language of the immersive case-study page. */
+body.home-case-style{--cs-ink:#15110d;--cs-cream:#f5f0e8;--cs-pink:#ead8df;--cs-wine:#6d294c;--cs-blue:#07131f;--cs-lime:#b9ff67;--cs-orange:#ff5b1b;--cs-radius:38px;background:#070604;color:#f7f0e5}
+body.home-case-style:before{opacity:.08;background-size:96px 96px}
+body.home-case-style .container{width:min(1280px,calc(100% - 52px))}
+body.home-case-style h1,body.home-case-style h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.065em}
+body.home-case-style h2{font-size:clamp(3.3rem,6.2vw,7rem);line-height:.92}
+body.home-case-style h3{letter-spacing:-.04em}
+body.home-case-style .topbar{top:18px}
+body.home-case-style .nav{width:min(1320px,calc(100% - 28px));padding:11px 13px 11px 18px;border-radius:20px;background:rgba(8,7,5,.72);border-color:rgba(255,255,255,.12);box-shadow:0 22px 70px rgba(0,0,0,.34)}
+body.home-case-style .nav .btn-primary{background:#f4eee4;color:#17120d;box-shadow:none}
+body.home-case-style .btn{border-radius:999px;padding-inline:25px;min-height:58px}
+body.home-case-style .btn-primary{background:#f4eee4;color:#17120d;border-color:#f4eee4;box-shadow:0 20px 55px rgba(0,0,0,.18)}
+body.home-case-style .btn-primary:hover{background:#fff;border-color:#fff}
+body.home-case-style .eyebrow{font-size:.68rem;letter-spacing:.19em}
+
+/* Hero as an editorial cover. */
+body.home-case-style .hero{width:min(1540px,calc(100% - 24px));margin:0 auto 24px;padding:150px 0 48px;min-height:920px;border-radius:0 0 var(--cs-radius) var(--cs-radius);overflow:hidden;position:relative;background:radial-gradient(circle at 78% 12%,rgba(216,166,72,.2),transparent 26rem),linear-gradient(135deg,#181109 0%,#080705 58%,#11100e 100%);border:1px solid rgba(255,255,255,.09);box-shadow:0 45px 150px rgba(0,0,0,.48)}
+body.home-case-style .hero:before{content:"DIGITAL TRUST";position:absolute;left:-.04em;bottom:-.14em;font:900 clamp(7rem,18vw,19rem)/.78 Inter,system-ui,sans-serif;letter-spacing:-.09em;color:rgba(255,255,255,.025);white-space:nowrap;pointer-events:none}
+body.home-case-style .hero-grid{grid-template-columns:minmax(0,.92fr) minmax(470px,1.08fr);gap:clamp(40px,6vw,95px);align-items:center}
+body.home-case-style .hero h1{font-size:clamp(4.5rem,8.7vw,9.6rem);line-height:.83;margin:25px 0 30px;max-width:850px}
+body.home-case-style .hero h1 em{display:block;color:#f2cd7a;font-style:italic}
+body.home-case-style .hero .lead{max-width:700px;color:#d5c9ba;font-size:clamp(1.08rem,1.55vw,1.35rem)}
+body.home-case-style .hero-visual{min-height:700px;perspective:1500px}
+body.home-case-style .hero-photo{inset:0 0 0 0;border-radius:34px;transform:rotateY(-4deg) rotateX(1deg);border:1px solid rgba(255,255,255,.2);box-shadow:0 55px 120px rgba(0,0,0,.5)}
+body.home-case-style .hero-photo img{object-position:center 20%}
+body.home-case-style .hero-photo:after{background:linear-gradient(180deg,transparent 54%,rgba(6,5,4,.7)),linear-gradient(90deg,rgba(7,6,4,.05),transparent 55%)}
+body.home-case-style .float{border-radius:17px;background:rgba(9,8,6,.75);border-color:rgba(255,255,255,.18);box-shadow:0 25px 70px rgba(0,0,0,.4)}
+body.home-case-style .float strong{font-size:1.55rem;color:#f2cd7a}
+body.home-case-style .f1{left:-25px;bottom:78px}body.home-case-style .f2{right:-20px;top:70px}body.home-case-style .f3{right:20px;bottom:25px}
+body.home-case-style .proof-line{margin-top:28px;color:#c7bcaf}
+
+/* Authority strip becomes a premium magazine index. */
+body.home-case-style .authority{width:min(1540px,calc(100% - 24px));margin:0 auto 24px;border:0;border-radius:30px;background:var(--cs-cream);color:var(--cs-ink);overflow:hidden}
+body.home-case-style .authority-grid{grid-template-columns:repeat(4,1fr)}
+body.home-case-style .authority-item{min-height:120px;border-color:rgba(20,16,12,.12);padding:26px 30px}
+body.home-case-style .authority-item b{color:var(--cs-ink);font-size:clamp(1.35rem,2vw,2rem)}
+body.home-case-style .authority-item small{color:#756b61}
+body.home-case-style .authority .icon{border-color:rgba(20,16,12,.16);color:var(--cs-wine);background:#fff}
+
+/* Full-width editorial scenes. */
+body.home-case-style .cs-scene{width:min(1540px,calc(100% - 24px));margin:0 auto 24px;border-radius:var(--cs-radius);overflow:hidden;position:relative;isolation:isolate;padding:clamp(82px,9vw,150px) 0;border:1px solid rgba(255,255,255,.09);box-shadow:0 35px 110px rgba(0,0,0,.27)}
+body.home-case-style .cs-scene:before{content:attr(data-scene);position:absolute;right:-.02em;top:-.17em;z-index:-1;font:900 clamp(9rem,22vw,25rem)/1 Inter,system-ui,sans-serif;letter-spacing:-.11em;color:rgba(255,255,255,.045);pointer-events:none}
+body.home-case-style .cs-scene .section-head{align-items:start;margin-bottom:60px}
+body.home-case-style .cs-scene .section-head>div{max-width:900px}
+body.home-case-style .cs-scene .section-head>p{max-width:480px;font-size:1.04rem}
+body.home-case-style .cs-cream{background:radial-gradient(circle at 88% 5%,rgba(109,41,76,.12),transparent 24rem),var(--cs-cream);color:var(--cs-ink);border-color:rgba(20,16,12,.1)}
+body.home-case-style .cs-cream:before{color:rgba(20,16,12,.035)}
+body.home-case-style .cs-cream .gold,body.home-case-style .cs-cream .eyebrow{color:var(--cs-wine)}
+body.home-case-style .cs-cream .eyebrow:before{background:linear-gradient(90deg,var(--cs-wine),transparent)}
+body.home-case-style .cs-cream .lead,body.home-case-style .cs-cream .muted,body.home-case-style .cs-cream .section-head p{color:#72675e}
+body.home-case-style .cs-wine{background:radial-gradient(circle at 86% 8%,rgba(109,41,76,.18),transparent 27rem),linear-gradient(135deg,#f8f2ef,#ead9df);color:#2c1721;border-color:rgba(109,41,76,.14)}
+body.home-case-style .cs-wine:before{color:rgba(109,41,76,.05)}
+body.home-case-style .cs-wine .eyebrow,body.home-case-style .cs-wine .gold{color:var(--cs-wine)}
+body.home-case-style .cs-wine .section-head p,body.home-case-style .cs-wine .card p{color:#725f67}
+body.home-case-style .cs-blue{background:radial-gradient(circle at 90% 5%,rgba(68,130,255,.2),transparent 27rem),linear-gradient(135deg,#06101b,#14233a);color:#fff}
+body.home-case-style .cs-blue .eyebrow,body.home-case-style .cs-blue .gold{color:var(--cs-lime)}
+body.home-case-style .cs-blue .eyebrow:before{background:linear-gradient(90deg,var(--cs-lime),transparent)}
+body.home-case-style .cs-blue .section-head p,body.home-case-style .cs-blue .pillar p{color:#b9c4ce}
+body.home-case-style .cs-orange{background:radial-gradient(circle at 88% 4%,rgba(255,91,27,.2),transparent 28rem),linear-gradient(135deg,#090705,#261006);color:#fff}
+body.home-case-style .cs-orange .eyebrow,body.home-case-style .cs-orange .gold{color:#ff7c48}
+body.home-case-style .cs-orange .eyebrow:before{background:linear-gradient(90deg,#ff5b1b,transparent)}
+body.home-case-style .cs-graphite{background:radial-gradient(circle at 80% 5%,rgba(216,166,72,.15),transparent 27rem),linear-gradient(135deg,#14110d,#070604);color:#fff}
+body.home-case-style .cs-gold{background:linear-gradient(135deg,#f4d486,#d7a346);color:#211607;border-color:rgba(33,22,7,.14)}
+body.home-case-style .cs-gold:before{color:rgba(33,22,7,.045)}
+body.home-case-style .cs-gold .eyebrow,body.home-case-style .cs-gold .gold{color:#5b3708}
+body.home-case-style .cs-gold .lead,body.home-case-style .cs-gold .muted{color:#674b26}
+
+/* Problem cards: editorial, not agency tiles. */
+body.home-case-style .cs-wine .grid3{display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:1fr 1fr;gap:18px}
+body.home-case-style .cs-wine .card{min-height:260px;border-radius:28px;border:1px solid rgba(109,41,76,.16);background:rgba(255,255,255,.48);padding:34px;box-shadow:none}
+body.home-case-style .cs-wine .card:first-child{grid-row:1/3;min-height:540px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,rgba(109,41,76,.08),rgba(109,41,76,.22)),url('/assets/images/raphael/raphael-hermann-kundengespraech.webp') center/cover}
+body.home-case-style .cs-wine .card:first-child:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(38,15,28,.88));pointer-events:none}
+body.home-case-style .cs-wine .card:first-child>*{position:relative;z-index:1;color:white}
+body.home-case-style .cs-wine .card:first-child p{color:#eadde3}
+body.home-case-style .cs-wine .card-num{margin-bottom:auto;color:currentColor}
+body.home-case-style .cs-wine .card h3{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,3vw,3.5rem);line-height:.98}
+
+/* Three services as asymmetrical project worlds. */
+body.home-case-style .cs-blue .pillars{display:grid;grid-template-columns:1.12fr .88fr;grid-template-rows:1fr 1fr;gap:18px}
+body.home-case-style .cs-blue .pillar{min-height:300px;border-radius:30px;border-color:rgba(255,255,255,.15);padding:34px}
+body.home-case-style .cs-blue .pillar:first-child{grid-row:1/3;min-height:660px}
+body.home-case-style .cs-blue .pillar:before{background-image:linear-gradient(180deg,rgba(5,12,20,.02) 5%,rgba(5,12,20,.92) 83%),var(--image)}
+body.home-case-style .cs-blue .pillar h3{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.2rem,3.2vw,4rem);line-height:.95}
+body.home-case-style .cs-blue .pillar a{color:var(--cs-lime)}
+body.home-case-style .cs-blue .pillar-label{border-color:rgba(185,255,103,.35);color:var(--cs-lime);background:rgba(5,12,20,.72)}
+
+/* Impact section becomes another immersive scene. */
+body.home-case-style .dg-impact-section{width:min(1540px,calc(100% - 24px));margin:0 auto 24px;border-radius:var(--cs-radius);padding:clamp(88px,9vw,145px) 0;background:radial-gradient(circle at 88% 7%,rgba(109,41,76,.12),transparent 25rem),var(--cs-cream);color:var(--cs-ink);overflow:hidden;border:1px solid rgba(20,16,12,.1)}
+body.home-case-style .dg-impact-section .gold,body.home-case-style .dg-impact-section .eyebrow{color:var(--cs-wine)}
+body.home-case-style .dg-impact-head>p,body.home-case-style .dg-impact-card>p{color:#72675e}
+body.home-case-style .dg-impact-card{border-color:rgba(20,16,12,.12);background:rgba(255,255,255,.52);box-shadow:none}
+body.home-case-style .dg-impact-number{border-color:rgba(20,16,12,.14);color:var(--cs-wine);background:#fff}
+body.home-case-style .dg-impact-bottom>div,body.home-case-style .dg-outcome{border-color:rgba(20,16,12,.1);background:#fff}
+body.home-case-style .dg-impact-bottom span,body.home-case-style .dg-outcome span{color:#72675e}
+body.home-case-style .dg-outcome b{color:var(--cs-wine)}
+body.home-case-style .dg-roi{background:linear-gradient(135deg,#16110c,#080705);color:#fff;border-color:rgba(255,255,255,.12)}
+body.home-case-style .dg-roi .muted{color:#b8ad9f}
+
+/* Reviews feel like a premium editorial testimonial spread. */
+body.home-case-style .cs-reviews .reviews-top{align-items:start;margin-bottom:55px}
+body.home-case-style .cs-reviews .score{background:#fff;border-color:rgba(20,16,12,.12);color:var(--cs-ink);box-shadow:0 20px 55px rgba(44,23,33,.08)}
+body.home-case-style .cs-reviews .review-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+body.home-case-style .cs-reviews .review{min-height:310px;border-radius:26px;background:rgba(255,255,255,.62);border-color:rgba(109,41,76,.13);color:var(--cs-ink);padding:26px}
+body.home-case-style .cs-reviews .review:first-child,body.home-case-style .cs-reviews .review:nth-child(5){grid-column:span 2}
+body.home-case-style .cs-reviews .review:first-child{background:var(--cs-wine);color:#fff}
+body.home-case-style .cs-reviews .review:first-child p{color:#f4e8ee;font-size:1.18rem}
+body.home-case-style .cs-reviews .review p{color:#5e5057;font-size:1rem}
+body.home-case-style .cs-reviews .review:before{content:"“";font:400 5rem/.7 Georgia,serif;color:rgba(109,41,76,.18);margin-bottom:15px}
+body.home-case-style .cs-reviews .review:first-child:before{color:rgba(255,255,255,.25)}
+body.home-case-style .cs-reviews .review-foot{color:#817079}
+body.home-case-style .cs-reviews .avatar{background:#fff;color:var(--cs-wine)}
+
+/* About Raphael as a signature founder case. */
+body.home-case-style .cs-about .about{grid-template-columns:1.05fr .95fr;gap:clamp(45px,7vw,100px)}
+body.home-case-style .cs-about .about-img{aspect-ratio:5/6;border-radius:34px;border-color:rgba(255,255,255,.17);transform:rotate(-2deg);box-shadow:0 50px 110px rgba(0,0,0,.42)}
+body.home-case-style .cs-about .about-img img{object-position:center 20%}
+body.home-case-style .cs-about .stats{gap:12px}
+body.home-case-style .cs-about .stat{padding:20px;border-radius:18px;border-color:rgba(255,91,27,.26);background:rgba(255,91,27,.08)}
+body.home-case-style .cs-about .stat b{color:#ff8453}
+body.home-case-style .cs-about .stat span,body.home-case-style .cs-about .muted{color:#c5b5aa}
+
+/* Process as a product story. */
+body.home-case-style .cs-process .process{grid-template-columns:1.05fr .95fr;gap:clamp(45px,7vw,90px)}
+body.home-case-style .cs-process .process-img{top:118px;border-radius:34px;border-color:rgba(185,255,103,.25);box-shadow:0 45px 105px rgba(0,0,0,.4)}
+body.home-case-style .cs-process .process-img img{aspect-ratio:4/5;object-fit:cover}
+body.home-case-style .cs-process .steps{gap:10px}
+body.home-case-style .cs-process .step{border-radius:22px;border-color:rgba(185,255,103,.18);background:rgba(255,255,255,.045);padding:25px}
+body.home-case-style .cs-process .step-num{border-color:rgba(185,255,103,.3);color:var(--cs-lime);background:rgba(185,255,103,.07)}
+body.home-case-style .cs-process .step p{color:#bac5cf}
+
+/* Audit, FAQ and closing are treated as final chapters. */
+body.home-case-style .cs-audit .audit{padding:clamp(35px,5vw,75px);border-radius:34px;border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.045);box-shadow:none}
+body.home-case-style .cs-audit .field input,body.home-case-style .cs-audit .field textarea{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.13)}
+body.home-case-style .cs-faq .faq details{background:#fff;border-color:rgba(20,16,12,.1);color:var(--cs-ink);border-radius:19px}
+body.home-case-style .cs-faq .faq p{color:#72675e}
+body.home-case-style .cs-final .final{border:0;background:transparent;box-shadow:none;padding:0}
+body.home-case-style .cs-final h2{max-width:1100px}
+body.home-case-style .cs-final .btn-primary{background:#211607;color:#fff;border-color:#211607}
+
+body.home-case-style footer{width:min(1540px,calc(100% - 24px));margin:0 auto 20px;border:0;border-radius:32px;background:#0c0a08;padding:70px 0 32px}
+body.home-case-style .whatsapp{box-shadow:0 20px 60px rgba(34,197,94,.32)}
+
+@media(max-width:1100px){
+ body.home-case-style .hero-grid{grid-template-columns:1fr;gap:50px}body.home-case-style .hero{min-height:auto}body.home-case-style .hero-visual{min-height:650px}body.home-case-style .hero-photo{transform:none}
+ body.home-case-style .cs-wine .grid3,body.home-case-style .cs-blue .pillars{grid-template-columns:1fr 1fr;grid-template-rows:auto}body.home-case-style .cs-wine .card:first-child,body.home-case-style .cs-blue .pillar:first-child{grid-column:1/-1;grid-row:auto;min-height:560px}
+ body.home-case-style .cs-reviews .review-grid{grid-template-columns:repeat(2,1fr)}body.home-case-style .cs-about .about,body.home-case-style .cs-process .process{grid-template-columns:1fr}
+ body.home-case-style .cs-process .process-img{position:relative;top:auto}body.home-case-style .cs-process .process-img img{aspect-ratio:16/10}
+}
+@media(max-width:760px){
+ body.home-case-style .container{width:min(100% - 28px,1280px)}body.home-case-style .hero,body.home-case-style .authority,body.home-case-style .cs-scene,body.home-case-style .dg-impact-section,body.home-case-style footer{width:calc(100% - 12px);border-radius:26px}
+ body.home-case-style .hero{padding:125px 0 34px}body.home-case-style .hero h1{font-size:clamp(3.6rem,17vw,5.7rem)}body.home-case-style .hero-visual{min-height:530px}body.home-case-style .f2{right:-3px;top:20px}body.home-case-style .f1{left:-3px;bottom:40px}
+ body.home-case-style .authority-grid{grid-template-columns:1fr}body.home-case-style .authority-item{border-right:0;border-bottom:1px solid rgba(20,16,12,.1)}
+ body.home-case-style .cs-scene{padding:76px 0}body.home-case-style h2{font-size:clamp(2.9rem,14vw,4.6rem)}body.home-case-style .cs-scene .section-head{display:block;margin-bottom:38px}body.home-case-style .cs-scene .section-head>p{margin-top:18px}
+ body.home-case-style .cs-wine .grid3,body.home-case-style .cs-blue .pillars,body.home-case-style .cs-reviews .review-grid{grid-template-columns:1fr}body.home-case-style .cs-wine .card:first-child,body.home-case-style .cs-blue .pillar:first-child,body.home-case-style .cs-reviews .review:first-child,body.home-case-style .cs-reviews .review:nth-child(5){grid-column:auto;min-height:420px}
+ body.home-case-style .cs-blue .pillar{min-height:360px}body.home-case-style .cs-reviews .review{min-height:auto}
+ body.home-case-style .cs-about .about-img{transform:none}body.home-case-style .cs-about .stats{grid-template-columns:1fr}
+}

@@ -1,0 +1,20 @@
+body.home-case-style .hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--mx,72%) var(--my,20%),rgba(242,205,122,.11),transparent 24rem);mix-blend-mode:screen}
+body.home-case-style .hero>.container{position:relative;z-index:2}
+body.home-case-style .cs-cream .statement{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+body.home-case-style .cs-cream .statement p{max-width:1200px;color:var(--cs-ink);font-size:clamp(3rem,6.7vw,7.5rem);line-height:.94;letter-spacing:-.07em}
+body.home-case-style .cs-cream .statement em{color:var(--cs-wine);font-family:Georgia,"Times New Roman",serif;font-style:italic}
+body.home-case-style .cs-wine .card-num{color:var(--cs-wine)}
+body.home-case-style .cs-reviews .reviews-top h2{max-width:840px}
+body.home-case-style .cs-about h2{font-size:clamp(3.2rem,5.6vw,6.3rem)}
+body.home-case-style .cs-process h2{font-size:clamp(3.2rem,5.5vw,6rem)}
+body.home-case-style .cs-audit h2{font-size:clamp(3.2rem,5.6vw,6.1rem)}
+body.home-case-style .cs-audit .audit-grid{align-items:center}
+body.home-case-style .cs-faq .section-head{margin-bottom:35px}
+body.home-case-style .cs-faq .faq{max-width:1050px;margin:0}
+body.home-case-style .cs-final{min-height:630px;display:grid;align-items:center}
+body.home-case-style .cs-final .final h2{font-size:clamp(3.5rem,7vw,8rem);line-height:.9;color:#211607}
+body.home-case-style .cs-final .eyebrow{color:#5b3708}
+body.home-case-style .cs-final .lead{font-size:1.25rem;max-width:700px}
+body.home-case-style .dg-case-intro h2{font-size:clamp(3.4rem,6.4vw,7rem)}
+body.home-case-style #cases.dg-upgraded{padding-top:125px}
+@media(max-width:760px){body.home-case-style .cs-cream .statement p{font-size:clamp(2.9rem,14vw,4.8rem)}body.home-case-style .cs-final{min-height:520px}}
