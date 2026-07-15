@@ -103,7 +103,11 @@ export default buildConfig({
   csrf: allowedOrigins,
   onInit: async (payload) => {
     if (!databaseURL) {
-      await seedDefaultContent(payload)
+      try {
+        await seedDefaultContent(payload)
+      } catch (error) {
+        payload.logger.error({ err: error, msg: 'CMS default content seed failed' })
+      }
       return
     }
 
@@ -123,10 +127,23 @@ export default buildConfig({
 
     try {
       await client.query('SELECT pg_advisory_lock($1)', [lockID])
-      const result = await client.query("SELECT to_regclass('public.users') AS users_table")
 
-      if (!result.rows[0]?.users_table) {
-        payload.logger.info('Initializing Payload schema in the connected Neon database…')
+      const usersResult = await client.query("SELECT to_regclass('public.users') AS users_table")
+      const schemaResult = await client.query(
+        `SELECT EXISTS (
+          SELECT 1
+          FROM information_schema.columns
+          WHERE table_schema = 'public'
+            AND table_name = 'case_studies'
+            AND column_name = 'image_path'
+        ) AS schema_ready`,
+      )
+
+      const usersTableExists = Boolean(usersResult.rows[0]?.users_table)
+      const currentSchemaReady = Boolean(schemaResult.rows[0]?.schema_ready)
+
+      if (!usersTableExists || !currentSchemaReady) {
+        payload.logger.info('Synchronizing the current Payload schema with Neon…')
         const previousForcePush = process.env.PAYLOAD_FORCE_DRIZZLE_PUSH
         process.env.PAYLOAD_FORCE_DRIZZLE_PUSH = 'true'
 
@@ -140,10 +157,17 @@ export default buildConfig({
           }
         }
 
-        payload.logger.info('Payload schema initialization completed.')
+        payload.logger.info('Payload schema synchronization completed.')
       }
 
-      await seedDefaultContent(payload)
+      try {
+        await seedDefaultContent(payload)
+      } catch (error) {
+        // Never make the whole admin unavailable because a single optional
+        // default record failed. The API remains usable and the exact record
+        // error is preserved in the runtime log.
+        payload.logger.error({ err: error, msg: 'CMS default content seed failed' })
+      }
     } finally {
       try {
         await client.query('SELECT pg_advisory_unlock($1)', [lockID])
