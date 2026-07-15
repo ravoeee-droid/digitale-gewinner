@@ -11,6 +11,9 @@ export const CaseStudies: CollectionConfig = {
     defaultColumns: ['title', 'sector', 'order', 'featured', 'status'],
     group: 'Website-Inhalte',
   },
+  access: {
+    read: () => true,
+  },
   versions: {
     drafts: true,
     maxPerDoc: 25,
@@ -78,6 +81,14 @@ export const CaseStudies: CollectionConfig = {
           defaultValue: '#d8a648',
         },
       ],
+    },
+    {
+      name: 'imagePath',
+      label: 'Bestehendes Website-Bild',
+      type: 'text',
+      admin: {
+        description: 'Lokaler Bildpfad der bestehenden Website. Ein später hochgeladenes Medienbild hat Vorrang.',
+      },
     },
     {
       name: 'seo',

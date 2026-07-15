@@ -7,7 +7,7 @@
     "payload-cms"
   ],
   "scripts": {
-    "build:site": "bash build.sh && rm -rf payload-cms/public && mkdir -p payload-cms/public && cp -R dist/. payload-cms/public/",
+    "build:site": "bash build.sh && python3 inject-cms-bridge.py && rm -rf payload-cms/public && mkdir -p payload-cms/public && cp -R dist/. payload-cms/public/",
     "build": "npm run build:site && npm --workspace payload-cms run build",
     "dev": "npm run build:site && npm --workspace payload-cms run dev",
     "start": "npm --workspace payload-cms run start"
