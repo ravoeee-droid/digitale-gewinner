@@ -15,14 +15,13 @@ import { Reviews } from './collections/Reviews'
 import { Users } from './collections/Users'
 import { Homepage } from './globals/Homepage'
 import { SiteSettings } from './globals/SiteSettings'
+import { seedDefaultContent } from './seed/defaultContent'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const isProduction = process.env.VERCEL_ENV === 'production'
 
-// Prefer Neon's direct/unpooled URL for schema initialization and Payload's
-// node-postgres adapter. Fall back to every variable name used by Vercel/Neon.
 const databaseURL =
   process.env.DATABASE_URL_UNPOOLED ||
   process.env.DATABASE_POSTGRES_URL_NON_POOLING ||
@@ -32,9 +31,6 @@ const databaseURL =
   process.env.POSTGRES_URL ||
   process.env.DATABASE_POSTGRES_PRISMA_URL
 
-// Always derive the active Vercel address automatically. This prevents stale
-// manually entered server URLs from breaking the Payload admin in previews or
-// on the stable project domain.
 const vercelHost = isProduction
   ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
   : process.env.VERCEL_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -66,8 +62,6 @@ const database = databaseURL
         connectionTimeoutMillis: 15000,
         idleTimeoutMillis: 10000,
       },
-      // Payload intentionally ignores development schema push in production.
-      // The one-time guarded bootstrap below handles a brand-new Neon database.
       push: false,
     })
   : sqliteAdapter({
@@ -108,7 +102,10 @@ export default buildConfig({
   cors: allowedOrigins,
   csrf: allowedOrigins,
   onInit: async (payload) => {
-    if (!databaseURL) return
+    if (!databaseURL) {
+      await seedDefaultContent(payload)
+      return
+    }
 
     const adapter = payload.db as typeof payload.db & {
       pool?: {
@@ -121,16 +118,12 @@ export default buildConfig({
 
     if (!adapter.pool) return
 
-    // Several serverless instances can start at once. A Postgres advisory lock
-    // guarantees that only one instance creates the initial schema.
     const client = await adapter.pool.connect()
     const lockID = 740150726
 
     try {
       await client.query('SELECT pg_advisory_lock($1)', [lockID])
-      const result = await client.query(
-        "SELECT to_regclass('public.users') AS users_table",
-      )
+      const result = await client.query("SELECT to_regclass('public.users') AS users_table")
 
       if (!result.rows[0]?.users_table) {
         payload.logger.info('Initializing Payload schema in the connected Neon database…')
@@ -149,6 +142,8 @@ export default buildConfig({
 
         payload.logger.info('Payload schema initialization completed.')
       }
+
+      await seedDefaultContent(payload)
     } finally {
       try {
         await client.query('SELECT pg_advisory_unlock($1)', [lockID])
