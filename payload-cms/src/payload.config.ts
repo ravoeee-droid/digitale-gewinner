@@ -1,3 +1,4 @@
+import { pushDevSchema } from '@payloadcms/drizzle'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -57,10 +58,6 @@ if (isProduction && !payloadSecret) {
   throw new Error('PAYLOAD_SECRET is required before the unified Payload deployment can go live.')
 }
 
-// Keep automatic schema synchronization enabled until migrations are
-// explicitly introduced. This makes a new Neon database immediately usable.
-const pushSchema = process.env.PAYLOAD_DB_PUSH !== 'false'
-
 const database = databaseURL
   ? postgresAdapter({
       pool: {
@@ -69,7 +66,9 @@ const database = databaseURL
         connectionTimeoutMillis: 15000,
         idleTimeoutMillis: 10000,
       },
-      push: pushSchema,
+      // Payload intentionally ignores development schema push in production.
+      // The one-time guarded bootstrap below handles a brand-new Neon database.
+      push: false,
     })
   : sqliteAdapter({
       client: {
@@ -108,6 +107,56 @@ export default buildConfig({
   serverURL,
   cors: allowedOrigins,
   csrf: allowedOrigins,
+  onInit: async (payload) => {
+    if (!databaseURL) return
+
+    const adapter = payload.db as typeof payload.db & {
+      pool?: {
+        connect: () => Promise<{
+          query: (query: string, values?: unknown[]) => Promise<{ rows: Array<Record<string, unknown>> }>
+          release: () => void
+        }>
+      }
+    }
+
+    if (!adapter.pool) return
+
+    // Several serverless instances can start at once. A Postgres advisory lock
+    // guarantees that only one instance creates the initial schema.
+    const client = await adapter.pool.connect()
+    const lockID = 740150726
+
+    try {
+      await client.query('SELECT pg_advisory_lock($1)', [lockID])
+      const result = await client.query(
+        "SELECT to_regclass('public.users') AS users_table",
+      )
+
+      if (!result.rows[0]?.users_table) {
+        payload.logger.info('Initializing Payload schema in the connected Neon database…')
+        const previousForcePush = process.env.PAYLOAD_FORCE_DRIZZLE_PUSH
+        process.env.PAYLOAD_FORCE_DRIZZLE_PUSH = 'true'
+
+        try {
+          await pushDevSchema(payload.db as never)
+        } finally {
+          if (previousForcePush === undefined) {
+            delete process.env.PAYLOAD_FORCE_DRIZZLE_PUSH
+          } else {
+            process.env.PAYLOAD_FORCE_DRIZZLE_PUSH = previousForcePush
+          }
+        }
+
+        payload.logger.info('Payload schema initialization completed.')
+      }
+    } finally {
+      try {
+        await client.query('SELECT pg_advisory_unlock($1)', [lockID])
+      } finally {
+        client.release()
+      }
+    }
+  },
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
