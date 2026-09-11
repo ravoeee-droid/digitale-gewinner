@@ -50,6 +50,85 @@
     if(primary)primary.textContent='Meine 3 Vertrauenslücken prüfen lassen →';
   }
 
+  function addWebsiteWeek(){
+    if(qs('#website-der-woche'))return;
+    const anchor=qs('#cases')||qs('#analyse');
+    if(!anchor)return;
+
+    if(!qs('#website-week-styles')){
+      const style=document.createElement('style');
+      style.id='website-week-styles';
+      style.textContent=`
+        #website-der-woche{padding:112px 0;position:relative;overflow:hidden}
+        #website-der-woche:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;right:-270px;top:-210px;background:radial-gradient(circle,rgba(241,206,132,.14),transparent 68%);pointer-events:none}
+        .www-shell{position:relative;border:1px solid rgba(241,206,132,.24);border-radius:34px;padding:54px;background:linear-gradient(135deg,rgba(216,166,72,.12),rgba(255,255,255,.028) 48%,rgba(8,7,5,.78));box-shadow:0 32px 100px rgba(0,0,0,.42);overflow:hidden}
+        .www-grid{display:grid;grid-template-columns:1fr .9fr;gap:54px;align-items:start}
+        .www-kicker{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border-radius:999px;border:1px solid rgba(241,206,132,.28);background:rgba(241,206,132,.07);color:#f1ce84;font-size:.72rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+        .www-kicker:before{content:"";width:7px;height:7px;border-radius:50%;background:#f1ce84;box-shadow:0 0 18px rgba(241,206,132,.8)}
+        .www-copy h2{margin:18px 0 18px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.8rem,5vw,5.2rem);line-height:1.02;font-weight:400;letter-spacing:-.05em}
+        .www-copy h2 em{color:#f1ce84;font-style:italic}
+        .www-copy>.www-lead{max-width:650px;color:#d4c9bb;font-size:clamp(1.04rem,1.6vw,1.23rem)}
+        .www-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:28px 0}
+        .www-metric{padding:16px;border:1px solid rgba(241,206,132,.16);border-radius:16px;background:rgba(8,7,5,.35)}
+        .www-metric b{display:block;color:#f1ce84;font-size:1.1rem}
+        .www-metric span{display:block;color:#a99e90;font-size:.76rem;margin-top:3px}
+        .www-how{display:grid;gap:11px;margin-top:28px}
+        .www-step{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:start;color:#d5cabc}
+        .www-step i{width:34px;height:34px;border:1px solid rgba(241,206,132,.22);border-radius:11px;display:grid;place-items:center;color:#f1ce84;font-style:normal;font-size:.75rem;font-weight:900;background:rgba(241,206,132,.05)}
+        .www-step b{display:block;color:#fff;margin-bottom:2px}.www-step span{font-size:.86rem;color:#a99f92}
+        .www-card{border:1px solid rgba(241,206,132,.2);border-radius:26px;padding:26px;background:rgba(7,6,4,.72);backdrop-filter:blur(18px);box-shadow:0 22px 70px rgba(0,0,0,.28)}
+        .www-card h3{margin:0 0 6px;font-size:1.45rem}.www-card>p{margin:0 0 20px;color:#a99f92;font-size:.9rem}
+        .www-form{display:grid;grid-template-columns:1fr 1fr;gap:11px}.www-field{display:grid;gap:6px}.www-field.full{grid-column:1/-1}
+        .www-field label{font-size:.76rem;color:#b8ad9f}.www-field input,.www-field select,.www-field textarea{width:100%;border:1px solid rgba(241,206,132,.18);background:rgba(8,7,5,.7);color:#fff;border-radius:13px;padding:13px 14px;outline:none}
+        .www-field input:focus,.www-field select:focus,.www-field textarea:focus{border-color:rgba(241,206,132,.55);box-shadow:0 0 0 3px rgba(216,166,72,.08)}
+        .www-field textarea{min-height:88px;resize:vertical}.www-field select option{background:#100d09;color:#fff}
+        .www-submit{grid-column:1/-1;min-height:56px;border:0;border-radius:14px;background:linear-gradient(135deg,#f1ce84,#d8a648);color:#150e05;font-weight:900;cursor:pointer;transition:.25s;box-shadow:0 16px 42px rgba(216,166,72,.18)}
+        .www-submit:hover{transform:translateY(-2px);box-shadow:0 20px 52px rgba(216,166,72,.26)}
+        .www-note{grid-column:1/-1;margin:0;color:#82786e;font-size:.72rem;line-height:1.45}.www-note strong{color:#c7b8a4}
+        @media(max-width:980px){.www-grid{grid-template-columns:1fr}.www-shell{padding:38px}.www-metrics{grid-template-columns:1fr 1fr 1fr}}
+        @media(max-width:640px){#website-der-woche{padding:76px 0}.www-shell{padding:24px;border-radius:26px}.www-grid{gap:34px}.www-metrics{grid-template-columns:1fr}.www-form{grid-template-columns:1fr}.www-field.full,.www-submit,.www-note{grid-column:auto}.www-copy h2{font-size:clamp(2.55rem,12vw,4rem)}}
+      `;
+      document.head.append(style);
+    }
+
+    const section=document.createElement('section');
+    section.id='website-der-woche';
+    section.innerHTML=`<div class="container"><div class="www-shell reveal"><div class="www-grid"><div class="www-copy"><span class="www-kicker">Website der Woche</span><h2>Jede Woche bauen wir <em>eine Website für 0 €.</em></h2><p class="www-lead">Für ein Unternehmen, bei dem wir online richtig etwas bewegen können. Pflege, Handwerk, PV/Energie, lokale Betriebe und Dienstleister können sich in weniger als 30 Sekunden bewerben.</p><div class="www-metrics"><div class="www-metric"><b>0 €</b><span>für die Erstellung</span></div><div class="www-metric"><b>1× pro Woche</b><span>wählen wir ein Unternehmen</span></div><div class="www-metric"><b>ab 79 €</b><span>monatliche Betreuung</span></div></div><div class="www-how"><div class="www-step"><i>01</i><div><b>Kurz bewerben</b><span>Unternehmen, Branche, Website und Kontakt eintragen.</span></div></div><div class="www-step"><i>02</i><div><b>Freitags wählen wir aus</b><span>Wir suchen den Betrieb mit dem stärksten Vorher-/Nachher-Potenzial.</span></div></div><div class="www-step"><i>03</i><div><b>Wir bauen die neue Website</b><span>Konzept, Design, Texte und Umsetzung übernehmen wir.</span></div></div></div></div><div class="www-card"><h3>Für diese Woche bewerben</h3><p>Keine lange Anfrage. Wir brauchen nur die wichtigsten Infos.</p><form class="www-form" id="websiteWeekForm"><div class="www-field"><label for="www-name">Name</label><input id="www-name" name="name" autocomplete="name" required placeholder="Max Mustermann"></div><div class="www-field"><label for="www-company">Unternehmen</label><input id="www-company" name="company" autocomplete="organization" required placeholder="Muster GmbH"></div><div class="www-field"><label for="www-sector">Branche</label><select id="www-sector" name="sector" required><option value="" selected disabled>Bitte wählen</option><option>Pflege</option><option>Handwerk</option><option>PV / Energie</option><option>Gastronomie</option><option>Gesundheit</option><option>Dienstleistung</option><option>Andere</option></select></div><div class="www-field"><label for="www-contact">WhatsApp / Telefon</label><input id="www-contact" name="contact" autocomplete="tel" required placeholder="+49 ..."></div><div class="www-field full"><label for="www-site">Aktuelle Website</label><input id="www-site" name="website" inputmode="url" placeholder="https://..."></div><div class="www-field full"><label for="www-goal">Was soll die neue Website besser machen?</label><textarea id="www-goal" name="goal" placeholder="Mehr Bewerber, mehr Anfragen, moderner wirken ..."></textarea></div><button class="www-submit" type="submit">Jetzt für diese Woche bewerben →</button><p class="www-note"><strong>Transparent:</strong> Die Erstellung kostet beim ausgewählten Unternehmen 0 €. Bei Annahme der Website fällt nur die laufende Betreuung ab 79 € / Monat an. Mit dem Absenden entsteht noch keine Verpflichtung.</p></form></div></div></div></div>`;
+    anchor.insertAdjacentElement('beforebegin',section);
+    requestAnimationFrame(()=>section.querySelector('.reveal')?.classList.add('visible'));
+
+    const nav=qs('.nav-links');
+    if(nav&&!qs('a[href="#website-der-woche"]',nav)){
+      const link=document.createElement('a');
+      link.href='#website-der-woche';
+      link.textContent='Website gewinnen';
+      link.dataset.track='website_week_nav_click';
+      nav.insertBefore(link,nav.firstChild);
+    }
+
+    const form=qs('#websiteWeekForm');
+    if(!form)return;
+    let started=false;
+    qsa('input,select,textarea',form).forEach(field=>field.addEventListener('focus',()=>{if(!started){started=true;track('website_week_form_start',{form_name:'website-der-woche'})}},{once:true}));
+    form.addEventListener('submit',(e)=>{
+      e.preventDefault();
+      if(!form.reportValidity())return;
+      const data=new FormData(form);
+      const message=[
+        'Hallo Raphael, ich möchte mich für die Website der Woche bewerben.',
+        '',
+        `Name: ${data.get('name')||''}`,
+        `Unternehmen: ${data.get('company')||''}`,
+        `Branche: ${data.get('sector')||''}`,
+        `WhatsApp / Telefon: ${data.get('contact')||''}`,
+        `Aktuelle Website: ${data.get('website')||'keine / nicht angegeben'}`,
+        `Ziel: ${data.get('goal')||'nicht angegeben'}`
+      ].join('\n');
+      track('website_week_submit',{form_name:'website-der-woche',sector:String(data.get('sector')||'')});
+      window.open(`https://wa.me/4971134063951?text=${encodeURIComponent(message)}`,'_blank','noopener');
+    });
+  }
+
   function addGoogleProof(){
     const score=qs('#bewertungen .score');
     if(!score||qs('.cro-google-link'))return;
@@ -173,6 +252,7 @@
   ready(()=>{
     if(document.body.classList.contains('dg-case-page'))return;
     addHeroOffer();
+    addWebsiteWeek();
     addGoogleProof();
     enhanceForm();
     bindClickTracking();
