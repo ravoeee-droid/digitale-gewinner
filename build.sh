@@ -73,9 +73,10 @@ image_data = {
     'Beratung und Führungskräfteentwicklung': ('/assets/images/case-studies/case-study-fuehrungskraefte.webp', 1573, 721),
     'NeuroMind Website': ('/assets/images/case-studies/case-study-neuromind-breathwork.webp', 1573, 723),
     'NeuroMind Breathwork Website': ('/assets/images/case-studies/case-study-neuromind-breathwork.webp', 1573, 723),
-    'Raphael Hermann von Digitale Gewinner': ('/assets/images/raphael/raphael-hermann-hero.webp', 1122, 1402),
-    'Raphael Hermann in einer Beratungssituation': ('/assets/images/raphael/raphael-hermann-portrait.webp', 1122, 1402),
-    'Strategie und Umsetzung bei Digitale Gewinner': ('/assets/images/raphael/raphael-hermann-strategiearbeit.webp', 1400, 933),
+    # Raphael Hermann hero/about/process images intentionally excluded here:
+    # index.html now hardcodes the current Bruno photos directly with correct
+    # width/height, and this alt-text-keyed replacement used to silently
+    # revert them back to the old portrait Raphael-solo images on every build.
 }
 
 def replace_image_tag(html: str, alt: str, src: str, width: int, height: int) -> str:
@@ -92,19 +93,6 @@ home = out / 'index.html'
 html = home.read_text(encoding='utf-8')
 for alt, (src, width, height) in image_data.items():
     html = replace_image_tag(html, alt, src, width, height)
-
-html = html.replace(
-    ".p-google{--image:url('https://digitale-gewinner.de/assets/consulting.webp')}",
-    ".p-google{--image:url('/assets/images/raphael/raphael-hermann-kundengespraech.webp')}"
-)
-html = html.replace(
-    ".p-site{--image:url('https://digitale-gewinner.de/assets/raphael-office.webp')}",
-    ".p-site{--image:url('/assets/images/raphael/raphael-hermann-strategiearbeit.webp')}"
-)
-html = html.replace(
-    ".p-social{--image:url('https://digitale-gewinner.de/assets/process.webp')}",
-    ".p-social{--image:url('/assets/images/raphael/raphael-hermann-praesentation.webp')}"
-)
 
 base_links = (
     '<link rel="stylesheet" href="case-worlds.css">'
