@@ -4,6 +4,7 @@
 
   try {
     if (!reduceMotion && window.Lenis) {
+      document.documentElement.style.scrollBehavior = 'auto';
       var lenis = new Lenis({ duration: 1.05, smoothWheel: true });
       if (window.gsap) {
         gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
