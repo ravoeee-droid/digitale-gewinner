@@ -134,24 +134,27 @@ goal_marker = '<div class="field full"><label for="goal">Was soll online stärke
 if 'name="priority"' not in html:
     html = html.replace(goal_marker, priority_field + goal_marker)
 
-if 'home-case-style.css' not in html:
-    html = html.replace(
-        '</head>',
-        '<link rel="stylesheet" href="home-case-style.css">'
-        '<link rel="stylesheet" href="home-case-polish.css"></head>'
-    )
-
-# trust-upgrade.js and cro-upgrade.js intentionally excluded from index.html:
-# both DOM-inject pre-rebrand agency copy (hero offer chips, "Website der
-# Woche" giveaway campaign, old Vertrauensanalyse form text) and cro-upgrade.js
-# additionally hijacks #trustForm's submit event in the capture phase with
-# stopImmediatePropagation, silently overriding the rewritten submit handler
-# already inlined in index.html. Both conflict with the rewritten copy.
+# trust-upgrade.js, cro-upgrade.js, home-case-style.js/.css and
+# home-case-polish.css are all intentionally excluded from index.html now:
+# - trust-upgrade.js / cro-upgrade.js DOM-inject pre-rebrand agency copy
+#   (hero offer chips, "Website der Woche" giveaway campaign, old
+#   Vertrauensanalyse form text) and cro-upgrade.js additionally hijacks
+#   #trustForm's submit event in the capture phase with
+#   stopImmediatePropagation, silently overriding the rewritten handler
+#   already inlined in index.html.
+# - home-case-style.js/.css apply a per-section "scene" background system
+#   (cs-cream/cs-wine/cs-blue/...) built around the OLD 3-pillar
+#   Google/Website/Social-Media content. It rewrites #system's headline
+#   back to "3 Orte. 1 Eindruck." and forces an old asymmetric grid layout.
+# - home-case-polish.css additionally @imports
+#   /assets/images/ui/home-brand-lock.css, which re-locks #system's pillar
+#   colors/grid and sets `.pillar>*{position:relative}` with #id-level
+#   specificity, breaking .pillar-label's `position:absolute` and making
+#   the label badge overlap the link text instead of sitting top-left.
+# None of this loads on pflege.html/handwerk.html, which is also why the
+# homepage looked visually inconsistent with the other two pages.
 # cro-upgrade.js stays loaded on danke.html (its own <script> tag there),
 # where it only prefills the thank-you page and is harmless.
-for script in ('home-case-style.js',):
-    if script not in html:
-        html = html.replace('</body>', f'<script src="{script}" defer></script></body>')
 home.write_text(html, encoding='utf-8')
 
 subprocess.run(['python3', 'render-cases.py'], check=True)
