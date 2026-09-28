@@ -47,6 +47,36 @@
   } catch (err) { console.warn('fx: magnetic buttons disabled', err); }
 
   try {
+    if (!reduceMotion && fine) {
+      document.querySelectorAll('.card, .pillar, .review, .step, .tl-step').forEach(function(el){
+        el.style.transformStyle = 'preserve-3d';
+        el.style.transition = 'transform .4s cubic-bezier(.16,1,.3,1)';
+        el.addEventListener('mousemove', function(e){
+          var r = el.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          el.style.transform = 'perspective(900px) rotateX(' + (py * -6) + 'deg) rotateY(' + (px * 8) + 'deg) translateZ(6px)';
+        });
+        el.addEventListener('mouseleave', function(){ el.style.transform = ''; });
+      });
+    }
+  } catch (err) { console.warn('fx: card tilt disabled', err); }
+
+  try {
+    var progress = document.createElement('div');
+    progress.className = 'fx-progress';
+    document.body.appendChild(progress);
+    var updateProgress = function(){
+      var h = document.documentElement;
+      var scrolled = h.scrollTop || document.body.scrollTop;
+      var height = (h.scrollHeight || document.body.scrollHeight) - h.clientHeight;
+      progress.style.width = (height > 0 ? Math.min(100, (scrolled / height) * 100) : 0) + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  } catch (err) { console.warn('fx: scroll progress disabled', err); }
+
+  try {
     document.querySelectorAll('[data-fx-split]').forEach(function(el){
       var words = el.textContent.trim().split(/\s+/);
       el.innerHTML = words.map(function(w, i){
