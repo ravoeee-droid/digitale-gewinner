@@ -107,11 +107,10 @@ html = html.replace(
 )
 
 base_links = (
-    '<link rel="stylesheet" href="trust-upgrade.css">'
     '<link rel="stylesheet" href="case-worlds.css">'
     '<link rel="stylesheet" href="local-assets.css">'
 )
-if 'trust-upgrade.css' not in html:
+if 'case-worlds.css' not in html:
     html = html.replace('</head>', base_links + '</head>')
 elif 'local-assets.css' not in html:
     html = html.replace('</head>', '<link rel="stylesheet" href="local-assets.css"></head>')
@@ -151,27 +150,21 @@ if 'home-case-style.css' not in html:
     html = html.replace(
         '</head>',
         '<link rel="stylesheet" href="home-case-style.css">'
-        '<link rel="stylesheet" href="home-case-polish.css">'
-        '<link rel="stylesheet" href="cro-upgrade.css"></head>'
+        '<link rel="stylesheet" href="home-case-polish.css"></head>'
     )
-elif 'cro-upgrade.css' not in html:
-    html = html.replace('</head>', '<link rel="stylesheet" href="cro-upgrade.css"></head>')
 
-for script in ('trust-upgrade.js', 'home-case-style.js', 'cro-upgrade.js'):
+# trust-upgrade.js and cro-upgrade.js intentionally excluded from index.html:
+# both DOM-inject pre-rebrand agency copy (hero offer chips, "Website der
+# Woche" giveaway campaign, old Vertrauensanalyse form text) and cro-upgrade.js
+# additionally hijacks #trustForm's submit event in the capture phase with
+# stopImmediatePropagation, silently overriding the rewritten submit handler
+# already inlined in index.html. Both conflict with the rewritten copy.
+# cro-upgrade.js stays loaded on danke.html (its own <script> tag there),
+# where it only prefills the thank-you page and is harmless.
+for script in ('home-case-style.js',):
     if script not in html:
         html = html.replace('</body>', f'<script src="{script}" defer></script></body>')
 home.write_text(html, encoding='utf-8')
-
-upgrade_js = out / 'trust-upgrade.js'
-js = upgrade_js.read_text(encoding='utf-8')
-for old, new in {
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://strongrelationship.de': '/assets/images/case-studies/case-study-strong-relationship.webp',
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://libielektronik.de': '/assets/images/case-studies/case-study-libi-elektronik.webp',
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://neuromind-breathwork.de': '/assets/images/case-studies/case-study-neuromind-breathwork.webp',
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://koerperkult-shop.de': '/assets/images/case-studies/case-study-koerperkult.webp',
-}.items():
-    js = js.replace(old, new)
-upgrade_js.write_text(js, encoding='utf-8')
 
 subprocess.run(['python3', 'render-cases.py'], check=True)
 
