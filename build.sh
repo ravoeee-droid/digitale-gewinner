@@ -32,7 +32,7 @@ for item in source.iterdir():
     else:
         shutil.copy2(item, target)
 
-for name in ('index.html', 'case-studies.html', 'danke.html', 'robots.txt', 'sitemap.xml'):
+for name in ('index.html', 'case-studies.html', 'pflege.html', 'handwerk.html', 'danke.html', 'robots.txt', 'sitemap.xml'):
     shutil.copy2(root / name, out / name)
 
 publish_assets = (
@@ -198,7 +198,7 @@ for rel in expected_images:
         raise SystemExit(f'Invalid WebP file: {rel}')
 
 required = (
-    'index.html', 'case-studies.html', 'danke.html',
+    'index.html', 'case-studies.html', 'pflege.html', 'handwerk.html', 'danke.html',
     'trust-upgrade.css', 'case-worlds.css', 'local-assets.css',
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',

@@ -2,6 +2,16 @@
   command = "bash build.sh"
   publish = "dist"
 
+[[redirects]]
+  from = "/pflege"
+  to = "/pflege.html"
+  status = 200
+
+[[redirects]]
+  from = "/handwerk"
+  to = "/handwerk.html"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
