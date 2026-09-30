@@ -11,16 +11,8 @@ SITE = "https://digitalegewinner.de"
 PHONE = "4971134063951"
 
 SECTORS = [
-    {"key":"unternehmen","name":"Unternehmen","prefix":"","audience":"Unternehmen, Dienstleister und Experten","pain":"Der Online-Auftritt erklärt Qualität oft zu langsam. Interessenten vergleichen dann Preis statt Wert oder springen ab, bevor ein Gespräch entsteht.","proof":"Klare Positionierung, echte Projekte, Bewertungen, persönliche Ansprechpartner und nachvollziehbare nächste Schritte.","outcome":"mehr qualifizierte Anfragen, weniger Preisvergleich und ein professioneller digitaler Vertriebsweg","example":"Besucher sollen innerhalb weniger Sekunden verstehen, für wen das Angebot gedacht ist, welches Problem gelöst wird und warum das Unternehmen die sichere Wahl ist."},
-    {"key":"photovoltaik","name":"Photovoltaik","prefix":"photovoltaik","audience":"PV-Betriebe, Solarteure und Photovoltaik-Unternehmen","pain":"PV-Endkunden vergleichen mehrere Anbieter, Preise, Speicherlösungen und Bewertungen. Eine austauschbare Website verliert deshalb Anfragen trotz vorhandener Nachfrage.","proof":"Regionale Leistungsseiten, PV-Referenzen, Ersparnislogik, Dach- und Speicherfragen, Bewertungen und eine schnelle Angebotsvorqualifizierung.","outcome":"mehr qualifizierte PV-Anfragen und weniger Leads, die nur den billigsten Preis suchen","example":"Ein PV-Funnel kann Dachart, Stromverbrauch, PLZ, Speicherwunsch und Projektzeitraum vorqualifizieren, bevor der Vertrieb zurückruft."},
     {"key":"pflegedienst","name":"Pflegedienst","prefix":"pflegedienst","audience":"ambulante Pflegedienste, Pflegeanbieter und Pflegeunternehmen","pain":"Pflegedienste müssen gleichzeitig Vertrauen bei Angehörigen aufbauen und Fachkräfte überzeugen. Veraltete Seiten bremsen beide Ziele.","proof":"Menschliche Teamdarstellung, klare Pflegeleistungen, lokale Vertrauenssignale, Bewerberstrecke, Google-Bewertungen und direkte Kontaktwege.","outcome":"mehr passende Bewerbungen, mehr qualifizierte Kundenanfragen und stärkere lokale Wahrnehmung","example":"Eine Pflege-Website muss Angehörigen Sicherheit geben und Bewerbern zeigen, wie Team, Führung, Dienstplanung und Arbeitsalltag wirklich aussehen."},
     {"key":"handwerk","name":"Handwerk","prefix":"handwerk","audience":"Handwerksbetriebe und regionale Fachbetriebe","pain":"Viele Handwerksbetriebe leben von Empfehlungen, verlieren aber digitale Interessenten an Wettbewerber mit klareren Leistungen, Referenzen und Kontaktwegen.","proof":"Leistungsseiten, Projektbeispiele, Einsatzgebiet, Bewertungen, schnelle Anfrageformulare und klare Qualifizierung nach Projektart.","outcome":"mehr passende Projekte statt unqualifizierter Preis-Anfragen","example":"Gute Handwerkerseiten zeigen Leistungen, echte Baustellen, Region, Ablauf und einen einfachen Weg zur qualifizierten Anfrage."},
-    {"key":"shk","name":"SHK","prefix":"shk","audience":"SHK-Betriebe, Heizungsbauer und Sanitärunternehmen","pain":"Bei Heizung, Wärmepumpe und Sanitär entscheidet Vertrauen früh. Unklare Leistungen und fehlende regionale Relevanz kosten hochwertige Projekte.","proof":"Leistungscluster für Heizung, Wärmepumpe und Sanitär, Referenzen, Förderhinweise, regionale Seiten und Projektvorqualifizierung.","outcome":"mehr hochwertige SHK-Anfragen und weniger unnötige Rückfragen","example":"Ein SHK-Funnel trennt Notdienst, Modernisierung, Wärmepumpe und Badsanierung und fragt Budget, Objekt und Zeitraum passend ab."},
-    {"key":"elektro","name":"Elektro","prefix":"elektro","audience":"Elektriker, Elektrobetriebe und Gebäudetechnik-Unternehmen","pain":"Von klassischer Elektroinstallation bis Wallbox und Smart Home sind Leistungen breit. Ohne klare Struktur versteht Google und der Kunde das Angebot nur teilweise.","proof":"Saubere Leistungsarchitektur, regionale Relevanz, Projektbeispiele, Zertifikate und qualifizierende Anfragewege.","outcome":"mehr passende Elektro-Projekte und bessere Sichtbarkeit für profitable Leistungen","example":"Leistungen wie Wallbox, PV-Elektrik, Smart Home und Gewerbeinstallation brauchen jeweils klare Suchintention und Beweise."},
-    {"key":"dachdecker","name":"Dachdecker","prefix":"dachdecker","audience":"Dachdecker, Zimmereien und Dach-Fachbetriebe","pain":"Dachprojekte haben hohen Auftragswert und hohen Vertrauensbedarf. Eine schwache Website lässt Interessenten Angebote nur über den Preis vergleichen.","proof":"Vorher-Nachher-Projekte, Leistungsarten, Region, Materialkompetenz, Bewertungen und Projektvorqualifizierung.","outcome":"mehr profitable Dachprojekte und weniger reine Preisvergleiche","example":"Eine gute Dachdecker-Seite trennt Sanierung, Neubau, Reparatur, Flachdach und Dämmung und führt Interessenten direkt zum passenden Anfrageweg."},
-    {"key":"steuerberater","name":"Steuerberater","prefix":"steuerberater","audience":"Steuerkanzleien und Steuerberater","pain":"Mandanten und Bewerber suchen Kompetenz, Erreichbarkeit und Spezialisierung. Generische Kanzlei-Seiten zeigen selten, warum genau diese Kanzlei passt.","proof":"Spezialisierungen, Branchenkompetenz, Team, digitale Zusammenarbeit, Mandantenprozess und Karrierebereich.","outcome":"mehr passende Mandatsanfragen und qualifiziertere Bewerbungen","example":"Eine Steuerberater-Website sollte früh klären, welche Mandate passen, wie digital gearbeitet wird und was neue Mandanten im Erstkontakt erwartet."},
-    {"key":"kanzlei","name":"Kanzlei","prefix":"kanzlei","audience":"Rechtsanwaltskanzleien und spezialisierte Kanzleien","pain":"Rechtliche Probleme erzeugen Unsicherheit. Besucher brauchen schnell Fachgebiet, Kompetenz, Vorgehen und einen sicheren nächsten Schritt.","proof":"Klare Rechtsgebiete, Anwaltprofile, Falllogik ohne Ergebnisversprechen, Bewertungen und strukturierte Erstkontaktstrecken.","outcome":"mehr passende Mandatsanfragen und weniger unpassende Erstkontakte","example":"Statt allgemeiner Kanzlei-Sprache braucht jedes wichtige Rechtsgebiet eine klare Erklärung von Situation, Vorgehen und nächstem Schritt."},
-    {"key":"immobilienmakler","name":"Immobilienmakler","prefix":"immobilienmakler","audience":"Immobilienmakler und Maklerunternehmen","pain":"Eigentümer vergeben hochwertige Objekte an Anbieter, denen sie Vermarktungskompetenz und lokale Marktkenntnis zutrauen. Austauschbare Maklerseiten verlieren diesen Vertrauensvergleich.","proof":"Referenzobjekte, Verkaufsprozess, lokale Expertise, Bewertungen, Eigentümer-Funnel und Bewertungsanfrage.","outcome":"mehr Eigentümer-Leads und besser vorqualifizierte Verkaufsmandate","example":"Ein Eigentümer-Funnel kann Objektart, Lage, Verkaufszeitraum und Motivation abfragen und direkt einen passenden nächsten Schritt anbieten."},
 ]
 
 INTENTS = [
@@ -218,8 +210,9 @@ def generate_pages() -> list[str]:
             target.mkdir(parents=True, exist_ok=True)
             (target / "index.html").write_text(page, encoding="utf-8")
             slugs.append(slug)
-    if len(slugs) != 100 or len(set(slugs)) != 100:
-        raise SystemExit(f"Expected 100 unique SEO pages, got {len(set(slugs))}")
+    expected = len(SECTORS) * len(INTENTS)
+    if len(slugs) != expected or len(set(slugs)) != expected:
+        raise SystemExit(f"Expected {expected} unique SEO pages, got {len(set(slugs))}")
     return slugs
 
 def write_discovery(slugs: list[str]) -> None:
@@ -241,12 +234,16 @@ def write_discovery(slugs: list[str]) -> None:
 def main() -> None:
     if not OUT.exists():
         raise SystemExit("dist directory not found")
+    # patch_metadata(), inject_homepage_content(), patch_case_metadata() and
+    # inject_homepage_hub() are intentionally NOT called anymore: they used
+    # to silently overwrite index.html's <title>/<meta description> back to
+    # old agency SEO copy and append two old off-brand sections
+    # ("Vertrauensproblem" diagnosis, a duplicate FAQ) after </main> on every
+    # build, plus a "seo-leistungen" hub linking to since-removed sectors
+    # (Photovoltaik, Steuerberater, ...). index.html/case-studies.html
+    # already carry the correct rewritten title/meta/content directly.
     normalize_existing_pages()
-    patch_metadata()
-    inject_homepage_content()
-    patch_case_metadata()
     slugs = generate_pages()
-    inject_homepage_hub()
     write_discovery(slugs)
     print(f"SEO system built: {len(slugs)} fast, static, internally linked pages on {SITE}.")
 
