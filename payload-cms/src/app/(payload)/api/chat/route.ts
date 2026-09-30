@@ -58,7 +58,6 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         model: process.env.EXPERIENTIAL_MODEL || DEFAULT_MODEL,
         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-        temperature: 0.6,
         max_tokens: 400,
       }),
     })
