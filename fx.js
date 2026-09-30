@@ -2,19 +2,12 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(pointer:fine)').matches;
 
-  try {
-    if (!reduceMotion && window.Lenis) {
-      document.documentElement.style.scrollBehavior = 'auto';
-      var lenis = new Lenis({ duration: 1.05, smoothWheel: true });
-      if (window.gsap) {
-        gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
-        gsap.ticker.lagSmoothing(0);
-        if (window.ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
-      } else {
-        requestAnimationFrame(function raf(time){ lenis.raf(time); requestAnimationFrame(raf); });
-      }
-    }
-  } catch (err) { console.warn('fx: smooth scroll disabled', err); }
+  // Lenis (JS-driven smooth scroll) was removed: it caused two separate
+  // production bugs (scroll freezing, a fixed-position widget rendering
+  // clipped at the left edge after scrolling) that never reproduced in
+  // isolated testing, consistent with a scroll-library/fixed-positioning
+  // interaction that's not worth the "buttery scroll" feel. Native
+  // scroll-behavior:smooth (already in the page CSS) covers anchor jumps.
 
   try {
     if (!reduceMotion && fine) {

@@ -72,9 +72,7 @@
 <script>window.CTA_WIDGET_TEXT="Hallo Raphael, ich wollte dir kurz unsere aktuelle Situation bei der Mitarbeitersuche zeigen.";</script>
 <script src="/cta-widget.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="/fx.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script><script src="/fx.js" defer></script>
 <script src="/chat-widget.js" defer></script>
 <script>const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll('.reveal').forEach(el=>o.observe(el));document.getElementById('pflegeForm').addEventListener('submit',function(e){e.preventDefault();const d=new FormData(this),t=`Hallo Raphael, ich wollte dir kurz unsere aktuelle Situation bei der Mitarbeitersuche zeigen.%0A%0AName: ${encodeURIComponent(d.get('name')||'')}%0AEinrichtung: ${encodeURIComponent(d.get('einrichtung')||'')}%0AOffene Stellen: ${encodeURIComponent(d.get('offene')||'')}%0AWo hängt es: ${encodeURIComponent(d.get('goal')||'')}`;window.open(`https://wa.me/4971134063951?text=${t}`,'_blank','noopener')});</script>
 </body></html>
