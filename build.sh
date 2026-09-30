@@ -47,8 +47,6 @@ publish_assets = (
     'cro-upgrade.js',
     'case-overview.css',
     'case-overview.js',
-    'cta-widget.css',
-    'cta-widget.js',
     'fx.css',
     'fx.js',
     'chat-widget.css',
@@ -192,7 +190,7 @@ required = (
     'trust-upgrade.css', 'case-worlds.css', 'local-assets.css',
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
-    'case-overview.css', 'case-overview.js', 'cta-widget.css', 'cta-widget.js',
+    'case-overview.css', 'case-overview.js',
     'fx.css', 'fx.js', 'chat-widget.css', 'chat-widget.js',
 )
 for name in required:
