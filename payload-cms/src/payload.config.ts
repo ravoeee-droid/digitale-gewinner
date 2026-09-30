@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { BlogPosts } from './collections/BlogPosts'
 import { CaseStudies } from './collections/CaseStudies'
 import { FAQs } from './collections/FAQs'
 import { Media } from './collections/Media'
@@ -94,7 +95,7 @@ export default buildConfig({
       titleSuffix: '– Digitale Gewinner CMS',
     },
   },
-  collections: [Users, Media, CaseStudies, Reviews, FAQs, Pages],
+  collections: [Users, Media, CaseStudies, Reviews, FAQs, Pages, BlogPosts],
   globals: [Homepage, SiteSettings],
   editor: lexicalEditor(),
   secret: payloadSecret,
