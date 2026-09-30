@@ -51,6 +51,8 @@ publish_assets = (
     'cta-widget.js',
     'fx.css',
     'fx.js',
+    'chat-widget.css',
+    'chat-widget.js',
 )
 for name in publish_assets:
     shutil.copy2(root / name, out / name)
@@ -191,7 +193,7 @@ required = (
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
     'case-overview.css', 'case-overview.js', 'cta-widget.css', 'cta-widget.js',
-    'fx.css', 'fx.js',
+    'fx.css', 'fx.js', 'chat-widget.css', 'chat-widget.js',
 )
 for name in required:
     if not (out / name).exists():
