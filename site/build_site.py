@@ -263,7 +263,7 @@ DEMO = {
 # Beispielwerte zur Veranschaulichung – KEINE echten Kundenergebnisse. Durch belegte Zahlen ersetzen, sobald freigegeben.
 CAMPAIGN = dict(
     title='Kampagnen-Übersicht',
-    kpis=[('Reichweite', '48.200'), ('Klicks', '1.340'), ('Bewerbungen', '86'), ('Kosten je Bewerbung', '14,20 €')],
+    kpis=[('Reichweite', '48.200'), ('Klicks', '1.340'), ('Bewerbungen', '86'), ('Kosten je Bewerbung', '45 €')],
     series=[6, 9, 8, 14, 18, 17, 25, 31, 30, 42, 55, 61, 74, 86],
     ads=[('Anzeige A', 41), ('Anzeige B', 29), ('Anzeige C', 16)],
 )
