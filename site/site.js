@@ -111,6 +111,7 @@
   /* ===== Hero-Canvas: Signalnetz ===== */
   (function net() {
     var c = $('#net'); if (!c || reduce) { if (c) c.style.display = 'none'; return; }
+    var cs = getComputedStyle(d.body), AC = cs.getPropertyValue('--ac-rgb').trim() || '241,206,132', AC2 = cs.getPropertyValue('--ac2-rgb').trim() || '216,166,72', SIG = cs.getPropertyValue('--sig-rgb').trim() || '255,226,160';
     var ctx = c.getContext('2d'), W, H, dpr, pts = [], mouse = { x: -999, y: -999 }, run = true, hub;
     function size() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -133,21 +134,21 @@
         if (dm < 140) { a.x += dx / dm * .8; a.y += dy / dm * .8; }
         for (var j = i + 1; j < pts.length; j++) {
           var b = pts[j], ddx = a.x - b.x, ddy = a.y - b.y, dd = ddx * ddx + ddy * ddy;
-          if (dd < 15000) { ctx.strokeStyle = 'rgba(241,206,132,' + (.16 * (1 - dd / 15000)) + ')'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+          if (dd < 15000) { ctx.strokeStyle = 'rgba(' + AC + ',' + (.16 * (1 - dd / 15000)) + ')'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
         }
-        ctx.fillStyle = 'rgba(241,206,132,.55)'; ctx.beginPath(); ctx.arc(a.x, a.y, 1.6, 0, 6.283); ctx.fill();
+        ctx.fillStyle = 'rgba(' + AC + ',.55)'; ctx.beginPath(); ctx.arc(a.x, a.y, 1.6, 0, 6.283); ctx.fill();
         if (a.s >= 0) { /* Signal wandert zum Hub = "passender Mensch → Gespräch" */
           a.p += .0035; if (a.p > 1) { a.p = 0; }
           var px = a.x + (hub.x - a.x) * a.p, py = a.y + (hub.y - a.y) * a.p;
-          ctx.strokeStyle = 'rgba(216,166,72,' + (.28 * (1 - a.p)) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(px, py); ctx.stroke();
-          ctx.fillStyle = 'rgba(255,226,160,.95)'; ctx.shadowColor = '#d8a648'; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(px, py, 2.6, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
+          ctx.strokeStyle = 'rgba(' + AC2 + ',' + (.28 * (1 - a.p)) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(px, py); ctx.stroke();
+          ctx.fillStyle = 'rgba(' + SIG + ',.95)'; ctx.shadowColor = 'rgb(' + AC2 + ')'; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(px, py, 2.6, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
         }
       }
       var pulse = 8 + Math.sin(t * 2) * 2;
       var g = ctx.createRadialGradient(hub.x, hub.y, 0, hub.x, hub.y, 90);
-      g.addColorStop(0, 'rgba(216,166,72,.35)'); g.addColorStop(1, 'rgba(216,166,72,0)');
+      g.addColorStop(0, 'rgba(' + AC2 + ',.35)'); g.addColorStop(1, 'rgba(' + AC2 + ',0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.arc(hub.x, hub.y, 90, 0, 6.283); ctx.fill();
-      ctx.fillStyle = '#f1ce84'; ctx.beginPath(); ctx.arc(hub.x, hub.y, pulse, 0, 6.283); ctx.fill();
+      ctx.fillStyle = 'rgb(' + AC + ')'; ctx.beginPath(); ctx.arc(hub.x, hub.y, pulse, 0, 6.283); ctx.fill();
       requestAnimationFrame(frame);
     }
     size(); frame();
