@@ -243,6 +243,81 @@ def choose():
 </div></section>'''
 
 
+
+DEMO = {
+    'home': dict(ads=[('pflege-pflegekraft', 'Pflege mit Zeit für Menschen', 'Jetzt in Ihrer Region bewerben'), ('hw-elektriker', 'Elektroniker (m/w/d) gesucht', 'Bei uns in Ihrer Region'), ('kunden-beratung', 'Neue Heizung? Jetzt beraten lassen', 'Unverbindlich anfragen')],
+                 page_h='Kurz bewerben – auch ohne Lebenslauf', page_f=['Name', 'Telefon oder E-Mail', 'Was passt zu Ihnen?'], chips=['Pflege', 'Handwerk'], btn='Bewerbung absenden',
+                 cols=[('Neu', [('M. K.', 'Pflegefachkraft'), ('T. B.', 'Elektroniker')]), ('Kontaktiert', [('S. L.', 'Pflegehelferin'), ('J. W.', 'Anlagenmechaniker')]), ('Gespräch', [('A. R.', 'Pflegefachkraft')])]),
+    'pflege': dict(ads=[('pflege-pflegekraft', 'Pflege mit Zeit für Menschen', 'Jetzt in Ihrer Region bewerben'), ('pflege-team', 'Ein Team, das zusammenhält', 'Kurz bewerben – auch ohne Lebenslauf'), ('pflege-portrait', 'Wir suchen Sie (m/w/d)', 'Pflegefachkraft · Pflegehelfer')],
+                   page_h='Kurz bewerben – auch ohne Lebenslauf', page_f=['Name', 'Telefon oder E-Mail', 'Ihre Qualifikation'], chips=['Fachkraft', 'Helfer', 'Azubi'], btn='Bewerbung absenden',
+                   cols=[('Neu', [('M. K.', 'Pflegefachkraft'), ('T. B.', 'Pflegehelfer')]), ('Kontaktiert', [('S. L.', 'Teilzeit'), ('J. W.', 'Nachtdienst')]), ('Gespräch', [('A. R.', 'Pflegefachkraft')])]),
+    'hw-mit': dict(ads=[('hw-elektriker', 'Elektroniker (m/w/d) gesucht', 'Bei uns in Ihrer Region'), ('hw-werkstatt', 'Ein Team mit Handschlag-Qualität', 'Kurz bewerben – auch ohne Lebenslauf'), ('hw-dachdecker', 'Dachdecker-Geselle (m/w/d)', 'Jetzt melden')],
+                   page_h='Kurz bewerben – auch ohne Lebenslauf', page_f=['Name', 'Telefon oder E-Mail', 'Ihr Beruf'], chips=['Geselle', 'Meister', 'Azubi'], btn='Bewerbung absenden',
+                   cols=[('Neu', [('M. K.', 'Elektroniker'), ('T. B.', 'Tischler')]), ('Kontaktiert', [('S. L.', 'Anlagenmechaniker'), ('J. W.', 'Dachdecker')]), ('Gespräch', [('A. R.', 'Elektroniker')])]),
+    'hw-kun': dict(ads=[('kunden-beratung', 'Neue Heizung? Jetzt beraten lassen', 'Unverbindlich anfragen'), ('kunden-paar', 'Ihr Zuhause, sauber umgesetzt', 'Jetzt Anfrage stellen'), ('hw-dachdecker', 'Dach sanieren – aber richtig', 'Beratung anfragen')],
+                   page_h='Kurz anfragen – wir melden uns', page_f=['Name', 'Telefon oder E-Mail', 'Worum geht es?'], chips=['Heizung', 'Dach', 'Bad'], btn='Anfrage senden',
+                   cols=[('Neu', [('M. K.', 'Heizungstausch'), ('T. B.', 'Badumbau')]), ('Kontaktiert', [('S. L.', 'Dachsanierung'), ('J. W.', 'Photovoltaik')]), ('Beratung', [('A. R.', 'Heizungstausch')])]),
+}
+
+
+# Beispielwerte zur Veranschaulichung – KEINE echten Kundenergebnisse. Durch belegte Zahlen ersetzen, sobald freigegeben.
+CAMPAIGN = dict(
+    title='Kampagnen-Übersicht',
+    kpis=[('Reichweite', '48.200'), ('Klicks', '1.340'), ('Bewerbungen', '86'), ('Kosten je Bewerbung', '14,20 €')],
+    series=[6, 9, 8, 14, 18, 17, 25, 31, 30, 42, 55, 61, 74, 86],
+    ads=[('Anzeige A', 41), ('Anzeige B', 29), ('Anzeige C', 16)],
+)
+
+
+def campaign():
+    c = CAMPAIGN
+    pts = c['series']; mx = max(pts)
+    xs = [round(i * 300 / (len(pts) - 1), 1) for i in range(len(pts))]
+    ys = [round(100 - v / mx * 88, 1) for v in pts]
+    line = ' '.join(f'{x},{y}' for x, y in zip(xs, ys))
+    area = f'0,100 {line} 300,100'
+    kp = ''.join(f'<div class="cp-k"><small>{e(k)}</small><b>{e(v)}</b></div>' for k, v in c['kpis'])
+    tot = max(v for _, v in c['ads'])
+    rows = ''.join(f'<div class="cp-r"><span>{e(n)}</span><i><u style="--w:{v / tot * 100:.0f}%"></u></i><b>{v}</b></div>' for n, v in c['ads'])
+    return (f'<div class="cp" data-r><div class="kb-bar"><span class="hv-live"></span>{e(c["title"])}<em>Beispielwerte</em></div>'
+            f'<div class="cp-grid"><div><div class="cp-kpis">{kp}</div>'
+            f'<svg class="cp-chart" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="cpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--gold)" stop-opacity=".45"/><stop offset="1" stop-color="var(--gold)" stop-opacity="0"/></linearGradient></defs>'
+            f'<polygon points="{area}" fill="url(#cpg)"/><polyline class="cp-line" points="{line}" fill="none" stroke="var(--gold)" stroke-width="2.2" vector-effect="non-scaling-stroke"/></svg></div>'
+            f'<div class="cp-rows"><small>Bewerbungen je Anzeige</small>{rows}</div></div>'
+            f'<div class="cp-note">Beispielwerte zur Veranschaulichung – keine Kundenergebnisse.</div></div>')
+
+
+def demo(key):
+    d = DEMO[key]
+    ads = ''
+    for i, (img, h, s) in enumerate(d['ads']):
+        ads += (f'<div class="ad ad{i}"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>'
+                f'<img src="/assets/images/photos/{img}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">'
+                f'<div class="ad-f"><span><b>{e(h)}</b><small>{e(s)}</small></span><i>Mehr</i></div></div>')
+    fields = ''.join(f'<div class="ph-f"><small>{e(f)}</small><i></i></div>' for f in d['page_f'][:2])
+    chips = ''.join(f'<span class="{"on" if k == 0 else ""}">{e(c)}</span>' for k, c in enumerate(d['chips']))
+    cols = ''
+    for name, cards in d['cols']:
+        cc = ''.join(f'<div class="kb-c"><i>{e(n[0])}</i><span><b>{e(n)}</b><small>{e(r)}</small></span></div>' for n, r in cards)
+        cols += f'<div class="kb-col"><h4>{e(name)}<em>{len(cards)}</em></h4>{cc}</div>'
+    return f'''<section class="section demo" id="beispiel"><div class="container">
+<div class="demo-head"><span class="eyebrow" data-r>So sieht das aus</span>
+<h2 class="h2" data-r>Von der Anzeige bis zum Gespräch – <span class="gold it">alles aus einer Hand.</span></h2>
+<p class="lead" data-r>Beispielansichten: So erreichen wir passende Menschen, so einfach können sie den nächsten Schritt machen und so bekommen Sie sie vorbereitet zurück.</p></div>
+<div class="dm-grid">
+<div class="dm-col" data-r><div class="dm-lbl"><b>1</b> Passende Menschen werden aufmerksam</div><div class="ads" aria-label="Beispiel-Anzeigen">{ads}</div></div>
+<div class="dm-arrow" aria-hidden="true"><i></i></div>
+<div class="dm-col" data-r><div class="dm-lbl"><b>2</b> Sie machen unkompliziert den nächsten Schritt</div>
+<div class="phone" aria-label="Beispiel: Bewerbungsseite auf dem Handy"><div class="ph-top"></div><div class="ph-body"><span class="ph-brand">{LOGO} Ihr Betrieb</span><h4>{e(d['page_h'])}</h4>{fields}<div class="ph-chips">{chips}</div><div class="ph-btn">{e(d['btn'])}</div><small class="ph-note">✓ Bestätigung kommt automatisch</small></div></div></div>
+<div class="dm-arrow" aria-hidden="true"><i></i></div>
+<div class="dm-col" data-r><div class="dm-lbl"><b>3</b> Sie erhalten vorbereitete Kontakte</div>
+<div class="kb" aria-label="Beispiel: Bewerber-Cockpit"><div class="kb-bar"><span class="hv-live"></span>Ihr Cockpit<em>Beispielansicht</em></div><div class="kb-cols">{cols}</div></div></div>
+</div>
+{campaign()}
+<p class="micro" style="text-align:center" data-r>Alle Namen und Inhalte sind Beispiele. Echte Ergebnisse zeigen wir ausschließlich belegt. · <strong class="gold">3.000+ Bewerbungen generiert · 500+ Fachkräfte gewonnen</strong></p>
+</div></section>'''
+
+
 def flow():
     st = ''.join(f'<article class="step"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">{STEP_ICONS[i]}</svg><div class="n" aria-hidden="true">{i + 1}</div><h3>{e(t)}</h3><p>{e(d)}</p></article>' for i, (t, d) in enumerate(STEPS))
     return f'''<section class="section flow" id="ablauf"><div class="container">
@@ -362,7 +437,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += problem() + triptych() + usp() + choose() + flow() + auto() + results() + offer() + about() + faq() + final()
+    body += problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -370,15 +445,15 @@ BRANCH = {
     'pflege': dict(title='Mehr Bewerbungen von Pflegekräften aus Ihrer Region – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                    h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
-                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.')),
+                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.')),
     'handwerk-mitarbeiter': dict(title='Mehr Bewerbungen von Fachkräften für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                                  h1=['Mehr Bewerbungen von', 'Fachkräften', '<span class="gold it">aus Ihrer Region.</span>'],
                                  lead='Wir machen Ihren Betrieb als Arbeitgeber sichtbar, zeigen verständlich, was Sie auszeichnet, und erleichtern den ersten Kontakt.',
-                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_MIT, loop='elektriker', band=('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte, die zu Ihrem Betrieb passen.')),
+                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_MIT, loop='elektriker', demo='hw-mit', band=('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte, die zu Ihrem Betrieb passen.')),
     'handwerk-kunden': dict(title='Mehr Anfragen für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                             h1=['Mehr Anfragen für die Aufträge,', '<span class="gold it">die zu Ihrem Betrieb passen.</span>'],
                             lead='Wir machen Ihre Leistungen verständlich, erreichen passende Menschen aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
-                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_KUN, loop='paar', band=('kunden-beratung', 'Handwerker zeigt einem Paar einen Plan auf dem Tablet', 'Kunden, die Ihr Angebot verstehen und anfragen.')),
+                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_KUN, loop='paar', demo='hw-kun', band=('kunden-beratung', 'Handwerker zeigt einem Paar einen Plan auf dem Tablet', 'Kunden, die Ihr Angebot verstehen und anfragen.')),
 }
 
 
@@ -390,7 +465,7 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
-    body += photo_band(*c['band']) + flow() + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme']) + body + footer()
 
 

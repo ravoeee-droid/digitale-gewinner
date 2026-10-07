@@ -176,6 +176,12 @@
     setTimeout(tick, 1200);
   })();
 
+  /* ===== Kampagnen-Beispiel: Linie zeichnet sich ===== */
+  $$('.cp').forEach(function (el) {
+    if (!('IntersectionObserver' in window)) { el.classList.add('in'); return; }
+    new IntersectionObserver(function (en, o) { if (en[0].isIntersecting) { el.classList.add('in'); o.disconnect(); } }, { threshold: .35 }).observe(el);
+  });
+
   /* ===== Count-up ===== */
   function countUp(el) {
     var to = parseFloat(el.getAttribute('data-count')), dec = (el.getAttribute('data-dec') | 0), suf = el.getAttribute('data-suf') || '';
