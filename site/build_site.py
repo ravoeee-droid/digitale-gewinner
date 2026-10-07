@@ -125,6 +125,28 @@ def nav(home, theme=''):
 </div></header>'''
 
 
+def loop_html(name):
+    if not name:
+        return ''
+    p = f'/assets/images/loops/{name}'
+    return (f'<video class="hero-bg" autoplay muted loop playsinline preload="metadata" poster="{p}.webp" aria-hidden="true" tabindex="-1">'
+            f'<source src="{p}.webm" type="video/webm"><source src="{p}.mp4" type="video/mp4"></video>')
+
+
+def photo_band(name, alt, caption, ratio=''):
+    return (f'<section class="band"><div class="container"><figure class="pb {ratio}" data-r>'
+            f'<img src="/assets/images/photos/{name}.webp" alt="{e(alt)}" width="1600" height="1062" loading="lazy" decoding="async">'
+            f'<figcaption><b>{e(caption)}</b><span>Symbolbild</span></figcaption></figure></div></section>')
+
+
+def triptych():
+    items = [('pflege-pflegekraft', 'Pflegekraft hält die Hand einer älteren Dame', 'Passende Pflegekräfte', '/pflege'),
+             ('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte fürs Handwerk', '/handwerk-mitarbeiter'),
+             ('kunden-beratung', 'Handwerker zeigt einem Paar einen Plan auf dem Tablet', 'Anfragen für Aufträge, die passen', '/handwerk-kunden')]
+    cards = ''.join(f'<a class="tp" href="{h}" data-r><img src="/assets/images/photos/{n}.webp" alt="{e(a)}" width="1600" height="1062" loading="lazy" decoding="async"><span><b>{e(c)}</b><i>Mehr erfahren →</i></span></a>' for n, a, c, h in items)
+    return f'<section class="band"><div class="container"><div class="tps">{cards}</div><p class="micro" style="text-align:right">Symbolbilder</p></div></section>'
+
+
 def hero_visual(items, title='Ihr Kontakt-Cockpit'):
     cards = ''
     labels = ['Angaben erfasst', 'Bestätigung gesendet', 'Erinnerung geplant', 'Termin vorbereitet']
@@ -144,7 +166,7 @@ VIS_HW_MIT = [('Elektroniker (m/w/d)', '8 km entfernt', 4), ('Anlagenmechaniker 
 VIS_HW_KUN = [('Anfrage: Heizungstausch', '6 km entfernt', 4), ('Anfrage: Dachsanierung', '9 km entfernt', 3), ('Anfrage: Badumbau', '4 km entfernt', 2), ('Anfrage: Photovoltaik', '13 km entfernt', 1)]
 
 
-def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual=''):
+def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop=''):
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
     prf = '''<div class="proof" data-r>
 <div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
@@ -155,7 +177,7 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual=''):
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
 </div>''' if proof else ''
     cls = ('wide ' if wide else '') + ('has-vis' if visual else '')
-    return f'''<main id="main"><section class="hero" id="top"><canvas id="net" aria-hidden="true"></canvas>
+    return f'''<main id="main"><section class="hero" id="top">{loop_html(loop)}<canvas id="net" aria-hidden="true"></canvas>
 <div class="container"><div class="hero-grid {'with-vis' if visual else ''}"><div class="hero-main"><span class="eyebrow" data-r>{eyebrow}</span>
 <h1 class="{cls}">{ln}</h1>
 <p class="lead" data-r>{lead}</p>
@@ -339,8 +361,8 @@ def home():
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
-                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME))
-    body += problem() + usp() + choose() + flow() + auto() + results() + offer() + about() + faq() + final()
+                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
+    body += problem() + triptych() + usp() + choose() + flow() + auto() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -348,27 +370,27 @@ BRANCH = {
     'pflege': dict(title='Mehr Bewerbungen von Pflegekräften aus Ihrer Region – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                    h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
-                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE),
+                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.')),
     'handwerk-mitarbeiter': dict(title='Mehr Bewerbungen von Fachkräften für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                                  h1=['Mehr Bewerbungen von', 'Fachkräften', '<span class="gold it">aus Ihrer Region.</span>'],
                                  lead='Wir machen Ihren Betrieb als Arbeitgeber sichtbar, zeigen verständlich, was Sie auszeichnet, und erleichtern den ersten Kontakt.',
-                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_MIT),
+                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_MIT, loop='elektriker', band=('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte, die zu Ihrem Betrieb passen.')),
     'handwerk-kunden': dict(title='Mehr Anfragen für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                             h1=['Mehr Anfragen für die Aufträge,', '<span class="gold it">die zu Ihrem Betrieb passen.</span>'],
                             lead='Wir machen Ihre Leistungen verständlich, erreichen passende Menschen aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
-                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_KUN),
+                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_KUN, loop='paar', band=('kunden-beratung', 'Handwerker zeigt einem Paar einen Plan auf dem Tablet', 'Kunden, die Ihr Angebot verstehen und anfragen.')),
 }
 
 
 def branch(slug, c):
     h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
-    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']))
+    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'])
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
-    body += flow() + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + flow() + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme']) + body + footer()
 
 

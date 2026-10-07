@@ -98,6 +98,12 @@
   $$('.seg button').forEach(function (b) { b.addEventListener('click', function () { pick(b.getAttribute('data-p'), true); }); });
   if (panels.length) pick(panels[0].id);
 
+  /* ===== Hero-Loop: bei reduzierter Bewegung anhalten ===== */
+  $$('.hero-bg').forEach(function (v) {
+    if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
+    v.addEventListener('error', function () { v.style.display = 'none'; }, true);
+  });
+
   /* ===== Hero: Intro ===== */
   function heroIntro() {
     if (!animate) return;
@@ -273,7 +279,7 @@
   })();
 
   /* ===== Portrait Parallax ===== */
-  $$('.portrait img').forEach(function (img) {
+  $$('.portrait img, .pb img').forEach(function (img) {
     if (animate) gsap.fromTo(img, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: img.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } });
   });
 

@@ -446,3 +446,24 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .strike{font-size:clamp(1.7rem,3.3vw,3.4rem);line-height:1.18}
 .strike span{white-space:nowrap}
 .strike span:after{top:54%}
+
+/* ===== Fotos & Loops ===== */
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.8}
+.hero:before{z-index:1}
+.band{padding:clamp(40px,7vw,90px) 0}
+.pb{margin:0;position:relative;border-radius:calc(var(--r) + 8px);overflow:hidden;aspect-ratio:21/9;border:1px solid var(--line);box-shadow:0 40px 110px rgba(0,0,0,var(--sh))}
+.pb img{width:100%;height:114%;object-fit:cover;will-change:transform}
+.pb:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.62))}
+.pb figcaption{position:absolute;left:clamp(18px,3vw,42px);right:clamp(18px,3vw,42px);bottom:clamp(16px,2.6vw,34px);z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;color:#fff}
+.pb figcaption b{font-family:var(--serif);font-weight:400;font-size:clamp(1.3rem,3.2vw,2.8rem);letter-spacing:-.03em;line-height:1.1;max-width:22ch}
+.pb figcaption span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75;white-space:nowrap}
+.tps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tp{position:relative;display:block;border-radius:var(--r);overflow:hidden;aspect-ratio:4/5;border:1px solid var(--line)}
+.tp img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.tp:hover img{transform:scale(1.06)}
+.tp:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.72))}
+.tp span{position:absolute;left:22px;right:22px;bottom:20px;z-index:2;color:#fff;display:grid;gap:6px}
+.tp b{font-family:var(--serif);font-weight:400;font-size:clamp(1.3rem,2.2vw,1.9rem);letter-spacing:-.02em;line-height:1.15}
+.tp i{font-style:normal;font-size:.88rem;color:var(--b1);font-weight:700}
+@media (max-width:760px){.pb{aspect-ratio:4/3}.tps{grid-template-columns:1fr;gap:14px}.tp{aspect-ratio:16/11}.pb figcaption{flex-direction:column;align-items:flex-start}}
+.hero:after{content:"";position:absolute;inset:0 0 auto;height:140px;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(var(--bg-rgb),.75),transparent)}
