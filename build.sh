@@ -206,7 +206,7 @@ required = (
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
     'case-overview.css', 'case-overview.js',
-    'site.css', 'site.js', 'pflege.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html',
+    'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html',
     'vendor/gsap.min.js', 'vendor/ScrollTrigger.min.js', 'vendor/lenis.min.js',
 )
 for name in required:

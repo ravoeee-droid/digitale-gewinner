@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://digitale-gewinner.de/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://digitale-gewinner.de/pflege</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://digitale-gewinner.de/handwerk-mitarbeiter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://digitale-gewinner.de/handwerk-kunden</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://digitale-gewinner.de/case-studies.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://digitale-gewinner.de/impressum.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
-  <url><loc>https://digitale-gewinner.de/datenschutz.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://digitalegewinner.de/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://digitalegewinner.de/pflege</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://digitalegewinner.de/pflege-patienten</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://digitalegewinner.de/handwerk-mitarbeiter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://digitalegewinner.de/handwerk-kunden</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://digitalegewinner.de/case-studies.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://digitalegewinner.de/impressum.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://digitalegewinner.de/datenschutz.html</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>

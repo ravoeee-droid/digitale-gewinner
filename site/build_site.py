@@ -12,7 +12,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 OUT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HERE.parent / 'dist'
-SITE = 'https://digitale-gewinner.de'
+SITE = 'https://digitalegewinner.de'
 WA = 'https://wa.me/4971134063951'
 ARROW = '<span class="arr" aria-hidden="true">→</span>'
 
@@ -162,6 +162,7 @@ def hero_visual(items, title='Ihr Kontakt-Cockpit'):
 
 VIS_HOME = [('Pflegefachkraft (m/w/d)', '8 km entfernt', 4), ('Elektroniker (m/w/d)', '12 km entfernt', 3), ('Anfrage: Badumbau', '6 km entfernt', 2), ('Pflegehelfer (m/w/d)', '15 km entfernt', 1)]
 VIS_PFLEGE = [('Pflegefachkraft (m/w/d)', '8 km entfernt', 4), ('Pflegehelfer (m/w/d)', '15 km entfernt', 3), ('Pflegefachkraft Teilzeit', '5 km entfernt', 2), ('Auszubildende Pflege', '11 km entfernt', 1)]
+VIS_PF_KUN = [('Anfrage: Pflege zu Hause', '4 km entfernt', 4), ('Anfrage: Tagespflege', '7 km entfernt', 3), ('Anfrage: Pflegeberatung', '9 km entfernt', 2), ('Anfrage: Verhinderungspflege', '12 km entfernt', 1)]
 VIS_HW_MIT = [('Elektroniker (m/w/d)', '8 km entfernt', 4), ('Anlagenmechaniker SHK', '14 km entfernt', 3), ('Dachdecker-Geselle', '6 km entfernt', 2), ('Tischler (m/w/d)', '12 km entfernt', 1)]
 VIS_HW_KUN = [('Anfrage: Heizungstausch', '6 km entfernt', 4), ('Anfrage: Dachsanierung', '9 km entfernt', 3), ('Anfrage: Badumbau', '4 km entfernt', 2), ('Anfrage: Photovoltaik', '13 km entfernt', 1)]
 
@@ -237,7 +238,7 @@ def choose():
 <p><strong>Mehr passende Anfragen für die Aufträge, die Sie wirklich möchten.</strong> Wir machen Ihr Angebot verständlich, bringen es vor die richtigen Menschen und begleiten Interessenten bis zur konkreten Anfrage.</p>
 <ul class="ticks">{ticks(TICKS_KUN)}</ul>
 <a class="btn btn-gold" href="#analyse" data-goal="Kunden" data-cta="panel-kunden">Kunden gewinnen {ARROW}</a>
-<p class="micro">Branche: <a class="gold" href="/handwerk-kunden">Handwerk</a></p></article>
+<p class="micro">Branchen: <a class="gold" href="/pflege-patienten">Pflege (Patienten)</a> · <a class="gold" href="/handwerk-kunden">Handwerk</a></p></article>
 </div>
 <p class="both" data-r><b>Sie benötigen beides?</b> Wir beginnen mit Ihrem größten Engpass und bauen den zweiten Weg anschließend gezielt auf.</p>
 </div></section>'''
@@ -254,6 +255,9 @@ DEMO = {
     'hw-mit': dict(ads=[('hw-elektriker', 'Elektroniker (m/w/d) gesucht', 'Bei uns in Ihrer Region'), ('hw-werkstatt', 'Ein Team mit Handschlag-Qualität', 'Kurz bewerben – auch ohne Lebenslauf'), ('hw-dachdecker', 'Dachdecker-Geselle (m/w/d)', 'Jetzt melden')],
                    page_h='Kurz bewerben – auch ohne Lebenslauf', page_f=['Name', 'Telefon oder E-Mail', 'Ihr Beruf'], chips=['Geselle', 'Meister', 'Azubi'], btn='Bewerbung absenden',
                    cols=[('Neu', [('M. K.', 'Elektroniker'), ('T. B.', 'Tischler')]), ('Kontaktiert', [('S. L.', 'Anlagenmechaniker'), ('J. W.', 'Dachdecker')]), ('Gespräch', [('A. R.', 'Elektroniker')])]),
+    'pf-kun': dict(ads=[('pflege-pflegekraft', 'Pflege zu Hause – wir beraten Sie', 'Unverbindlich anfragen'), ('pflege-team', 'Ein Team, dem Sie vertrauen können', 'Jetzt Anfrage stellen'), ('pflege-portrait', 'Wir sind für Sie da', 'Beratung anfragen')],
+                   page_h='Kurz anfragen – wir melden uns', page_f=['Name', 'Telefon oder E-Mail', 'Worum geht es?'], chips=['Zu Hause', 'Tagespflege', 'Beratung'], btn='Anfrage senden',
+                   cols=[('Neu', [('M. K.', 'Pflege zu Hause'), ('T. B.', 'Beratung')]), ('Kontaktiert', [('S. L.', 'Tagespflege'), ('J. W.', 'Pflege zu Hause')]), ('Beratung', [('A. R.', 'Pflege zu Hause')])]),
     'hw-kun': dict(ads=[('kunden-beratung', 'Neue Heizung? Jetzt beraten lassen', 'Unverbindlich anfragen'), ('kunden-paar', 'Ihr Zuhause, sauber umgesetzt', 'Jetzt Anfrage stellen'), ('hw-dachdecker', 'Dach sanieren – aber richtig', 'Beratung anfragen')],
                    page_h='Kurz anfragen – wir melden uns', page_f=['Name', 'Telefon oder E-Mail', 'Worum geht es?'], chips=['Heizung', 'Dach', 'Bad'], btn='Anfrage senden',
                    cols=[('Neu', [('M. K.', 'Heizungstausch'), ('T. B.', 'Badumbau')]), ('Kontaktiert', [('S. L.', 'Dachsanierung'), ('J. W.', 'Photovoltaik')]), ('Beratung', [('A. R.', 'Heizungstausch')])]),
@@ -423,7 +427,7 @@ def final(preset=''):
 def footer():
     return f'''</main><footer class="site"><div class="container foot">
 <div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p></div>
-<nav aria-label="Fußzeile"><a href="/pflege">Pflege</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
+<nav aria-label="Fußzeile"><a href="/pflege">Pflege · Mitarbeiter</a><a href="/pflege-patienten">Pflege · Patienten</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
 </div></footer>
 <div class="mcta"><a class="btn btn-gold" href="#analyse" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
 <script src="/vendor/gsap.min.js"></script><script src="/vendor/ScrollTrigger.min.js"></script><script src="/vendor/lenis.min.js"></script><script src="/site.js"></script></body></html>'''
@@ -447,6 +451,11 @@ BRANCH = {
                    h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
                    btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.')),
+    'pflege-patienten': dict(title='Mehr Anfragen von Patienten und Angehörigen für Pflegebetriebe – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
+                             h1=['Mehr Anfragen von', 'Patienten und Angehörigen', '<span class="gold it">aus Ihrer Region.</span>'],
+                             lead='Wir machen Ihre Pflegeleistungen verständlich, erreichen Pflegebedürftige und Angehörige aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
+                             btn='Patientengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PF_KUN, loop='pflege', demo='pf-kun',
+                             band=('pflege-pflegekraft', 'Pflegekraft hält die Hand einer älteren Dame', 'Menschen, die Sie als Pflegebetrieb finden und anfragen.')),
     'handwerk-mitarbeiter': dict(title='Mehr Bewerbungen von Fachkräften für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                                  h1=['Mehr Bewerbungen von', 'Fachkräften', '<span class="gold it">aus Ihrer Region.</span>'],
                                  lead='Wir machen Ihren Betrieb als Arbeitgeber sichtbar, zeigen verständlich, was Sie auszeichnet, und erleichtern den ersten Kontakt.',
