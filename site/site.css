@@ -384,3 +384,15 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 
 .theme-pflege .ticks li:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2314695f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 10.5 3.2 3.2L15 6.8'/%3E%3C/svg%3E")}
 .theme-handwerk .ticks li:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23ffa24d' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 10.5 3.2 3.2L15 6.8'/%3E%3C/svg%3E")}
+
+/* Ablauf: gepinnt muss komplett in die Fensterhöhe passen */
+.flow-head{max-width:64rem}
+.flow.pinned{padding:84px 0 24px}
+.flow.pinned .h2{font-size:clamp(1.6rem,min(4.2vw,6.2vh),3.5rem);margin:10px 0 0}
+.flow.pinned .track-wrap{margin-top:22px}
+.flow.pinned .rail{margin-bottom:16px}
+.flow.pinned .step{padding:20px 26px;flex-basis:min(34vw,420px)}
+.flow.pinned .step .n{font-size:clamp(2.4rem,7.5vh,4.4rem)}
+.flow.pinned .step h3{font-size:1.25rem;margin:6px 0 6px}
+.flow.pinned .step p{font-size:.97rem;line-height:1.5}
+.flow.pinned .flow-cta{margin-top:18px}

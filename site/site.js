@@ -228,7 +228,7 @@
       var dist = function () { var pl = parseFloat(getComputedStyle(wrap).paddingLeft) || 0; return Math.max(0, track.scrollWidth - (wrap.clientWidth - 2 * pl)); };
       var tw = gsap.to(track, { x: function () { return -dist(); }, ease: 'none' });
       ScrollTrigger.create({
-        animation: tw, trigger: flow, start: 'top 6%', end: function () { return '+=' + (dist() + 400); },
+        animation: tw, trigger: flow, start: 'top top', end: function () { return '+=' + (dist() + 400); },
         pin: true, scrub: .6, anticipatePin: 1, invalidateOnRefresh: true,
         onUpdate: function (s) {
           fill.style.width = (s.progress * 100) + '%';
