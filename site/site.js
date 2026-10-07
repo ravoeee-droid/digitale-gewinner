@@ -158,6 +158,18 @@
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { var v = en[0].isIntersecting; if (v && !run) { run = true; frame(); } run = v; }, { threshold: 0 }).observe(c);
   })();
 
+  /* ===== Hero-Cockpit: Kontakte laufen ein ===== */
+  (function () {
+    var cards = $$('.hv-card'); if (!cards.length) return;
+    if (reduce) { cards.forEach(function (c) { c.classList.add('in'); }); return; }
+    var i = 0;
+    function tick() {
+      if (i < cards.length) { cards[i].classList.add('in'); i++; setTimeout(tick, 1300); }
+      else setTimeout(function () { cards.forEach(function (c) { c.classList.remove('in'); }); i = 0; setTimeout(tick, 900); }, 5200);
+    }
+    setTimeout(tick, 1200);
+  })();
+
   /* ===== Count-up ===== */
   function countUp(el) {
     var to = parseFloat(el.getAttribute('data-count')), dec = (el.getAttribute('data-dec') | 0), suf = el.getAttribute('data-suf') || '';

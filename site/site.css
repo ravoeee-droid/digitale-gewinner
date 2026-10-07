@@ -396,3 +396,48 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .flow.pinned .step h3{font-size:1.25rem;margin:6px 0 6px}
 .flow.pinned .step p{font-size:.97rem;line-height:1.5}
 .flow.pinned .flow-cta{margin-top:18px}
+
+/* ===== Erklär-Visuals ===== */
+.hero-grid.with-vis{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,4vw,64px);align-items:center}
+.hero-grid.with-vis h1{font-size:clamp(2.4rem,4.6vw,4.7rem)}
+.hv{border:1px solid rgba(var(--ac-rgb),.35);border-radius:calc(var(--r) + 6px);background:linear-gradient(160deg,rgba(var(--panel-rgb),.92),rgba(var(--panel-rgb),.78));backdrop-filter:blur(10px);box-shadow:0 40px 110px rgba(0,0,0,var(--sh)),0 0 80px rgba(var(--ac2-rgb),.12);overflow:hidden;max-width:520px;margin-left:auto}
+.hv-bar{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line2);font-weight:800;font-size:.9rem}
+.hv-bar em{margin-left:auto;font-style:normal;font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hv-live{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(var(--ac2-rgb),.7);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(var(--ac2-rgb),0)}100%{box-shadow:0 0 0 0 rgba(var(--ac2-rgb),0)}}
+.hv-list{padding:14px;display:grid;gap:10px}
+.hv-card{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--line2);border-radius:14px;background:rgba(var(--fg-rgb),.04)}
+.js .hv-card{opacity:0;transform:translateY(16px) scale(.98);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.js .hv-card.in{opacity:1;transform:none}
+.js.reduce .hv-card{opacity:1;transform:none}
+.hv-av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--ac2-rgb),.16);border:1px solid var(--line);color:var(--gold2)}
+.hv-av svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.hv-t{flex:1;min-width:0}
+.hv-t b{display:block;font-size:.98rem;line-height:1.25}
+.hv-t small{color:var(--muted)}
+.hv-dots{display:flex;gap:5px;margin-top:8px}
+.hv-dots i{width:22px;height:4px;border-radius:3px;background:rgba(var(--fg-rgb),.14);transition:background .4s var(--d,0s)}
+.hv-card.in .hv-dots i.on{background:var(--gold)}
+.js.reduce .hv-dots i.on{background:var(--gold)}
+.hv-chip{flex:none;font-size:.72rem;font-weight:800;padding:6px 10px;border-radius:999px;background:rgba(var(--ac2-rgb),.16);color:var(--gold2);border:1px solid var(--line);white-space:nowrap}
+.hv-foot{padding:14px 18px;border-top:1px solid var(--line2);font-size:.92rem;color:var(--text2)}
+.hv-foot b{color:var(--cream)}
+@media (max-width:1100px){
+  .hero-grid.with-vis{display:block}
+  .hero-vis{margin-top:36px}
+  .hv{margin:0;max-width:none}
+}
+@media (max-width:520px){.hv-chip{display:none}.hv-card:nth-child(4){display:none}}
+/* Browser-Mock (Unterschied) */
+.bm{margin-top:24px;border:1px solid var(--line2);border-radius:12px;overflow:hidden;opacity:.8}
+.bm-top{display:flex;align-items:center;gap:6px;padding:9px 12px;background:rgba(var(--fg-rgb),.05);border-bottom:1px solid var(--line2)}
+.bm-top i{width:9px;height:9px;border-radius:50%;background:rgba(var(--fg-rgb),.2)}
+.bm-top span{margin-left:10px;font-size:.78rem;color:var(--dim)}
+.bm-body{padding:18px;display:grid;gap:10px}
+.bm-body i{display:block;height:10px;border-radius:5px;background:rgba(var(--fg-rgb),.1)}
+.bm-body i:nth-child(1){width:60%}.bm-body i:nth-child(2){width:85%}.bm-body i:nth-child(3){width:45%}
+.bm-img{height:70px;border-radius:8px;background:repeating-linear-gradient(135deg,rgba(var(--fg-rgb),.05) 0 10px,rgba(var(--fg-rgb),.09) 10px 20px)}
+.bm-note{display:flex;align-items:center;gap:10px;margin:16px 0 0;font-size:.95rem;color:var(--muted)}
+.bm-note svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* Schritt-Icons */
+.step .ico{position:absolute;right:22px;top:22px;width:46px;height:46px;padding:11px;border-radius:14px;border:1px solid var(--line);background:rgba(var(--ac2-rgb),.1);color:var(--gold2);fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}

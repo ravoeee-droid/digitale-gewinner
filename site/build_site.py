@@ -41,6 +41,8 @@ FAQ = [
     ('Was passiert im ersten Gespräch?', 'In 15 Minuten prüfen wir Ihren aktuellen Weg zur Mitarbeiter- oder Kundengewinnung, erkennen mögliche Lücken und klären, ob unser System zu Ihrem Unternehmen passt.'),
 ]
 
+STEP_ICONS = ['<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/>', '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 17.5h7M17.5 14v7"/>', '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>', '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>', '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 14.5l2.2 2.2 4.3-4.2"/>']
+
 STEPS = [
     ('Ziel festlegen', 'Gemeinsam definieren wir, welche Mitarbeiter oder Kunden wirklich zu Ihrem Unternehmen passen.'),
     ('System aufbauen', 'Wir erstellen Botschaft, Auftritt, Kontaktweg und die notwendigen Abläufe. Sie müssen keine unterschiedlichen Dienstleister koordinieren.'),
@@ -123,7 +125,26 @@ def nav(home, theme=''):
 </div></header>'''
 
 
-def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False):
+def hero_visual(items, title='Ihr Kontakt-Cockpit'):
+    cards = ''
+    labels = ['Angaben erfasst', 'Bestätigung gesendet', 'Erinnerung geplant', 'Termin vorbereitet']
+    for i, (role, meta, lvl) in enumerate(items):
+        dots = ''.join(f'<i class="{"on" if k < lvl else ""}" style="--d:{k * .35:.2f}s"></i>' for k in range(4))
+        cards += (f'<div class="hv-card"><span class="hv-av" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>'
+                  f'<div class="hv-t"><b>{e(role)}</b><small>{e(meta)}</small><div class="hv-dots" aria-hidden="true">{dots}</div></div>'
+                  f'<span class="hv-chip">{labels[lvl - 1]}</span></div>')
+    return (f'<aside class="hv" aria-label="Beispielansicht: So landen Kontakte bei Ihnen"><div class="hv-bar"><span class="hv-live"></span>{e(title)}<em>Beispielansicht</em></div>'
+            f'<div class="hv-list">{cards}</div>'
+            f'<div class="hv-foot">Alles vorbereitet – <b>Sie führen nur noch das Gespräch.</b></div></aside>')
+
+
+VIS_HOME = [('Pflegefachkraft (m/w/d)', '8 km entfernt', 4), ('Elektroniker (m/w/d)', '12 km entfernt', 3), ('Anfrage: Badumbau', '6 km entfernt', 2), ('Pflegehelfer (m/w/d)', '15 km entfernt', 1)]
+VIS_PFLEGE = [('Pflegefachkraft (m/w/d)', '8 km entfernt', 4), ('Pflegehelfer (m/w/d)', '15 km entfernt', 3), ('Pflegefachkraft Teilzeit', '5 km entfernt', 2), ('Auszubildende Pflege', '11 km entfernt', 1)]
+VIS_HW_MIT = [('Elektroniker (m/w/d)', '8 km entfernt', 4), ('Anlagenmechaniker SHK', '14 km entfernt', 3), ('Dachdecker-Geselle', '6 km entfernt', 2), ('Tischler (m/w/d)', '12 km entfernt', 1)]
+VIS_HW_KUN = [('Anfrage: Heizungstausch', '6 km entfernt', 4), ('Anfrage: Dachsanierung', '9 km entfernt', 3), ('Anfrage: Badumbau', '4 km entfernt', 2), ('Anfrage: Photovoltaik', '13 km entfernt', 1)]
+
+
+def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual=''):
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
     prf = '''<div class="proof" data-r>
 <div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
@@ -133,12 +154,14 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False):
 <div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b>bei Google</div>
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
 </div>''' if proof else ''
+    cls = ('wide ' if wide else '') + ('has-vis' if visual else '')
     return f'''<main id="main"><section class="hero" id="top"><canvas id="net" aria-hidden="true"></canvas>
-<div class="container"><span class="eyebrow" data-r>{eyebrow}</span>
-<h1 class="{'wide' if wide else ''}">{ln}</h1>
+<div class="container"><div class="hero-grid {'with-vis' if visual else ''}"><div class="hero-main"><span class="eyebrow" data-r>{eyebrow}</span>
+<h1 class="{cls}">{ln}</h1>
 <p class="lead" data-r>{lead}</p>
 <p class="punch" data-r>{punch}</p>
-<div class="btns" data-r>{btns}</div>
+<div class="btns" data-r>{btns}</div></div>
+{('<div class="hero-vis" data-r>' + visual + '</div>') if visual else ''}</div>
 {prf}</div><span class="scroll-hint" aria-hidden="true"></span></section>'''
 
 
@@ -163,7 +186,9 @@ def usp():
 <h2 class="h2" data-r>Keine Website zum Anschauen. <span class="gold it">Ein System, das arbeitet.</span></h2>
 <p class="lead" data-r>Eine gewöhnliche Website zeigt Informationen. Unser intelligentes Websystem hilft zusätzlich dabei, Menschen zu erreichen, Interesse in Kontakt zu verwandeln und offene Anfragen zuverlässig weiterzuführen.</p></div>
 <div class="vs">
-<div class="vs-card vs-old" data-r><span class="tag">Gewöhnliche Website</span><h3>Zeigt Informationen.</h3><div class="skeleton" aria-hidden="true"><i></i><i></i><i></i></div></div>
+<div class="vs-card vs-old" data-r><span class="tag">Gewöhnliche Website</span><h3>Zeigt Informationen.</h3>
+<div class="bm" aria-hidden="true"><div class="bm-top"><i></i><i></i><i></i><span>ihre-website.de</span></div><div class="bm-body"><i></i><i></i><i></i><div class="bm-img"></div></div></div>
+<p class="bm-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></svg>Besucher schauen – und gehen wieder.</p></div>
 <div class="vs-card vs-new" data-r><span class="tag">Websystem</span><h3>Führt Kontakte bis zum Gespräch.</h3><div class="flowline" role="list" aria-label="Beispielhafter Ablauf"><span class="fill" aria-hidden="true"></span>{fl}</div></div>
 </div>
 <h3 class="can-title" data-r>Das System kann</h3>
@@ -197,7 +222,7 @@ def choose():
 
 
 def flow():
-    st = ''.join(f'<article class="step"><div class="n" aria-hidden="true">{i + 1}</div><h3>{e(t)}</h3><p>{e(d)}</p></article>' for i, (t, d) in enumerate(STEPS))
+    st = ''.join(f'<article class="step"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true">{STEP_ICONS[i]}</svg><div class="n" aria-hidden="true">{i + 1}</div><h3>{e(t)}</h3><p>{e(d)}</p></article>' for i, (t, d) in enumerate(STEPS))
     return f'''<section class="section flow" id="ablauf"><div class="container">
 <div class="flow-head"><span class="eyebrow" data-r>So einfach funktioniert es</span>
 <h2 class="h2" data-r>Sie sagen uns, wen Sie suchen. <span class="gold it">Wir kümmern uns um den Weg dorthin.</span></h2></div>
@@ -314,7 +339,7 @@ def home():
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
-                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS)
+                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME))
     body += problem() + usp() + choose() + flow() + auto() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
@@ -323,22 +348,22 @@ BRANCH = {
     'pflege': dict(title='Mehr Bewerbungen von Pflegekräften aus Ihrer Region – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                    h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
-                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8'),
+                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE),
     'handwerk-mitarbeiter': dict(title='Mehr Bewerbungen von Fachkräften für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                                  h1=['Mehr Bewerbungen von', 'Fachkräften', '<span class="gold it">aus Ihrer Region.</span>'],
                                  lead='Wir machen Ihren Betrieb als Arbeitgeber sichtbar, zeigen verständlich, was Sie auszeichnet, und erleichtern den ersten Kontakt.',
-                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315'),
+                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_MIT),
     'handwerk-kunden': dict(title='Mehr Anfragen für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                             h1=['Mehr Anfragen für die Aufträge,', '<span class="gold it">die zu Ihrem Betrieb passen.</span>'],
                             lead='Wir machen Ihre Leistungen verständlich, erreichen passende Menschen aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
-                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315'),
+                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_KUN),
 }
 
 
 def branch(slug, c):
     h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
-    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True)
+    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']))
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
