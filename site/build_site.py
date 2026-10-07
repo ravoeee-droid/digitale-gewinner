@@ -413,6 +413,7 @@ def final(preset=''):
 <button class="btn btn-gold" type="submit" data-cta="form-senden">Kostenlose 15-Minuten-Analyse buchen {ARROW}</button>
 <button class="back-btn" type="button" style="background:none;border:0;color:var(--muted);margin:14px auto 0;display:block;cursor:pointer;min-height:44px">← Zurück</button></div>
 <p class="fine">Unverbindlich. Ihre Angaben nutzen wir nur für die Kontaktaufnahme – siehe <a href="/datenschutz.html">Datenschutz</a>.</p>
+<p class="alt">Lieber direkt? <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
 </div>
 <div class="done" role="status"><h3>Danke – WhatsApp öffnet sich.</h3><p class="done-txt"></p>
 <a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">WhatsApp-Nachricht erneut öffnen {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
@@ -500,6 +501,10 @@ def main():
         pages[f'{slug}.html'] = branch(slug, c)
     for name, content in pages.items():
         (OUT / name).write_text(content, encoding='utf-8')
+    for name in ('impressum', 'datenschutz'):  # beide URL-Varianten bedienen (/impressum.html und /impressum/)
+        src, dst = OUT / name / 'index.html', OUT / f'{name}.html'
+        if src.exists() and not dst.exists():
+            shutil.copy2(src, dst)
     for f in ('site.css', 'site.js'):
         shutil.copy2(HERE / f, OUT / f)
     shutil.copytree(HERE / 'vendor', OUT / 'vendor', dirs_exist_ok=True)
