@@ -171,6 +171,9 @@ upgrade_js.write_text(js, encoding='utf-8')
 
 subprocess.run(['python3', 'render-cases.py'], check=True)
 
+# Relaunch: neue Startseite, Branchenseiten und Outbound-Template überschreiben die alte Startseite.
+subprocess.run(['python3', 'site/build_site.py', str(out)], check=True)
+
 expected_images = [
     'assets/images/raphael/raphael-hermann-hero.webp',
     'assets/images/raphael/raphael-hermann-portrait.webp',
@@ -203,6 +206,8 @@ required = (
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
     'case-overview.css', 'case-overview.js',
+    'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html',
+    'vendor/gsap.min.js', 'vendor/ScrollTrigger.min.js', 'vendor/lenis.min.js',
 )
 for name in required:
     if not (out / name).exists():
