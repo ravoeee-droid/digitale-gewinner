@@ -109,7 +109,7 @@ def schema(faq=True):
     return out
 
 
-def nav(home, theme=''):
+def nav(home, theme='', cta='#analyse'):
     p = '' if home else '/'
     return f'''<body class="{theme}"><a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="nav"><div class="container nav-in">
@@ -119,7 +119,7 @@ def nav(home, theme=''):
 <a href="{p}#ziel" data-pick="p-kun">Kunden gewinnen</a>
 <a href="{p}#ergebnisse">Ergebnisse</a>
 <a href="{p}#raphael">Über Raphael</a>
-<a class="btn btn-gold" href="#analyse" data-cta="nav">Kostenlose Analyse</a>
+<a class="btn btn-gold" href="{cta}" data-cta="nav">Kostenlose Analyse</a>
 </nav>
 <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü öffnen"><i></i><i></i></button>
 </div></header>'''
@@ -424,12 +424,12 @@ def final(preset=''):
 </form></div></section>'''
 
 
-def footer():
+def footer(cta='#analyse'):
     return f'''</main><footer class="site"><div class="container foot">
 <div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p></div>
 <nav aria-label="Fußzeile"><a href="/pflege">Pflege · Mitarbeiter</a><a href="/pflege-patienten">Pflege · Patienten</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
 </div></footer>
-<div class="mcta"><a class="btn btn-gold" href="#analyse" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
+<div class="mcta"><a class="btn btn-gold" href="{cta}" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
 <script src="/vendor/gsap.min.js"></script><script src="/vendor/ScrollTrigger.min.js"></script><script src="/vendor/lenis.min.js"></script><script src="/site.js"></script></body></html>'''
 
 
@@ -503,6 +503,18 @@ def outbound():
     return h + nav(False).replace('data-pick="p-mit"', '').replace('href="/#ziel"', 'href="/#ziel"') + body + footer()
 
 
+def legal_page(key):
+    raw = (HERE / 'legal' / f'{key}.html').read_text(encoding='utf-8')
+    meta, body = raw.split('-->', 1)
+    parts = dict(p.split(':', 1) for p in meta.replace('<!--', '').strip().split('|'))
+    title, intro, stand = parts['title'], parts.get('intro', ''), parts.get('stand', '')
+    h = head(f'{title} | Digitale Gewinner', intro or title, f'/{key}')
+    top = (f'<main id="main"><section class="legal-hero"><div class="container"><span class="eyebrow">Rechtliches</span><h1>{title}</h1>'
+           f'{f"<p class=lead>{intro}</p>" if intro else ""}{f"<p class=micro>{stand}</p>" if stand else ""}</div></section>'
+           f'<section class="legal"><div class="container"><div class="legal-body">{body}</div></div></section>')
+    return h + nav(False, cta='/#analyse') + top + footer('/#analyse')
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     pages = {'index.html': home(), 'analyse.html': outbound()}
@@ -510,10 +522,11 @@ def main():
         pages[f'{slug}.html'] = branch(slug, c)
     for name, content in pages.items():
         (OUT / name).write_text(content, encoding='utf-8')
-    for name in ('impressum', 'datenschutz'):  # beide URL-Varianten bedienen (/impressum.html und /impressum/)
-        src, dst = OUT / name / 'index.html', OUT / f'{name}.html'
-        if src.exists() and not dst.exists():
-            shutil.copy2(src, dst)
+    for name in ('impressum', 'datenschutz'):  # neue Optik; beide URL-Varianten bedienen (/impressum.html und /impressum/)
+        html_ = legal_page(name)
+        (OUT / f'{name}.html').write_text(html_, encoding='utf-8')
+        (OUT / name).mkdir(exist_ok=True)
+        (OUT / name / 'index.html').write_text(html_, encoding='utf-8')
     for f in ('site.css', 'site.js'):
         shutil.copy2(HERE / f, OUT / f)
     shutil.copytree(HERE / 'vendor', OUT / 'vendor', dirs_exist_ok=True)
