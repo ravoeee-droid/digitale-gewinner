@@ -343,3 +343,10 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
   *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   .btn-gold:after{display:none}
 }
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.stats div{border:1px solid var(--line);border-radius:var(--r);padding:28px;background:linear-gradient(160deg,rgba(216,166,72,.1),var(--panel))}
+.stats b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,5vw,4.2rem);letter-spacing:-.04em;color:var(--gold2);line-height:1}
+.stats span{color:#d8cdbd}
+@media (max-width:760px){.stats{grid-template-columns:1fr}}
+.cal-link{width:100%}

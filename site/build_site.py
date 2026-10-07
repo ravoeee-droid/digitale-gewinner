@@ -127,6 +127,8 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False):
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
     prf = '''<div class="proof" data-r>
 <div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
+<div><b data-count="3000" data-suf="+">3.000+</b>Bewerbungen generiert</div>
+<div><b data-count="500" data-suf="+">500+</b>Fachkräfte gewonnen</div>
 <div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
 <div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b>bei Google</div>
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
@@ -220,7 +222,8 @@ def results(reviews=True, list_=True):
     top = f'''<div class="res-top"><div><span class="eyebrow" data-r>Ergebnisse statt Fachbegriffe</span>
 <h2 class="h2" data-r style="margin-bottom:0">Entscheidend ist, <span class="gold it">was bei Ihnen ankommt.</span></h2></div></div>
 <ul class="res-list" data-r>{lst}</ul>
-<p class="honest" data-r>Wir zeigen nur belegbare Ergebnisse – keine erfundenen Kennzahlen. Bis ausreichend dokumentierte Recruiting- und Anfrage-Fälle vorliegen, sprechen echte Google-Bewertungen für sich.</p>''' if list_ else ''
+<div class="stats" data-r><div><b data-count="3000" data-suf="+">3.000+</b><span>Bewerbungen generiert</span></div><div><b data-count="500" data-suf="+">500+</b><span>Fachkräfte gewonnen</span></div><div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b><span>bei Google</span></div></div>
+<p class="honest" data-r>Wir zeigen nur belegbare Ergebnisse – keine erfundenen Kennzahlen. Dokumentierte Fälle mit Ausgangslage, Weg, Ergebnis und Kundenzitat folgen.</p>''' if list_ else ''
     return f'''<section class="section" id="ergebnisse"><div class="container">{top}
 <div class="rev-head" data-r><div class="score"><span class="g" aria-hidden="true">G</span><div><b>5,0</b> <span class="stars" aria-hidden="true">★★★★★</span><br><small class="muted">9 Google-Rezensionen</small></div></div></div>
 <div class="revs" data-r tabindex="0" aria-label="Google-Rezensionen">{revs}</div>
@@ -249,6 +252,7 @@ def about():
 <h2 class="h2" data-r>Sie arbeiten direkt mit <span class="gold it">Raphael Hermann.</span></h2>
 <p data-r>Seit acht Jahren unterstütze ich Unternehmen dabei, digital sichtbarer zu werden und aus Interesse konkrete Gespräche zu machen.</p>
 <p data-r>Dabei habe ich gelernt: Eine schöne Website allein verändert noch kein Unternehmen. Sie muss den richtigen Menschen eine klare Entscheidung ermöglichen und anschließend zuverlässig weiterarbeiten.</p>
+<p data-r><strong>Keine Massenabfertigung:</strong> Ich kümmere mich wirklich persönlich um meine Kunden.</p>
 <p data-r>Deshalb verbindet Digitale Gewinner alles Notwendige in einem verständlichen System – ohne anonymen Agenturprozess und ohne Weitergabe an wechselnde Ansprechpartner.</p>
 <div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-cta="raphael">Kostenlose Analyse mit Raphael buchen {ARROW}</a></div></div>
 </div></section>'''
@@ -288,8 +292,8 @@ def final(preset=''):
 <button class="back-btn" type="button" style="background:none;border:0;color:var(--muted);margin:14px auto 0;display:block;cursor:pointer;min-height:44px">← Zurück</button></div>
 <p class="fine">Unverbindlich. Ihre Angaben nutzen wir nur für die Kontaktaufnahme – siehe <a href="/datenschutz.html">Datenschutz</a>.</p>
 </div>
-<div class="done" role="status"><h3>Danke – Ihre Anfrage ist da.</h3><p class="done-txt"></p>
-<a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">Terminwunsch per WhatsApp senden {ARROW}</a><div class="cal"></div></div>
+<div class="done" role="status"><h3>Danke – WhatsApp öffnet sich.</h3><p class="done-txt"></p>
+<a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">WhatsApp-Nachricht erneut öffnen {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
 </form></div></section>'''
 
 

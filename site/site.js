@@ -3,8 +3,7 @@
   'use strict';
 
   /* ===== Konfiguration ===== */
-  var CAL_URL = '';                       // TODO Raphael: Kalender-Embed-Link (z. B. https://cal.com/…?embed=true). Leer = WhatsApp-Terminwunsch.
-  var WA = 'https://wa.me/4971134063951';
+    var WA = 'https://wa.me/4971134063951';
 
   var d = document, root = d.documentElement;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -323,15 +322,15 @@
       err2.textContent = '';
       var btn = $('button[type=submit]', form); btn.disabled = true;
       var body = new URLSearchParams(); data.forEach(function (v, k) { body.append(k, String(v)); });
+      var link = $('.wa-link', form);
       var msg = 'Hallo Raphael, ich möchte die kostenlose 15-Minuten-Analyse.\n\nName: ' + name + '\nKontakt: ' + contact + '\nZiel: ' + goal;
       var wa = WA + '?text=' + encodeURIComponent(msg);
       fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() }).catch(function () { });
       window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'lead_submit', goal: goal });
       form.classList.add('sent');
-      var cal = $('.cal', form), link = $('.wa-link', form);
       link.href = wa;
-      if (CAL_URL) { cal.innerHTML = '<iframe title="Termin wählen" loading="lazy" src="' + CAL_URL + '"></iframe>'; $('.done-txt', form).textContent = 'Wählen Sie jetzt direkt Ihren Termin.'; }
-      else { cal.hidden = true; $('.done-txt', form).textContent = 'Senden Sie uns Ihren Terminwunsch direkt per WhatsApp – dann stimmen wir den Zeitpunkt persönlich ab.'; }
+      $('.done-txt', form).textContent = 'Senden Sie die vorbereitete Nachricht in WhatsApp ab. Oder wählen Sie direkt einen freien Termin im Kalender.';
+      window.open(wa, '_blank', 'noopener');
       form.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
     });
   }
