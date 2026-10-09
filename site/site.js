@@ -112,23 +112,15 @@
 
   /* ===== Hero-Loop: bei reduzierter Bewegung anhalten ===== */
   $$('.hero-bg').forEach(function (v) {
-    if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
+    if (reduce || window.innerWidth < 700) { v.removeAttribute('autoplay'); v.pause(); }
     v.addEventListener('error', function () { v.style.display = 'none'; }, true);
   });
 
   /* ===== Hero: Intro ===== */
-  function heroIntro() {
-    if (!animate) return;
-    var tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-    tl.to('.hero .ln>span', { yPercent: 0, duration: 1.15, stagger: .13 }, .1)
-      .to('.hero [data-r]', { opacity: 1, y: 0, duration: .9, stagger: .08 }, .55);
-  }
-  if (animate) { gsap.set('.ln>span', { yPercent: 112, opacity: 1 }); }
-  heroIntro();
 
   /* ===== Hero-Canvas: Signalnetz ===== */
   (function net() {
-    var c = $('#net'); if (!c || reduce) { if (c) c.style.display = 'none'; return; }
+    var c = $('#net'); if (!c || reduce || window.innerWidth < 900) { if (c) c.style.display = 'none'; return; }
     var cs = getComputedStyle(d.body), AC = cs.getPropertyValue('--ac-rgb').trim() || '241,206,132', AC2 = cs.getPropertyValue('--ac2-rgb').trim() || '216,166,72', SIG = cs.getPropertyValue('--sig-rgb').trim() || '255,226,160';
     var ctx = c.getContext('2d'), W, H, dpr, pts = [], mouse = { x: -999, y: -999 }, run = true, hub;
     function size() {
@@ -243,6 +235,31 @@
 
   initOutbound();
   if (!hasGsap) { finishForm(); return; }
+
+  /* ===== Animationen nur im Sichtbereich ===== */
+  if ('IntersectionObserver' in window) {
+    var ao = new IntersectionObserver(function (es) { es.forEach(function (e2) { e2.target.classList.toggle('run', e2.isIntersecting); }); }, { rootMargin: '80px' });
+    $$('[data-anim]').forEach(function (el) { ao.observe(el); });
+  } else { $$('[data-anim]').forEach(function (el) { el.classList.add('run'); }); }
+
+  /* ===== Einwilligung (nur aktiv, wenn eine Tag-Manager-ID gesetzt ist) ===== */
+  var GTM_ID = (document.documentElement.getAttribute('data-gtm') || '').trim();
+  var cb = $('#consent');
+  function loadGTM() {
+    if (!GTM_ID || window.__gtmLoaded) return; window.__gtmLoaded = true;
+    window.dataLayer = window.dataLayer || []; window.dataLayer.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+    var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtm.js?id=' + encodeURIComponent(GTM_ID); document.head.appendChild(s);
+  }
+  var stored = null; try { stored = localStorage.getItem('dg-consent'); } catch (err) {}
+  if (GTM_ID && cb) {
+    if (stored === 'yes') loadGTM(); else if (stored !== 'no') cb.hidden = false;
+    $$('[data-consent]', cb).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var v = b.getAttribute('data-consent'); try { localStorage.setItem('dg-consent', v); } catch (err) {}
+        cb.hidden = true; if (v === 'yes') loadGTM();
+      });
+    });
+  }
 
   /* ===== Fall: Karten nacheinander einblenden ===== */
   var cf = $('#case-flow');

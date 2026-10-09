@@ -87,7 +87,7 @@ def head(title, desc, path, noindex=False, extra=''):
     og = '' if noindex else (f'<meta property="og:type" content="website"><meta property="og:title" content="{e(title)}">'
                              f'<meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{SITE}{path}">'
                              f'<meta property="og:image" content="{SITE}/assets/images/raphael/raphael-hermann-hero.webp">')
-    return (f'<!doctype html><html lang="de"><head><meta charset="utf-8">'
+    return (f'<!doctype html><html lang="de" data-gtm=""><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
             f'<title>{e(title)}</title><meta name="description" content="{e(desc)}">{robots}{canon}{og}'
             f'<meta name="theme-color" content="#090806">'
@@ -244,6 +244,24 @@ def case_pflege():
 </div></section>'''
 
 
+def brand_img(name, alt, cls='bimg'):
+    """Offizielle Logo-/Badge-Dateien (aus dem Partnerportal) liegen unter assets/partners/. Nur wenn vorhanden, werden sie eingebunden."""
+    for ext in ('svg', 'webp', 'png'):
+        if (HERE.parent / 'assets' / 'partners' / f'{name}.{ext}').exists():
+            return f'<img class="{cls}" src="/assets/partners/{name}.{ext}" alt="{e(alt)}" height="40" loading="lazy" decoding="async">'
+    return ''
+
+
+def partner_strip():
+    g = brand_img('google-partner', 'Google Partner')
+    m = brand_img('meta-partner', 'Meta Business Partner')
+    gi = g or '<span class="pt-txt">Google Partner</span>'
+    mi = m or '<span class="pt-txt">Meta Business Partner</span>'
+    return f'''<section class="partners" aria-label="Partnerstatus"><div class="container pt-in">
+<span class="pt-l">Zertifizierter Partner für Werbung auf</span>
+<div class="pt-i">{gi}{mi}</div></div></section>'''
+
+
 def problem():
     return '''<section class="section statement" id="problem"><div class="container">
 <span class="eyebrow" data-r>Problembewusstsein</span>
@@ -255,7 +273,7 @@ def problem():
 
 
 def usp():
-    fl = ''.join(f'<div class="fl"><i>{i + 1}</i><span>{e(t)}</span></div>' for i, t in enumerate(FLOW))
+    fl = ''.join(f'<div class="fl" role="listitem"><i>{i + 1}</i><span>{e(t)}</span></div>' for i, t in enumerate(FLOW))
     return f'''<section class="section" id="unterschied"><div class="container">
 <div class="usp-top"><span class="eyebrow" data-r>Der Unterschied</span>
 <h2 class="h2" data-r>Keine Website zum Anschauen. <span class="gold it">Ein System, das arbeitet.</span></h2>
@@ -349,7 +367,7 @@ def demo(key):
     cols = ''
     for name, cards in d['cols']:
         cc = ''.join(f'<div class="kb-c"><i>{e(n[0])}</i><span><b>{e(n)}</b><small>{e(r)}</small></span></div>' for n, r in cards)
-        cols += f'<div class="kb-col"><h4>{e(name)}<em>{len(cards)}</em></h4>{cc}</div>'
+        cols += f'<div class="kb-col"><h4 aria-level="3">{e(name)}<em>{len(cards)}</em></h4>{cc}</div>'
     return f'''<section class="section demo" id="beispiel"><div class="container">
 <div class="demo-head"><span class="eyebrow" data-r>So sieht das aus</span>
 <h2 class="h2" data-r>Von der Anzeige bis zum Gespräch – <span class="gold it">alles aus einer Hand.</span></h2>
@@ -358,7 +376,7 @@ def demo(key):
 <div class="dm-col" data-r><div class="dm-lbl"><b>1</b> Passende Menschen werden aufmerksam</div><div class="ads" aria-label="Beispiel-Anzeigen">{ads}</div></div>
 <div class="dm-arrow" aria-hidden="true"><i></i></div>
 <div class="dm-col" data-r><div class="dm-lbl"><b>2</b> Sie machen unkompliziert den nächsten Schritt</div>
-<div class="phone" aria-label="Beispiel: Bewerbungsseite auf dem Handy"><div class="ph-top"></div><div class="ph-body"><span class="ph-brand">{LOGO} Ihr Betrieb</span><h4>{e(d['page_h'])}</h4>{fields}<div class="ph-chips">{chips}</div><div class="ph-btn">{e(d['btn'])}</div><small class="ph-note">✓ Bestätigung kommt automatisch</small></div></div></div>
+<div class="phone" aria-label="Beispiel: Bewerbungsseite auf dem Handy"><div class="ph-top"></div><div class="ph-body"><span class="ph-brand">{LOGO} Ihr Betrieb</span><h4 aria-level="3">{e(d['page_h'])}</h4>{fields}<div class="ph-chips">{chips}</div><div class="ph-btn">{e(d['btn'])}</div><small class="ph-note">✓ Bestätigung kommt automatisch</small></div></div></div>
 <div class="dm-arrow" aria-hidden="true"><i></i></div>
 <div class="dm-col" data-r><div class="dm-lbl"><b>3</b> Sie erhalten vorbereitete Kontakte</div>
 <div class="kb" aria-label="Beispiel: Bewerber-Cockpit"><div class="kb-bar"><span class="hv-live"></span>Ihr Cockpit<em>Beispielansicht</em></div><div class="kb-cols">{cols}</div></div></div>
@@ -406,7 +424,7 @@ def live():
     return f'''<section class="section live" id="alltag" aria-labelledby="live-h"><div class="container">
 <div class="live-head"><span class="eyebrow" data-r>Das System im Alltag</span>
 <h2 class="h2" id="live-h" data-r>Drei Dinge, die Ihnen <span class="gold it">niemand mehr hinterhertragen muss.</span></h2></div>
-<div class="live-grid">
+<div class="live-grid" data-anim>
 <article class="lv" data-r><div class="lv-ui lv-form" aria-hidden="true"><i class="l1"></i><i class="l2"></i><i class="l3"></i><b></b></div>
 <h3>Erfasst</h3><p>Die wichtigsten Angaben werden direkt abgefragt und übersichtlich gesammelt – ohne Zettel und ohne Nachtelefonieren.</p></article>
 <article class="lv" data-r><div class="lv-ui lv-bell" aria-hidden="true"><span class="n1">Bestätigung gesendet</span><span class="n2">Erinnerung geplant</span><span class="n3">Termin vorbereitet</span></div>
@@ -473,6 +491,10 @@ def chart(pts, cls=''):
             f'<path class="ar" d="{d} L{w},{h} L0,{h}Z"/><path class="ln" d="{d}" pathLength="1"/></svg>')
 
 
+def fmt_de(n):
+    return f'{n:,}'.replace(',', '.')
+
+
 def spark(pts):
     w, h = 120, 36
     xs = [i * w / (len(pts) - 1) for i in range(len(pts))]
@@ -520,8 +542,8 @@ def meta_manager(slug):
 <div class="tool-head"><span class="eyebrow" data-r>Ihre Anzeigen · Meta</span>
 <h2 class="h2" id="meta-h" data-r>Ihre Kampagne läuft dort, wo {d['who']} <span class="gold it">täglich unterwegs sind.</span></h2>
 <p class="lead" data-r>Wir richten Ihre Kampagne im Meta Werbeanzeigenmanager ein, steuern sie nach Region und Zielgruppe und werten sie laufend aus. Das Werbebudget zahlen Sie direkt an Meta.</p></div>
-<div class="ui ui-mgr" data-r role="img" aria-label="Beispielansicht eines Werbeanzeigenmanagers mit Kampagnenübersicht und Kennzahlen">
-<div class="mg-top"><span class="mg-burger">{ico('menu')}</span><b>Werbeanzeigenmanager</b><span class="acc">Ihr Betrieb · Werbekonto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen und filtern</span><em>Beispieldaten</em></div>
+<div class="ui ui-mgr" data-anim data-r role="img" aria-label="Beispielansicht eines Werbeanzeigenmanagers mit Kampagnenübersicht und Kennzahlen">
+<div class="mg-top"><span class="mg-burger">{ico('menu')}</span>{brand_img('meta', 'Meta', 'mg-logo')}<b>Werbeanzeigenmanager</b><span class="acc">Ihr Betrieb · Werbekonto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen und filtern</span><em>Beispieldaten</em></div>
 <div class="mg-body">{nav_rail(['home', 'camp', 'grp', 'ad', 'aud', 'set'])}
 <div class="mg-main">
 <div class="mg-tabs"><b class="on">Kampagnen</b><b>Anzeigengruppen</b><b>Anzeigen</b></div>
@@ -545,15 +567,15 @@ def google_search(slug):
     kpis = [('Klicks', 'k'), ('Impressionen', 'i'), ('Anfragen', 'a'), ('Kosten', 'c')]
     sp = {'k': [20, 34, 30, 46, 52, 64, 78], 'i': [30, 36, 44, 42, 58, 66, 72], 'a': [12, 22, 18, 40, 44, 60, 82], 'c': [40, 44, 42, 50, 54, 58, 60]}
     vals = {'k': (1284, ''), 'i': (38410, ''), 'a': (47, ''), 'c': (1150, ' €')}
-    kp = ''.join(f'<div class="kp"><small>{a}</small><b data-count="{vals[k][0]}" data-suf="{vals[k][1]}">{vals[k][0]:,}{vals[k][1]}</b>{spark(sp[k])}</div>'.replace(',', '.') for a, k in kpis)
+    kp = ''.join(f'<div class="kp"><small>{a}</small><b data-count="{vals[k][0]}" data-suf="{vals[k][1]}">{fmt_de(vals[k][0])}{vals[k][1]}</b>{spark(sp[k])}</div>' for a, k in kpis)
     data = [('20 € / Tag', '612', '18.200', '24'), ('15 € / Tag', '401', '11.900', '14'), ('10 € / Tag', '271', '8.310', '9')]
     camps = ''.join(f'<tr style="--i:{i}"><td><span class="ck"></span></td><th scope="row"><b>{e(c)}</b><small>Suchnetzwerk</small></th><td><span class="dot g"></span>Aktiv</td><td>{v[0]}</td><td class="n">{v[1]}</td><td class="n hide-s">{v[2]}</td><td class="n">{v[3]}</td></tr>' for i, (c, v) in enumerate(zip(d['camps'], data)))
     return f'''<section class="section toolsec" id="werbung" aria-labelledby="g-h"><div class="container">
 <div class="tool-head"><span class="eyebrow" data-r>Gefunden werden · Google</span>
 <h2 class="h2" id="g-h" data-r>Wer sucht, soll Sie finden – <span class="gold it">und direkt anfragen.</span></h2>
 <p class="lead" data-r>{d['who']} suchen bei Google. Wir richten Ihre Kampagne in Google Ads ein, pflegen Ihr Profil und sorgen für einen einfachen Weg zur Anfrage. Das Werbebudget zahlen Sie direkt an Google.</p></div>
-<div class="ui ui-gads" data-r role="img" aria-label="Beispielansicht eines Google-Ads-Dashboards mit Kennzahlen, Verlauf und Kampagnen">
-<div class="mg-top ga"><span class="mg-burger">{ico('menu')}</span><b>Google Ads</b><span class="acc">Ihr Betrieb · Konto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen</span><em>Beispieldaten</em></div>
+<div class="ui ui-gads" data-anim data-r role="img" aria-label="Beispielansicht eines Google-Ads-Dashboards mit Kennzahlen, Verlauf und Kampagnen">
+<div class="mg-top ga"><span class="mg-burger">{ico('menu')}</span>{brand_img('google', 'Google', 'mg-logo')}<b>Google Ads</b><span class="acc">Ihr Betrieb · Konto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen</span><em>Beispieldaten</em></div>
 <div class="mg-body">{nav_rail(['home', 'camp', 'grp', 'ad', 'key', 'goal'])}
 <div class="mg-main">
 <div class="mg-tabs"><b class="on">Übersicht</b><b>Kampagnen</b><b>Keywords</b><b>Ziele</b><span class="dtp">Letzte 30 Tage{ico('chev')}</span></div>
@@ -563,11 +585,11 @@ def google_search(slug):
 </div></div></div>
 <div class="serp-lbl" data-r><b>So erscheint Ihr Angebot bei der Suche</b></div>
 <div class="tool-grid one" data-r>
-<div class="ui ui-g" role="img" aria-label="Beispielansicht einer Google-Suche mit Anzeige, Karteneintrag und eingehender Anfrage">
+<div class="ui ui-g" data-anim role="img" aria-label="Beispielansicht einer Google-Suche mit Anzeige, Karteneintrag und eingehender Anfrage">
 <div class="ui-bar"><i></i><i></i><i></i><span>Suche · Beispielansicht</span></div>
 <div class="g-search"><span class="gq"><em>{e(d['q'])}</em></span></div>
 <div class="g-res">
-<div class="g-ad r1"><small><b>Anzeige</b> · ihr-betrieb.de</small><h4>{e(d['ad'])}</h4><p>{e(d['desc'])}</p><div class="g-links">{links}</div></div>
+<div class="g-ad r1"><small><b>Anzeige</b> · ihr-betrieb.de</small><h4 aria-level="3">{e(d['ad'])}</h4><p>{e(d['desc'])}</p><div class="g-links">{links}</div></div>
 <div class="g-map r2"><div class="map" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="p3"></i></div>
 <ul><li class="me"><b>Ihr Betrieb</b><span class="st">★★★★★</span><small>Geöffnet · in Ihrer Nähe</small></li><li><b class="sk"></b></li><li><b class="sk"></b></li></ul></div>
 </div>
@@ -597,7 +619,7 @@ def stages():
         if img:
             vis = f'<img src="/assets/images/creatives/{img}.webp" alt="Beispiel-Anzeige Stufe {i + 1}: {e(n)}" width="760" height="950" loading="lazy" decoding="async">'
         else:
-            vis = f'<div class="cr-text"><small>Karriere · Beispiel</small><h4>{e(h)}</h4><p>{e(t)}</p><span class="cr-cta">{e(cta)} →</span><em>Stufe {i + 1} · {e(n)}</em></div>'
+            vis = f'<div class="cr-text"><small>Karriere · Beispiel</small><h4 aria-level="3">{e(h)}</h4><p>{e(t)}</p><span class="cr-cta">{e(cta)} →</span><em>Stufe {i + 1} · {e(n)}</em></div>'
         panels += (f'<div class="st-panel" role="tabpanel" id="st-p{i}" aria-labelledby="st-t{i}"{"" if i == 0 else " hidden"}>'
                    f'<figure class="cr">{vis}</figure><div class="st-txt"><span class="eyebrow">Stufe {i + 1} von 7</span><h3>{e(n)}</h3><p class="st-h">{e(h)}</p><p>{e(t)}</p>'
                    f'<div class="st-nav"><button type="button" class="btn" data-st="prev" aria-label="Vorherige Stufe">←</button><button type="button" class="btn" data-st="next" aria-label="Nächste Stufe">→</button></div></div></div>')
@@ -672,7 +694,7 @@ def final(preset=''):
 <button class="btn btn-gold" type="submit" data-cta="form-senden">Kostenlose 15-Minuten-Analyse buchen {ARROW}</button>
 <button class="back-btn" type="button" style="background:none;border:0;color:var(--muted);margin:14px auto 0;display:block;cursor:pointer;min-height:44px">← Zurück</button></div>
 <p class="fine">Unverbindlich. Ihre Angaben nutzen wir nur für die Kontaktaufnahme – siehe <a href="/datenschutz.html">Datenschutz</a>.</p>
-<p class="alt">Lieber direkt? <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
+<p class="alt">Lieber direkt? <a href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender-alt">Termin wählen</a> · <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
 </div>
 <div class="done" role="status"><h3>Danke – WhatsApp öffnet sich.</h3><p class="done-txt"></p>
 <a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">WhatsApp-Nachricht erneut öffnen {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
@@ -681,10 +703,11 @@ def final(preset=''):
 
 def footer(cta='#analyse'):
     return f'''</main><footer class="site"><div class="container foot">
-<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p></div>
+<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p><p class="micro" style="margin-top:6px">Google Partner · Meta Business Partner</p></div>
 <nav aria-label="Fußzeile"><a href="/pflege">Pflege · Mitarbeiter</a><a href="/pflege-patienten">Pflege · Patienten</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
 </div></footer>
 <div class="mcta"><a class="btn btn-gold" href="{cta}" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
+<div class="consent" id="consent" role="dialog" aria-labelledby="consent-t" aria-modal="false" hidden><b id="consent-t">Ihre Privatsphäre</b><p>Mit Ihrer Einwilligung messen wir anonym, welche Inhalte helfen, um die Seite zu verbessern. Details in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</p><div class="consent-b"><button type="button" class="btn" data-consent="no">Ablehnen</button><button type="button" class="btn" data-consent="yes">Akzeptieren</button></div></div>
 <script src="/vendor/gsap.min.js"></script><script src="/vendor/ScrollTrigger.min.js"></script><script src="/vendor/lenis.min.js"></script><script src="/site.js"></script></body></html>'''
 
 
@@ -692,12 +715,12 @@ def footer(cta='#analyse'):
 def home():
     h = head('Digitale Gewinner – Mehr Bewerbungen. Mehr Kundenanfragen. Weniger Arbeit.',
              'Intelligente Websysteme für Pflege- und Handwerksbetriebe: passende Menschen aus Ihrer Region erreichen, Angaben erfassen und bis zum persönlichen Gespräch begleiten. Persönlich durch Raphael Hermann.',
-             '/', extra=schema(True))
+             '/', extra=schema(True) + '<link rel="preload" as="image" href="/assets/images/loops/werkstatt.webp" fetchpriority="high">')
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
+    body += partner_strip() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -723,9 +746,10 @@ BRANCH = {
 
 
 def branch(slug, c):
-    h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
+    h = head(c['title'], c['lead'], '/' + slug, extra=schema(False) + f'<link rel="preload" as="image" href="/assets/images/loops/{c["loop"]}.webp" fetchpriority="high">')
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
     body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'], kunden=c['goal'] == 'Kunden')
+    body += partner_strip()
     if slug == 'pflege':
         body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
@@ -741,7 +765,7 @@ def branch(slug, c):
     if slug == 'pflege':
         body += case_pflege()
     body += live()
-    body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + compare() + results(list_=False) + offer() + check() + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + check() + faq() + final(c['goal'])
     return h + nav(False, c['theme'], slug=slug) + body + footer()
 
 
@@ -781,6 +805,24 @@ def legal_page(key):
     return h + nav(False, cta='/#analyse') + top + footer('/#analyse')
 
 
+def minify_assets():
+    """Verkleinert site.css und site.js im Ausgabeordner (nur dist, Quellen bleiben lesbar)."""
+    import re
+    css = OUT / 'site.css'
+    t = css.read_text(encoding='utf-8')
+    t = re.sub(r'/\*.*?\*/', '', t, flags=re.S)
+    t = re.sub(r'\s+', ' ', t)
+    t = re.sub(r'\s*([{};,>])\s*', r'\1', t)
+    t = t.replace(';}', '}')
+    css.write_text(t.strip(), encoding='utf-8')
+    try:
+        import rjsmin
+        js = OUT / 'site.js'
+        js.write_text(rjsmin.jsmin(js.read_text(encoding='utf-8')), encoding='utf-8')
+    except ImportError:
+        pass
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     pages = {'index.html': home(), 'analyse.html': outbound()}
@@ -803,6 +845,7 @@ def main():
         for f in data.glob('*.json'):
             if not f.name.startswith('_'):
                 shutil.copy2(f, dest / f.name)
+    minify_assets()
     print(f'Site built: {", ".join(pages)}')
 
 

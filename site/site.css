@@ -836,3 +836,29 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 
 .ad-in img.cr-img{aspect-ratio:4/5;object-fit:cover}
 .ad-in:has(.cr-img) .ad-f{display:none}
+
+@media (max-width:640px){.revs{margin-inline:-12px;padding-inline:12px;scroll-padding-inline:12px}}
+.consent{position:fixed;left:16px;bottom:16px;z-index:140;max-width:420px;padding:20px 22px;border-radius:18px;border:1px solid var(--line);background:rgba(var(--panel-rgb),.97);backdrop-filter:blur(16px);box-shadow:0 30px 90px rgba(0,0,0,.45)}
+.consent[hidden]{display:none}
+.consent p{margin:8px 0 14px;font-size:.9rem;color:var(--text2)}.consent a{text-decoration:underline}
+.consent-b{display:flex;gap:10px}.consent-b .btn{flex:1;min-height:48px;padding:0 16px;font-size:.92rem}
+@media (max-width:640px){.consent{left:10px;right:10px;bottom:84px;max-width:none}}
+
+.partners{border-block:1px solid var(--line2);padding:18px 0;background:rgba(var(--panel-rgb),.5)}
+.pt-in{display:flex;align-items:center;justify-content:center;gap:clamp(16px,4vw,48px);flex-wrap:wrap}
+.pt-l{color:var(--muted);font-size:.84rem;font-weight:600}
+.pt-i{display:flex;align-items:center;gap:clamp(16px,3vw,36px);flex-wrap:wrap;justify-content:center}
+.pt-i img{height:40px;width:auto}
+.pt-txt{font-weight:800;font-size:.95rem;padding:9px 16px;border:1px solid var(--line);border-radius:999px}
+.mg-logo{height:22px;width:auto}
+
+/* Animationen laufen nur, wenn der Block sichtbar ist */
+.js [data-anim]:not(.run) *,.js [data-anim]:not(.run) *:before,.js [data-anim]:not(.run) *:after{animation-play-state:paused!important}
+
+/* Hero-Intro rein per CSS: Text ist sofort lesbar, kein Warten auf JavaScript */
+.js .hero [data-r]{opacity:1;transform:none;animation:heroin .9s var(--ease) both;animation-delay:.35s}
+.js .hero .ln>span{opacity:1;animation:lnin 1s var(--ease) both}
+.js .hero .ln:nth-child(2)>span{animation-delay:.1s}.js .hero .ln:nth-child(3)>span{animation-delay:.2s}
+@keyframes heroin{from{opacity:0;transform:translateY(24px)}}
+@keyframes lnin{from{transform:translateY(105%)}}
+@media (prefers-reduced-motion:reduce){.js .hero [data-r],.js .hero .ln>span{animation:none}}
