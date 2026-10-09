@@ -204,6 +204,27 @@
   }
   $$('[data-count]').forEach(countUp);
 
+  /* ===== Sieben Stufen: Tabs ===== */
+  var sg = $('[data-stages]');
+  if (sg) {
+    var stabs = $$('[role="tab"]', sg), spans = $$('.st-panel', sg), cur = 0;
+    var show = function (n, focus) {
+      cur = (n + stabs.length) % stabs.length;
+      stabs.forEach(function (b, i) { b.setAttribute('aria-selected', String(i === cur)); b.tabIndex = i === cur ? 0 : -1; });
+      spans.forEach(function (p, i) { p.hidden = i !== cur; });
+      if (focus) stabs[cur].focus();
+      stabs[cur].scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    };
+    stabs.forEach(function (b, i) {
+      b.addEventListener('click', function () { show(i); });
+      b.addEventListener('keydown', function (ev) {
+        if (ev.key === 'ArrowRight') { ev.preventDefault(); show(cur + 1, true); }
+        else if (ev.key === 'ArrowLeft') { ev.preventDefault(); show(cur - 1, true); }
+      });
+    });
+    $$('[data-st]', sg).forEach(function (b) { b.addEventListener('click', function () { show(cur + (b.getAttribute('data-st') === 'next' ? 1 : -1)); }); });
+  }
+
   /* ===== 30-Sekunden-Check ===== */
   var qz = $('[data-quiz]');
   if (qz) {

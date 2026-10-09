@@ -578,6 +578,38 @@ def google_search(slug):
 </div></section>'''
 
 
+STAGES = [
+    ('Wiedererkennung', 'Die Pflegekraft erkennt sich wieder.', 'Kein „Wir suchen dich". Die Anzeige beginnt bei ihr: Vielleicht ist sie gar nicht müde von der Pflege, sondern vom Drumherum.', 'Mehr über uns', 'stufe-1'),
+    ('Konflikt bewusst machen', 'Das Problem bekommt einen Namen.', 'Dienstplanung, Einspringen, fehlende Absprachen: Es liegt oft nicht am Beruf, sondern am System drumherum.', 'Warum wir anders sind', 'stufe-2'),
+    ('Möglichkeit öffnen', 'Es gibt einen anderen Weg.', 'Voll- oder Teilzeit, echte Planbarkeit, ein Umfeld mit mehr Raum für Menschen. Die Alternative wird vorstellbar.', 'Arbeiten bei uns', 'stufe-3'),
+    ('Vertrauen & Beweis', 'Nicht nur nette Worte.', 'Gute Einarbeitung, kurze Entscheidungswege, ein Team, auf das man sich verlassen kann. Jetzt braucht es Belege.', 'Team kennenlernen', 'stufe-4'),
+    ('Risiko reduzieren', 'Du musst dich noch nicht bewerben.', 'Erst mal unverbindlich reinschauen. Kein Bewerbungsmarathon, kein Druck, kein Lebenslauf. Die Hürde sinkt.', 'Unverbindlich ansehen', None),
+    ('Selbstqualifikation', 'Was ist dir bei einem Wechsel wichtig?', 'Planbarkeit, Teamgefühl, Entwicklung, Wertschätzung: Die Person prüft selbst, ob es passt. Sie entscheidet mit.', 'Quick-Match starten', None),
+    ('Entscheidung', 'Wenn es sich gut anfühlt, lass uns sprechen.', 'In 60 Sekunden zum ersten Kennenlernen, ohne Lebenslauf, ohne Anschreiben, ohne Druck. Der nächste Schritt ist klein.', 'Jetzt Kennenlernen', 'stufe-7'),
+]
+
+
+def stages():
+    tabs = ''.join(f'<button type="button" role="tab" id="st-t{i}" aria-controls="st-p{i}" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}"><i>{i + 1}</i><span>{e(n)}</span></button>' for i, (n, *_r) in enumerate(STAGES))
+    panels = ''
+    for i, (n, h, t, cta, img) in enumerate(STAGES):
+        if img:
+            vis = f'<img src="/assets/images/creatives/{img}.webp" alt="Beispiel-Anzeige Stufe {i + 1}: {e(n)}" width="760" height="950" loading="lazy" decoding="async">'
+        else:
+            vis = f'<div class="cr-text"><small>Karriere · Beispiel</small><h4>{e(h)}</h4><p>{e(t)}</p><span class="cr-cta">{e(cta)} →</span><em>Stufe {i + 1} · {e(n)}</em></div>'
+        panels += (f'<div class="st-panel" role="tabpanel" id="st-p{i}" aria-labelledby="st-t{i}"{"" if i == 0 else " hidden"}>'
+                   f'<figure class="cr">{vis}</figure><div class="st-txt"><span class="eyebrow">Stufe {i + 1} von 7</span><h3>{e(n)}</h3><p class="st-h">{e(h)}</p><p>{e(t)}</p>'
+                   f'<div class="st-nav"><button type="button" class="btn" data-st="prev" aria-label="Vorherige Stufe">←</button><button type="button" class="btn" data-st="next" aria-label="Nächste Stufe">→</button></div></div></div>')
+    return f'''<section class="section stg" id="stufen" aria-labelledby="stg-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Unsere Kampagnen-Methode</span>
+<h2 class="h2" id="stg-h" data-r>Keine „Wir suchen dich"-Anzeige. <span class="gold it">Sieben Stufen, die aufeinander aufbauen.</span></h2>
+<p class="lead" data-r>Nicht jede gute Pflegekraft will sofort wechseln. Deshalb führen wir sie Schritt für Schritt: vom Wiedererkennen bis zum ersten, unverbindlichen Kennenlernen.</p></div>
+<div class="st-box" data-r data-stages><div class="st-tabs" role="tablist" aria-label="Sieben Stufen der Kampagne">{tabs}</div>{panels}</div>
+<p class="micro" data-r>Beispielkampagne (Konzept) für ein fiktives Pflegehaus. Texte und Motive werden für Ihr Haus individuell entwickelt. Keine Garantie auf Bewerbungen.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="stufen-analyse">Diesen Weg für unser Haus besprechen {ARROW}</a></div>
+</div></section>'''
+
+
 def offer():
     t = ''.join(f'<li>{e(i)}</li>' for i in OFFER)
     return f'''<section class="section offer" id="paket"><div class="container offer-grid">
@@ -703,6 +735,8 @@ def branch(slug, c):
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
     body += meta_manager(slug) if slug in META_DATA else google_search(slug)
+    if slug == 'pflege':
+        body += stages()
     if slug == 'pflege':
         body += case_pflege()
     body += live()
