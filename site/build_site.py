@@ -208,9 +208,9 @@ HERO_BTNS = (f'<a class="btn btn-gold" href="/pflege" data-cta="hero-pflege">Fü
 
 def adstack():
     return '''<div class="adstack" aria-hidden="true">
-<div class="ac ac1"><img src="/assets/images/creatives/stufe-3.webp" alt="" width="760" height="950" decoding="async"></div>
-<div class="ac ac3"><img src="/assets/images/creatives/stufe-5.webp" alt="" width="760" height="950" decoding="async"></div>
-<div class="ac ac2"><img src="/assets/images/creatives/stufe-1.webp" alt="" width="760" height="950" fetchpriority="high" decoding="async"></div>
+<div class="ac ac1"><img src="/assets/images/creatives/stufe-3-sm.webp" alt="" width="380" height="475" loading="lazy" decoding="async"></div>
+<div class="ac ac3"><img src="/assets/images/creatives/stufe-5-sm.webp" alt="" width="380" height="475" loading="lazy" decoding="async"></div>
+<div class="ac ac2"><img src="/assets/images/creatives/stufe-1-sm.webp" srcset="/assets/images/creatives/stufe-1-sm.webp 380w, /assets/images/creatives/stufe-1.webp 760w" sizes="(max-width:1020px) 320px, 420px" alt="" width="380" height="475" decoding="async"></div>
 <div class="chip c1"><i></i><span><b>Neue Bewerbung</b><small>Pflegefachkraft · 8 km entfernt</small></span></div>
 <div class="chip c2"><i></i><span><b>Termin vorbereitet</b><small>Donnerstag, 10:00 Uhr</small></span></div>
 <span class="ad-note">Beispielansicht</span></div>'''
