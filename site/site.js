@@ -204,6 +204,22 @@
   }
   $$('[data-count]').forEach(countUp);
 
+  /* ===== 30-Sekunden-Check ===== */
+  var qz = $('[data-quiz]');
+  if (qz) {
+    var res = $('.q-res', qz), txt = $('.q-txt', qz);
+    var val = function (n) { var r = $('input[name="' + n + '"]:checked', qz); return r ? r.value : ''; };
+    var upd = function () {
+      var g = val('q1'), a = val('q2'), b = val('q3'); if (!g || !a || !b) return;
+      var first = a === 'c' ? 'Ihnen fehlt vor allem ein klarer Kontaktweg.' : a === 'a' ? 'Der erste Kontakt läuft ohne feste Abfolge – da gehen leicht Anfragen verloren.' : 'Ein Formular ist ein guter Start; entscheidend ist, was danach automatisch passiert.';
+      var second = b === 'a' ? 'Ihre schnelle Reaktion ist ein Vorteil, den das System absichern kann.' : 'Bei der Reaktionszeit lässt sich am meisten gewinnen: Bestätigung, Erinnerung und Nachfassen können automatisch laufen.';
+      txt.textContent = first + ' ' + second;
+      res.hidden = false; setGoal(g);
+      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'check_complete', goal: g });
+    };
+    $$('input', qz).forEach(function (i) { i.addEventListener('change', upd); });
+  }
+
   initOutbound();
   if (!hasGsap) { finishForm(); return; }
 

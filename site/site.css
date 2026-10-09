@@ -626,3 +626,48 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
   .nav-in{transition:all .5s var(--ease)}
 }
 @media (prefers-reduced-motion:reduce){.js-motion .case-flow li{opacity:1;transform:none;transition:none}}
+
+/* Alltag: kleine Beispiel-Oberflächen */
+.live-head{max-width:50rem;margin-bottom:clamp(28px,4vw,48px)}
+.live-head .h2{font-size:clamp(2rem,4.6vw,4rem)}
+.live-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.lv{border:1px solid var(--line2);border-radius:calc(var(--r) + 4px);padding:clamp(22px,2.6vw,32px);background:rgba(var(--panel-rgb),.9);display:flex;flex-direction:column;gap:12px}
+.lv h3{font-size:1.6rem;margin:6px 0 0}.lv p{margin:0;color:var(--text2)}
+.lv-ui{height:150px;border-radius:14px;border:1px solid var(--line);background:rgba(var(--fg-rgb),.03);position:relative;overflow:hidden;padding:16px}
+.lv-form i{display:block;height:12px;border-radius:6px;background:rgba(var(--ac-rgb),.22);margin-bottom:12px;width:0;animation:lvfill 5s var(--ease) infinite}
+.lv-form .l2{animation-delay:.7s;max-width:80%}.lv-form .l3{animation-delay:1.4s;max-width:60%}
+.lv-form b{position:absolute;left:16px;bottom:14px;width:90px;height:24px;border-radius:999px;background:linear-gradient(135deg,var(--b1),var(--b2));opacity:0;animation:lvpop 5s infinite}
+.lv-bell span{position:absolute;left:16px;right:16px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(var(--panel-rgb),.95);font-size:.82rem;font-weight:700;opacity:0;transform:translateY(14px);animation:lvnote 6s var(--ease) infinite}
+.lv-bell .n1{top:14px}.lv-bell .n2{top:58px;animation-delay:1.2s}.lv-bell .n3{top:102px;animation-delay:2.4s;border-color:rgba(var(--ac-rgb),.5)}
+.lv-chat em{position:absolute;height:26px;border-radius:14px;opacity:0;animation:lvnote 6s var(--ease) infinite}
+.lv-chat .c1{left:16px;top:16px;width:58%;background:rgba(var(--fg-rgb),.12)}
+.lv-chat .c2{right:16px;top:56px;width:42%;background:rgba(var(--ac-rgb),.35);animation-delay:1.6s}
+.lv-chat .c3{left:16px;top:96px;width:66%;background:rgba(var(--fg-rgb),.12);animation-delay:3.2s}
+@keyframes lvfill{0%,8%{width:0}30%,85%{width:100%}100%{width:0}}
+@keyframes lvpop{0%,45%{opacity:0;transform:scale(.8)}55%,85%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes lvnote{0%{opacity:0;transform:translateY(14px)}12%,80%{opacity:1;transform:none}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.lv-ui *{animation:none!important;opacity:1!important;width:100%!important;transform:none!important}.lv-form b{width:90px!important}}
+/* Vergleich */
+.cmp-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:calc(var(--r) + 4px);background:rgba(var(--panel-rgb),.9)}
+.cmp-t{width:100%;border-collapse:collapse;min-width:640px}
+.cmp-t th,.cmp-t td{padding:18px 20px;text-align:center;border-bottom:1px solid var(--line2)}
+.cmp-t thead th{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.cmp-t tbody th{text-align:left;font-weight:600}
+.cmp-t .me{color:var(--gold2);background:rgba(var(--ac2-rgb),.1)}
+.cmp-t tbody td:last-child{background:rgba(var(--ac2-rgb),.08)}
+.cmp-t tr:last-child th,.cmp-t tr:last-child td{border-bottom:0}
+.cmp-t .yes{color:var(--gold2);font-weight:900;font-size:1.2rem}.cmp-t .no{color:var(--dim)}
+/* Check */
+.chk-box{border:1px solid rgba(var(--ac-rgb),.35);border-radius:calc(var(--r) + 6px);padding:clamp(22px,3.4vw,44px);background:rgba(var(--panel-rgb),.92);max-width:860px;box-shadow:0 40px 120px rgba(0,0,0,var(--sh))}
+.q-list{list-style:none;margin:0;padding:0;display:grid;gap:26px}
+.q fieldset{border:0;margin:0;padding:0}.q legend{font-weight:800;margin-bottom:12px;padding:0}
+.qo{display:flex;flex-wrap:wrap;gap:10px}
+.qo label{cursor:pointer}.qo input{position:absolute;opacity:0}
+.qo span{display:inline-flex;align-items:center;min-height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--line);transition:all .25s}
+.qo input:checked+span{background:var(--gold);color:var(--on-ac);border-color:transparent;font-weight:800}
+.qo input:focus-visible+span{outline:2px solid var(--gold2);outline-offset:3px}
+.qo label:hover span{border-color:var(--gold2)}
+.q-res{margin-top:28px;padding-top:24px;border-top:1px solid var(--line2)}
+.q-res[hidden]{display:none}
+.q-txt{font-size:1.15rem;margin-bottom:6px}
+@media (max-width:900px){.live-grid{grid-template-columns:1fr}.qo span{min-height:52px}}

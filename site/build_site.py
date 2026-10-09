@@ -398,6 +398,52 @@ def results(reviews=True, list_=True):
 </div></section>'''
 
 
+def live():
+    return f'''<section class="section live" id="alltag" aria-labelledby="live-h"><div class="container">
+<div class="live-head"><span class="eyebrow" data-r>Das System im Alltag</span>
+<h2 class="h2" id="live-h" data-r>Drei Dinge, die Ihnen <span class="gold it">niemand mehr hinterhertragen muss.</span></h2></div>
+<div class="live-grid">
+<article class="lv" data-r><div class="lv-ui lv-form" aria-hidden="true"><i class="l1"></i><i class="l2"></i><i class="l3"></i><b></b></div>
+<h3>Erfasst</h3><p>Die wichtigsten Angaben werden direkt abgefragt und übersichtlich gesammelt – ohne Zettel und ohne Nachtelefonieren.</p></article>
+<article class="lv" data-r><div class="lv-ui lv-bell" aria-hidden="true"><span class="n1">Bestätigung gesendet</span><span class="n2">Erinnerung geplant</span><span class="n3">Termin vorbereitet</span></div>
+<h3>Erinnert</h3><p>Bestätigungen und Erinnerungen gehen automatisch raus. Termine werden vorbereitet, bevor das Gespräch beginnt.</p></article>
+<article class="lv" data-r><div class="lv-ui lv-chat" aria-hidden="true"><em class="c1"></em><em class="c2"></em><em class="c3"></em></div>
+<h3>Fasst nach</h3><p>Bleibt eine Rückmeldung aus, wird nachgefasst. Offene nächste Schritte bleiben sichtbar.</p></article>
+</div>
+<p class="micro" data-r>Schematische Beispielansichten. Sie führen die Gespräche – das System übernimmt die wiederkehrende Arbeit davor.</p>
+</div></section>'''
+
+
+def compare():
+    rows = [('Ein Ansprechpartner für alles', 0, 0, 1), ('Kontakte werden automatisch erfasst', 0, 0, 1),
+            ('Bestätigen, erinnern und nachfassen', 0, 0, 1), ('Auftritt, Werbung und Ablauf sind aufeinander abgestimmt', 0, 1, 1),
+            ('Persönliche Gespräche bleiben bei Ihnen', 1, 1, 1)]
+    ok = '<span class="yes" aria-label="ja">✓</span>'; no = '<span class="no" aria-label="meist nicht">–</span>'
+    body = ''.join(f'<tr><th scope="row">{e(t)}</th>' + ''.join(f'<td>{ok if v else no}</td>' for v in (a, b, c)) + '</tr>' for t, a, b, c in rows)
+    return f'''<section class="section cmp" id="vergleich" aria-labelledby="cmp-h"><div class="container">
+<div class="live-head"><span class="eyebrow" data-r>Der Vergleich</span>
+<h2 class="h2" id="cmp-h" data-r>Selbst koordinieren oder <span class="gold it">ein Websystem nutzen?</span></h2></div>
+<div class="cmp-wrap" data-r><table class="cmp-t"><thead><tr><th><span class="sr" style="position:absolute;left:-9999px">Merkmal</span></th><th>Selbst machen</th><th>Mehrere Dienstleister</th><th class="me">Websystem</th></tr></thead><tbody>{body}</tbody></table></div>
+<p class="micro" data-r>Vereinfachte, typische Darstellung. Im Einzelfall kann es anders aussehen.</p>
+</div></section>'''
+
+
+def check(goal=''):
+    return f'''<section class="section chk" id="check" aria-labelledby="chk-h"><div class="container">
+<div class="live-head"><span class="eyebrow" data-r>30-Sekunden-Check</span>
+<h2 class="h2" id="chk-h" data-r>Wo steckt bei Ihnen <span class="gold it">der Engpass?</span></h2></div>
+<div class="chk-box" data-r data-quiz>
+<ol class="q-list">
+<li class="q"><fieldset><legend>1 · Was möchten Sie gewinnen?</legend><div class="qo"><label><input type="radio" name="q1" value="Mitarbeiter"><span>Mitarbeiter</span></label><label><input type="radio" name="q1" value="Kunden"><span>Kunden</span></label><label><input type="radio" name="q1" value="Beides"><span>Beides</span></label></div></fieldset></li>
+<li class="q"><fieldset><legend>2 · Wie läuft der erste Kontakt heute?</legend><div class="qo"><label><input type="radio" name="q2" value="a"><span>Telefon oder E-Mail, ohne feste Abfolge</span></label><label><input type="radio" name="q2" value="b"><span>Es gibt ein Formular</span></label><label><input type="radio" name="q2" value="c"><span>Es gibt keinen klaren Weg</span></label></div></fieldset></li>
+<li class="q"><fieldset><legend>3 · Wie schnell melden Sie sich bei neuen Kontakten?</legend><div class="qo"><label><input type="radio" name="q3" value="a"><span>Am selben Tag</span></label><label><input type="radio" name="q3" value="b"><span>Nach zwei bis drei Tagen</span></label><label><input type="radio" name="q3" value="c"><span>Unregelmäßig</span></label></div></fieldset></li>
+</ol>
+<div class="q-res" role="status" aria-live="polite" hidden><p class="q-txt"></p><a class="btn btn-gold" href="#analyse" data-cta="check-analyse" data-quiz-cta>Das in 15 Minuten besprechen {ARROW}</a></div>
+</div>
+<p class="micro" data-r>Ihre Auswahl wird nicht gespeichert. Das Ergebnis ist eine erste Orientierung und ersetzt keine Analyse.</p>
+</div></section>'''
+
+
 def offer():
     t = ''.join(f'<li>{e(i)}</li>' for i in OFFER)
     return f'''<section class="section offer" id="paket"><div class="container offer-grid">
@@ -484,7 +530,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
+    body += problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -524,7 +570,8 @@ def branch(slug, c):
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
     if slug == 'pflege':
         body += case_pflege()
-    body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
+    body += live()
+    body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + compare() + results(list_=False) + offer() + check() + faq() + final(c['goal'])
     return h + nav(False, c['theme'], slug=slug) + body + footer()
 
 
