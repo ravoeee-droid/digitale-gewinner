@@ -207,6 +207,13 @@
   initOutbound();
   if (!hasGsap) { finishForm(); return; }
 
+  /* ===== Fall: Karten nacheinander einblenden ===== */
+  var cf = $('#case-flow');
+  if (cf && animate) {
+    root.classList.add('js-motion');
+    ScrollTrigger.create({ trigger: cf, start: 'top 82%', once: true, onEnter: function () { cf.classList.add('in'); } });
+  }
+
   /* ===== Reveal ===== */
   if (animate) {
     ScrollTrigger.batch('[data-r]:not(.hero [data-r])', {

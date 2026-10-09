@@ -225,10 +225,10 @@ def case_pflege():
 <div class="case-head"><span class="eyebrow" data-r>Ergebnis aus der Praxis · Pflege</span>
 <h2 class="h2" id="fall-h" data-r>2.000 € Werbebudget. <span class="gold it">43 Bewerbungen. 3 Einstellungen.</span></h2>
 <p class="lead" data-r>So sah eine Recruiting-Kampagne für eine Pflegeeinrichtung aus – mit durchschnittlich 46 € pro Bewerbung.</p></div>
-<ol class="case-flow" data-r>
-<li><span class="cf-n">2.000 €</span><span class="cf-l">Werbebudget<small>direkt an die Plattform gezahlt</small></span></li>
-<li><span class="cf-n">43</span><span class="cf-l">Bewerbungen<small>durchschnittlich 46 € pro Bewerbung</small></span></li>
-<li class="cf-end"><span class="cf-n">3</span><span class="cf-l">Einstellungen<small>aus den persönlichen Gesprächen</small></span></li>
+<ol class="case-flow" id="case-flow" data-r>
+<li><span class="cf-n" data-count="2000" data-suf=" €">2.000 €</span><span class="cf-l">Werbebudget<small>direkt an die Plattform gezahlt</small></span></li>
+<li><span class="cf-n" data-count="43">43</span><span class="cf-l">Bewerbungen<small>durchschnittlich 46 € pro Bewerbung</small></span></li>
+<li class="cf-end"><span class="cf-n" data-count="3">3</span><span class="cf-l">Einstellungen<small>aus den persönlichen Gesprächen</small></span></li>
 </ol>
 <div class="case-more" data-r>
 <h3>Weitere Ergebnisse aus Pflege-Projekten</h3>
