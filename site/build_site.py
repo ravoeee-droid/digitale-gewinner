@@ -584,8 +584,8 @@ STAGES = [
     ('Konflikt bewusst machen', 'Das Problem bekommt einen Namen.', 'Dienstplanung, Einspringen, fehlende Absprachen: Es liegt oft nicht am Beruf, sondern am System drumherum.', 'Warum wir anders sind', 'stufe-2'),
     ('Möglichkeit öffnen', 'Es gibt einen anderen Weg.', 'Voll- oder Teilzeit, echte Planbarkeit, ein Umfeld mit mehr Raum für Menschen. Die Alternative wird vorstellbar.', 'Arbeiten bei uns', 'stufe-3'),
     ('Vertrauen & Beweis', 'Nicht nur nette Worte.', 'Gute Einarbeitung, kurze Entscheidungswege, ein Team, auf das man sich verlassen kann. Jetzt braucht es Belege.', 'Team kennenlernen', 'stufe-4'),
-    ('Risiko reduzieren', 'Du musst dich noch nicht bewerben.', 'Erst mal unverbindlich reinschauen. Kein Bewerbungsmarathon, kein Druck, kein Lebenslauf. Die Hürde sinkt.', 'Unverbindlich ansehen', None),
-    ('Selbstqualifikation', 'Was ist dir bei einem Wechsel wichtig?', 'Planbarkeit, Teamgefühl, Entwicklung, Wertschätzung: Die Person prüft selbst, ob es passt. Sie entscheidet mit.', 'Quick-Match starten', None),
+    ('Risiko reduzieren', 'Du musst dich noch nicht bewerben.', 'Erst mal unverbindlich reinschauen. Kein Bewerbungsmarathon, kein Druck, kein Lebenslauf. Die Hürde sinkt.', 'Unverbindlich ansehen', 'stufe-5'),
+    ('Selbstqualifikation', 'Was ist dir bei einem Wechsel wichtig?', 'Planbarkeit, Teamgefühl, Entwicklung, Wertschätzung: Die Person prüft selbst, ob es passt. Sie entscheidet mit.', 'Quick-Match starten', 'stufe-6'),
     ('Entscheidung', 'Wenn es sich gut anfühlt, lass uns sprechen.', 'In 60 Sekunden zum ersten Kennenlernen, ohne Lebenslauf, ohne Anschreiben, ohne Druck. Der nächste Schritt ist klein.', 'Jetzt Kennenlernen', 'stufe-7'),
 ]
 
