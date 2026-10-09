@@ -180,13 +180,16 @@ VIS_HW_MIT = [('Elektroniker (m/w/d)', '8 km entfernt', 4), ('Anlagenmechaniker 
 VIS_HW_KUN = [('Anfrage: Heizungstausch', '6 km entfernt', 4), ('Anfrage: Dachsanierung', '9 km entfernt', 3), ('Anfrage: Badumbau', '4 km entfernt', 2), ('Anfrage: Photovoltaik', '13 km entfernt', 1)]
 
 
-def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop=''):
+def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop='', kunden=False):
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
-    prf = '''<div class="proof" data-r>
-<div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
-<div><b data-count="3000" data-suf="+">3.000+</b>Bewerbungen generiert</div>
+    prf_mid = '''<div><b>Tag für Tag</b>neue Anfragen im Blick</div>
+<div><b>Jede Anfrage</b>wird erfasst und nachgefasst</div>
+''' if kunden else '''<div><b data-count="3000" data-suf="+">3.000+</b>Bewerbungen generiert</div>
 <div><b data-count="500" data-suf="+">500+</b>Fachkräfte gewonnen</div>
-<div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
+'''
+    prf = f'''<div class="proof" data-r>
+<div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
+{prf_mid}<div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
 <div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b>bei Google</div>
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
 </div>''' if proof else ''
@@ -335,6 +338,7 @@ def campaign():
 
 def demo(key):
     d = DEMO[key]
+    proof_line = '' if key.endswith('kun') else ' · <strong class="gold">3.000+ Bewerbungen generiert · 500+ Fachkräfte gewonnen</strong>'
     ads = ''
     for i, (img, h, s) in enumerate(d['ads']):
         ads += (f'<div class="ad ad{i}"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>'
@@ -360,7 +364,7 @@ def demo(key):
 <div class="kb" aria-label="Beispiel: Bewerber-Cockpit"><div class="kb-bar"><span class="hv-live"></span>Ihr Cockpit<em>Beispielansicht</em></div><div class="kb-cols">{cols}</div></div></div>
 </div>
 {campaign()}
-<p class="micro" style="text-align:center" data-r>Alle Namen und Inhalte sind Beispiele. Echte Ergebnisse zeigen wir ausschließlich belegt. · <strong class="gold">3.000+ Bewerbungen generiert · 500+ Fachkräfte gewonnen</strong></p>
+<p class="micro" style="text-align:center" data-r>Alle Namen und Inhalte sind Beispiele. Echte Ergebnisse zeigen wir ausschließlich belegt.{proof_line}</p>
 </div></section>'''
 
 
@@ -444,41 +448,90 @@ def check(goal=''):
 </div></section>'''
 
 
+ICO = {
+    'menu': '<path d="M4 7h16M4 12h16M4 17h16"/>', 'home': '<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>', 'camp': '<path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/>',
+    'grp': '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
+    'ad': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/>', 'aud': '<circle cx="9" cy="9" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 8a3 3 0 1 1 0 6"/>',
+    'set': '<circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+    'key': '<circle cx="8" cy="12" r="4"/><path d="M12 12h9m-3 0v3"/>', 'goal': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+    'srch': '<circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/>', 'plus': '<path d="M12 5v14M5 12h14"/>', 'chev': '<path d="m6 9 6 6 6-6"/>',
+}
+
+
+def ico(n):
+    return f'<svg viewBox="0 0 24 24" aria-hidden="true">{ICO[n]}</svg>'
+
+
+def chart(pts, cls=''):
+    """Linienchart (Platzhalterverlauf, ohne Achsenwerte) als SVG."""
+    w, h = 600, 150
+    xs = [i * w / (len(pts) - 1) for i in range(len(pts))]
+    ys = [h - 12 - v * (h - 30) / 100 for v in pts]
+    d = 'M' + ' L'.join(f'{x:.0f},{y:.0f}' for x, y in zip(xs, ys))
+    grid = ''.join(f'<line x1="0" x2="{w}" y1="{y}" y2="{y}"/>' for y in (30, 70, 110))
+    return (f'<svg class="ch {cls}" viewBox="0 0 {w} {h}" preserveAspectRatio="none" aria-hidden="true"><g class="gr">{grid}</g>'
+            f'<path class="ar" d="{d} L{w},{h} L0,{h}Z"/><path class="ln" d="{d}" pathLength="1"/></svg>')
+
+
+def spark(pts):
+    w, h = 120, 36
+    xs = [i * w / (len(pts) - 1) for i in range(len(pts))]
+    ys = [h - 4 - v * (h - 8) / 100 for v in pts]
+    return f'<svg class="sp" viewBox="0 0 {w} {h}" preserveAspectRatio="none" aria-hidden="true"><path d="M' + ' L'.join(f'{x:.0f},{y:.0f}' for x, y in zip(xs, ys)) + '" pathLength="1"/></svg>'
+
+
+def nav_rail(items):
+    return '<div class="rail-ui" aria-hidden="true">' + ''.join(f'<span class="{"on" if i == 0 else ""}">{ico(n)}</span>' for i, n in enumerate(items)) + '</div>'
+
+
 META_DATA = {
-    'pflege': dict(img='pflege-team', head='Pflege mit Zeit für Menschen', sub='Jetzt in Ihrer Region bewerben', rows=['Pflegefachkraft (m/w/d) · Region', 'Pflegehelfer (m/w/d) · Region', 'Karriere-Video · Team'], real=True, who='Pflegekräfte'),
-    'handwerk-mitarbeiter': dict(img='hw-elektriker', head='Elektroniker (m/w/d) gesucht', sub='Bei uns in Ihrer Region', rows=['Elektroniker (m/w/d) · Region', 'Dachdecker-Geselle · Region', 'Karriere-Video · Betrieb'], real=False, who='Fachkräfte'),
+    'pflege': dict(img='pflege-team', head='Pflege mit Zeit für Menschen', sub='Jetzt in Ihrer Region bewerben', who='Pflegekräfte', real=True,
+                   rows=[('Pflegefachkraft (m/w/d) · Region', 'Aktiv', '2.000 €', 2000, '43', '46 €', '2.000 €', '184.220', '421.980'),
+                         ('Pflegehelfer (m/w/d) · Region', 'Entwurf', '—', 0, '—', '—', '—', '—', '—'),
+                         ('Karriere-Video · Team', 'Entwurf', '—', 0, '—', '—', '—', '—', '—')],
+                   tot=('2.000 €', '43', '46 €')),
+    'handwerk-mitarbeiter': dict(img='hw-elektriker', head='Elektroniker (m/w/d) gesucht', sub='Bei uns in Ihrer Region', who='Fachkräfte', real=False,
+                   rows=[('Elektroniker (m/w/d) · Region', 'Aktiv', '25 € / Tag', 0, '18', '41 €', '738 €', '61.420', '140.310'),
+                         ('Dachdecker-Geselle · Region', 'Aktiv', '20 € / Tag', 0, '11', '45 €', '495 €', '38.905', '92.760'),
+                         ('Karriere-Video · Betrieb', 'Entwurf', '—', 0, '—', '—', '—', '—', '—')],
+                   tot=('1.233 €', '29', '43 €')),
 }
 GOOGLE_DATA = {
-    'pflege-patienten': dict(q='Tagespflege in Ihrer Stadt', ad='Tagespflege – wir beraten Sie persönlich', desc='Unverbindlich anfragen. Wir melden uns zeitnah bei Ihnen.', links=['Beratung anfragen', 'Leistungen', 'So läuft es ab'], req='Anfrage: Tagespflege', who='Patienten und Angehörige'),
-    'handwerk-kunden': dict(q='Heizung erneuern in Ihrer Stadt', ad='Heizungstausch vom Fachbetrieb aus Ihrer Region', desc='Jetzt unverbindlich anfragen und Beratungstermin vereinbaren.', links=['Angebot anfragen', 'Leistungen', 'Referenzen'], req='Anfrage: Heizungstausch', who='Kunden'),
+    'pflege-patienten': dict(q='Tagespflege in Ihrer Stadt', ad='Tagespflege – wir beraten Sie persönlich', desc='Unverbindlich anfragen. Wir melden uns zeitnah bei Ihnen.', links=['Beratung anfragen', 'Leistungen', 'So läuft es ab'], req='Anfrage: Tagespflege', who='Patienten und Angehörige',
+                             camps=['Tagespflege · Region', 'Pflege zu Hause · Region', 'Pflegeberatung · Region']),
+    'handwerk-kunden': dict(q='Heizung erneuern in Ihrer Stadt', ad='Heizungstausch vom Fachbetrieb aus Ihrer Region', desc='Jetzt unverbindlich anfragen und Beratungstermin vereinbaren.', links=['Angebot anfragen', 'Leistungen', 'Referenzen'], req='Anfrage: Heizungstausch', who='Kunden',
+                            camps=['Heizungstausch · Region', 'Dachsanierung · Region', 'Badumbau · Region']),
 }
 
 
 def meta_manager(slug):
     d = META_DATA[slug]
-    if d['real']:
-        tiles = [('Werbebudget', '2.000 €'), ('Bewerbungen', '43'), ('Kosten pro Bewerbung', '46 €'), ('Einstellungen', '3')]
-        tiles_h = ''.join(f'<div class="mt"><small>{a}</small><b>{b}</b></div>' for a, b in tiles)
-        note = 'Die Kennzahlen stammen aus dem Fall weiter unten (eine Pflegeeinrichtung, Einzelergebnis).'
-    else:
-        tiles_h = ''.join(f'<div class="mt"><small>{a}</small><b class="sk"></b></div>' for a in ['Werbebudget', 'Bewerbungen', 'Kosten pro Bewerbung', 'Gespräche'])
-        note = 'Beispielansicht – die Werte legen wir gemeinsam nach Region, Zielgruppe und Wettbewerb fest.'
-    rows = ''.join(f'<tr style="--i:{i}"><td><span class="tg on" aria-hidden="true"></span></td><th scope="row">{e(r)}</th><td>Aktiv</td><td><span class="bar" style="--w:{w}%"></span></td></tr>' for i, (r, w) in enumerate(zip(d['rows'], (86, 64, 41))))
+    rows = ''
+    for i, (n, st, bud, _v, res, cpr, spent, reach, imp) in enumerate(d['rows']):
+        act = st == 'Aktiv'
+        rows += (f'<tr style="--i:{i}"><td><span class="ck"></span></td><td><span class="tg{" on" if act else ""}"></span></td>'
+                 f'<th scope="row"><b>{e(n)}</b><small>Kampagne · Bewerbungen</small></th>'
+                 f'<td><span class="dot {"g" if act else "x"}"></span>{"Aktiv" if act else "Entwurf"}</td><td>{bud}</td><td class="n">{res}</td><td class="n">{cpr}</td><td class="n">{spent}</td><td class="n hide-s">{reach}</td><td class="n hide-s">{imp}</td></tr>')
+    foot = (f'<tfoot><tr><td></td><td></td><th scope="row">Ergebnisse aus {len(d["rows"])} Kampagnen</th><td></td><td></td><td class="n">{d["tot"][1]}</td><td class="n">{d["tot"][2]}</td><td class="n">{d["tot"][0]}</td><td class="n hide-s"></td><td class="n hide-s"></td></tr></tfoot>')
+    note = ('Die Werte der aktiven Kampagne stammen aus dem Fall weiter unten (eine Pflegeeinrichtung, Einzelergebnis). Reichweite und Impressionen sind Beispielwerte.' if d['real']
+            else 'Beispieldaten zur Veranschaulichung – keine echten Ergebnisse. Die tatsächlichen Werte hängen von Region, Zielgruppe und Wettbewerb ab.')
     return f'''<section class="section toolsec" id="werbung" aria-labelledby="meta-h"><div class="container">
 <div class="tool-head"><span class="eyebrow" data-r>Ihre Anzeigen · Meta</span>
 <h2 class="h2" id="meta-h" data-r>Ihre Kampagne läuft dort, wo {d['who']} <span class="gold it">täglich unterwegs sind.</span></h2>
 <p class="lead" data-r>Wir richten Ihre Kampagne im Meta Werbeanzeigenmanager ein, steuern sie nach Region und Zielgruppe und werten sie laufend aus. Das Werbebudget zahlen Sie direkt an Meta.</p></div>
-<div class="tool-grid" data-r>
-<div class="ui ui-meta" role="img" aria-label="Beispielansicht eines Werbeanzeigenmanagers mit Kampagnen und Kennzahlen">
-<div class="ui-bar"><i></i><i></i><i></i><span>Werbeanzeigenmanager · Beispielansicht</span></div>
-<div class="ui-tabs"><b class="on">Kampagnen</b><b>Anzeigengruppen</b><b>Anzeigen</b><em>Letzte 30 Tage</em></div>
-<div class="mt-row">{tiles_h}</div>
-<table class="mt-t"><thead><tr><th></th><th>Kampagne</th><th>Status</th><th>Bewerbungen</th></tr></thead><tbody>{rows}</tbody></table>
-</div>
-<div class="ui ui-ad" role="img" aria-label="Beispiel einer Anzeige"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>
+<div class="ui ui-mgr" data-r role="img" aria-label="Beispielansicht eines Werbeanzeigenmanagers mit Kampagnenübersicht und Kennzahlen">
+<div class="mg-top"><span class="mg-burger">{ico('menu')}</span><b>Werbeanzeigenmanager</b><span class="acc">Ihr Betrieb · Werbekonto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen und filtern</span><em>Beispieldaten</em></div>
+<div class="mg-body">{nav_rail(['home', 'camp', 'grp', 'ad', 'aud', 'set'])}
+<div class="mg-main">
+<div class="mg-tabs"><b class="on">Kampagnen</b><b>Anzeigengruppen</b><b>Anzeigen</b></div>
+<div class="mg-tools"><span class="btn-b">{ico('plus')}Erstellen</span><span class="btn-o">Bearbeiten</span><span class="btn-o">Duplizieren</span><span class="btn-o dt">Letzte 30 Tage{ico('chev')}</span></div>
+<div class="mg-mid"><div class="mg-chart"><div class="mg-cl"><b>Bewerbungen pro Tag</b><small>Verlauf · Beispieldarstellung</small></div>{chart([18, 26, 22, 38, 34, 52, 46, 61, 58, 74, 70, 88], 'meta')}</div>
+<div class="ui ui-ad ad-in" aria-hidden="true"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>
 <img src="/assets/images/photos/{d['img']}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">
-<div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div>
-<div class="ad-react" aria-hidden="true"><span>Gefällt mir</span><span>Neue Bewerbung</span></div></div>
+<div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div></div>
+</div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Ergebnisse</th><th>Kosten pro Ergebnis</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
+</div></div>
 </div>
 <ul class="tool-pts" data-r><li>Zielgruppe nach Region und Interessen</li><li>Anzeigen mit Bild oder Video</li><li>Einfacher Kontakt – auf Wunsch ohne Lebenslauf</li><li>Laufende Auswertung und Optimierung</li></ul>
 <p class="micro" data-r>{note} Keine Garantie auf Bewerbungen oder Einstellungen.</p>
@@ -488,10 +541,26 @@ def meta_manager(slug):
 def google_search(slug):
     d = GOOGLE_DATA[slug]
     links = ''.join(f'<span>{e(l)}</span>' for l in d['links'])
+    kpis = [('Klicks', 'k'), ('Impressionen', 'i'), ('Anfragen', 'a'), ('Kosten', 'c')]
+    sp = {'k': [20, 34, 30, 46, 52, 64, 78], 'i': [30, 36, 44, 42, 58, 66, 72], 'a': [12, 22, 18, 40, 44, 60, 82], 'c': [40, 44, 42, 50, 54, 58, 60]}
+    vals = {'k': (1284, ''), 'i': (38410, ''), 'a': (47, ''), 'c': (1150, ' €')}
+    kp = ''.join(f'<div class="kp"><small>{a}</small><b data-count="{vals[k][0]}" data-suf="{vals[k][1]}">{vals[k][0]:,}{vals[k][1]}</b>{spark(sp[k])}</div>'.replace(',', '.') for a, k in kpis)
+    data = [('20 € / Tag', '612', '18.200', '24'), ('15 € / Tag', '401', '11.900', '14'), ('10 € / Tag', '271', '8.310', '9')]
+    camps = ''.join(f'<tr style="--i:{i}"><td><span class="ck"></span></td><th scope="row"><b>{e(c)}</b><small>Suchnetzwerk</small></th><td><span class="dot g"></span>Aktiv</td><td>{v[0]}</td><td class="n">{v[1]}</td><td class="n hide-s">{v[2]}</td><td class="n">{v[3]}</td></tr>' for i, (c, v) in enumerate(zip(d['camps'], data)))
     return f'''<section class="section toolsec" id="werbung" aria-labelledby="g-h"><div class="container">
 <div class="tool-head"><span class="eyebrow" data-r>Gefunden werden · Google</span>
 <h2 class="h2" id="g-h" data-r>Wer sucht, soll Sie finden – <span class="gold it">und direkt anfragen.</span></h2>
-<p class="lead" data-r>{d['who']} suchen bei Google. Wir sorgen dafür, dass Ihr Angebot dort überzeugend erscheint, mit Anzeige, gepflegtem Profil und einem einfachen Weg zur Anfrage.</p></div>
+<p class="lead" data-r>{d['who']} suchen bei Google. Wir richten Ihre Kampagne in Google Ads ein, pflegen Ihr Profil und sorgen für einen einfachen Weg zur Anfrage. Das Werbebudget zahlen Sie direkt an Google.</p></div>
+<div class="ui ui-gads" data-r role="img" aria-label="Beispielansicht eines Google-Ads-Dashboards mit Kennzahlen, Verlauf und Kampagnen">
+<div class="mg-top ga"><span class="mg-burger">{ico('menu')}</span><b>Google Ads</b><span class="acc">Ihr Betrieb · Konto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen</span><em>Beispieldaten</em></div>
+<div class="mg-body">{nav_rail(['home', 'camp', 'grp', 'ad', 'key', 'goal'])}
+<div class="mg-main">
+<div class="mg-tabs"><b class="on">Übersicht</b><b>Kampagnen</b><b>Keywords</b><b>Ziele</b><span class="dtp">Letzte 30 Tage{ico('chev')}</span></div>
+<div class="kp-row">{kp}</div>
+<div class="mg-chart"><div class="mg-cl"><b>Anfragen im Zeitverlauf</b><small>Verlauf · Beispieldarstellung</small></div>{chart([14, 20, 18, 30, 28, 42, 38, 55, 52, 66, 72, 84], 'goog')}</div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th>Kampagne</th><th>Status</th><th>Budget</th><th>Klicks</th><th class="hide-s">Impressionen</th><th>Anfragen</th></tr></thead><tbody>{camps}</tbody></table></div>
+</div></div></div>
+<div class="serp-lbl" data-r><b>So erscheint Ihr Angebot bei der Suche</b></div>
 <div class="tool-grid one" data-r>
 <div class="ui ui-g" role="img" aria-label="Beispielansicht einer Google-Suche mit Anzeige, Karteneintrag und eingehender Anfrage">
 <div class="ui-bar"><i></i><i></i><i></i><span>Suche · Beispielansicht</span></div>
@@ -500,13 +569,12 @@ def google_search(slug):
 <div class="g-ad r1"><small><b>Anzeige</b> · ihr-betrieb.de</small><h4>{e(d['ad'])}</h4><p>{e(d['desc'])}</p><div class="g-links">{links}</div></div>
 <div class="g-map r2"><div class="map" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="p3"></i></div>
 <ul><li class="me"><b>Ihr Betrieb</b><span class="st">★★★★★</span><small>Geöffnet · in Ihrer Nähe</small></li><li><b class="sk"></b></li><li><b class="sk"></b></li></ul></div>
-<div class="g-org r3"><small>ihr-betrieb.de</small><h4>Ihr Betrieb – Leistungen und Beratung</h4><b class="sk"></b></div>
 </div>
 <div class="g-toast" aria-hidden="true"><span class="dot"></span><span><b>Neue Anfrage</b><small>{e(d['req'])}</small></span></div>
 </div>
 </div>
 <ul class="tool-pts" data-r><li>Anzeigen bei der Suche in Ihrer Region</li><li>Gepflegtes Google-Profil mit Bewertungen</li><li>Einfacher Anfrageweg mit den wichtigsten Angaben</li><li>Automatisches Bestätigen und Nachfassen</li></ul>
-<p class="micro" data-r>Schematische Beispielansicht mit Platzhalter-Inhalten. Das Werbebudget zahlen Sie direkt an Google. Keine Garantie auf Platzierungen oder Anfragen.</p>
+<p class="micro" data-r>Beispieldaten zur Veranschaulichung, keine echten Ergebnisse. Keine Garantie auf Platzierungen oder Anfragen.</p>
 </div></section>'''
 
 
@@ -624,7 +692,7 @@ BRANCH = {
 def branch(slug, c):
     h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
-    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'])
+    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'], kunden=c['goal'] == 'Kunden')
     if slug == 'pflege':
         body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
