@@ -220,6 +220,27 @@ Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websystem-erk
 </div></section>'''
 
 
+def case_pflege():
+    return f'''<section class="section case-sec" id="fall" aria-labelledby="fall-h"><div class="container">
+<div class="case-head"><span class="eyebrow" data-r>Ergebnis aus der Praxis · Pflege</span>
+<h2 class="h2" id="fall-h" data-r>2.000 € Werbebudget. <span class="gold it">43 Bewerbungen. 3 Einstellungen.</span></h2>
+<p class="lead" data-r>So sah eine Recruiting-Kampagne für eine Pflegeeinrichtung aus – mit durchschnittlich 46 € pro Bewerbung.</p></div>
+<ol class="case-flow" data-r>
+<li><span class="cf-n">2.000 €</span><span class="cf-l">Werbebudget<small>direkt an die Plattform gezahlt</small></span></li>
+<li><span class="cf-n">43</span><span class="cf-l">Bewerbungen<small>durchschnittlich 46 € pro Bewerbung</small></span></li>
+<li class="cf-end"><span class="cf-n">3</span><span class="cf-l">Einstellungen<small>aus den persönlichen Gesprächen</small></span></li>
+</ol>
+<div class="case-more" data-r>
+<h3>Weitere Ergebnisse aus Pflege-Projekten</h3>
+<ul>
+<li><b>Pflegeresidenz</b> · 8 Wochen: 22 Bewerbungen, 10 Bewerbungsgespräche, 3 Einstellungen von Pflegefachkräften.</li>
+<li><b>Ambulanter Pflegedienst</b> · rund 4 Wochen: 11 Bewerbungsgespräche, 2 Einstellungen von Fachkräften.</li>
+</ul></div>
+<p class="case-src" data-r>Quelle: Kampagnen, die Raphael Hermann bei Fachkraftmarketing verantwortet hat; Veröffentlichung mit schriftlicher Freigabe. Es sind Einzelergebnisse und keine Garantie – Bewerbungen und Einstellungen hängen auch von Region, Angebot und Ihrer Reaktionsgeschwindigkeit ab. Das Werbebudget ist nicht Teil unseres Honorars.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="fall-analyse">Was wäre bei Ihnen möglich? {ARROW}</a></div>
+</div></section>'''
+
+
 def problem():
     return '''<section class="section statement" id="problem"><div class="container">
 <span class="eyebrow" data-r>Problembewusstsein</span>
@@ -501,6 +522,8 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
+    if slug == 'pflege':
+        body += case_pflege()
     body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme'], slug=slug) + body + footer()
 
