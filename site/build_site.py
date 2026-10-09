@@ -192,6 +192,21 @@ HERO_BTNS = (f'<a class="btn btn-gold" href="#ziel" data-goal="Mitarbeiter" data
              f'<a class="btn" href="#ziel" data-goal="Kunden" data-cta="hero-kunden">Kunden gewinnen</a>')
 
 
+def video_section():
+    return f'''<section class="section video-sec" id="video" aria-labelledby="video-h"><div class="container">
+<div class="video-head"><span class="eyebrow" data-r>In 80 Sekunden erklärt · für Pflegeeinrichtungen</span>
+<h2 class="h2" id="video-h" data-r>Eine Website war gestern. <span class="gold it">Ein Websystem arbeitet für Sie.</span></h2>
+<p class="lead" data-r>Sehen Sie, wie aus einer Seite zum Anschauen ein System wird, das Ihnen wiederkehrende Arbeit abnimmt – und Sie behalten die Gespräche.</p></div>
+<figure class="vid" data-r><div class="vid-frame">
+<video id="expl" controls preload="none" playsinline poster="/assets/video/websystem-erklaervideo-poster.webp" aria-describedby="vid-note" width="1280" height="720">
+<source src="/assets/video/websystem-erklaervideo.mp4" type="video/mp4">
+Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websystem-erklaervideo.mp4">Video herunterladen</a>.</video>
+<button class="vid-play" type="button" aria-label="Erklärvideo abspielen (80 Sekunden, mit Untertiteln)"><span class="vid-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="vid-lab">Video ansehen<small>80 Sek. · mit Untertiteln</small></span></button></div>
+<figcaption id="vid-note">Animiertes Erklärvideo mit Untertiteln. Ton an empfohlen. Die im Video genannten Kampagnenwerte stammen aus einem früheren Projekt von Raphael Hermann bei Fachkraftmarketing und sind nicht als Garantie zu verstehen.</figcaption></figure>
+<div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="video-mehr">Wie das System funktioniert</a></div>
+</div></section>'''
+
+
 def problem():
     return '''<section class="section statement" id="problem"><div class="container">
 <span class="eyebrow" data-r>Problembewusstsein</span>
@@ -442,7 +457,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
+    body += video_section() + problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -475,6 +490,8 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
+    if slug == 'pflege':
+        body += video_section()
     body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme']) + body + footer()
 

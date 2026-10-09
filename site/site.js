@@ -98,6 +98,18 @@
   $$('.seg button').forEach(function (b) { b.addEventListener('click', function () { pick(b.getAttribute('data-p'), true); }); });
   if (panels.length) pick(panels[0].id);
 
+  /* ===== Erklärvideo: Overlay-Button, Tracking ===== */
+  var ev = $('#expl'), eb = $('.vid-play');
+  if (ev && eb) {
+    ev.removeAttribute('controls');
+    eb.addEventListener('click', function () {
+      eb.hidden = true; ev.setAttribute('controls', ''); ev.play().catch(function () { eb.hidden = false; ev.removeAttribute('controls'); });
+      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_play', video: 'websystem-erklaervideo' });
+    });
+    ev.addEventListener('play', function () { eb.hidden = true; });
+    ev.addEventListener('ended', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_complete', video: 'websystem-erklaervideo' }); });
+  }
+
   /* ===== Hero-Loop: bei reduzierter Bewegung anhalten ===== */
   $$('.hero-bg').forEach(function (v) {
     if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
