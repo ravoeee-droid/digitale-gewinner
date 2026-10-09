@@ -586,3 +586,11 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .vid figcaption{margin-top:14px;font-size:.84rem;color:var(--muted);max-width:46rem}
 .vid-cta{margin-top:clamp(24px,3vw,36px)}
 @media (max-width:560px){.vid-lab{display:none}.vid-frame{border-radius:var(--r)}.vid-cta .btn{width:100%}}
+
+/* Branchen-Auswahl: beide Karten immer sichtbar */
+.choose.bran .panel{display:flex}
+.panel .btns{margin-top:auto;padding-top:22px}
+.nav-links a[aria-current=page]:not(.btn){color:var(--gold2)}
+.nav-links a[aria-current=page]:not(.btn):after{transform:scaleX(1)}
+@media (max-width:1020px){.choose.bran{display:grid;grid-template-columns:1fr}.choose.bran .panel{display:flex}}
+@media (max-width:560px){.panel .btns .btn{width:100%}}

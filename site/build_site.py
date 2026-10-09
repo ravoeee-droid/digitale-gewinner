@@ -109,16 +109,29 @@ def schema(faq=True):
     return out
 
 
-def nav(home, theme='', cta='#analyse'):
+BRANCH_NAV = {
+    'pflege': ('Pflege', 'pflege', 'Mitarbeiter gewinnen', 'pflege-patienten', 'Patienten gewinnen'),
+    'pflege-patienten': ('Pflege', 'pflege', 'Mitarbeiter gewinnen', 'pflege-patienten', 'Patienten gewinnen'),
+    'handwerk-mitarbeiter': ('Handwerk', 'handwerk-mitarbeiter', 'Mitarbeiter gewinnen', 'handwerk-kunden', 'Kunden gewinnen'),
+    'handwerk-kunden': ('Handwerk', 'handwerk-mitarbeiter', 'Mitarbeiter gewinnen', 'handwerk-kunden', 'Kunden gewinnen'),
+}
+
+
+def nav(home, theme='', cta='#analyse', slug=None):
     p = '' if home else '/'
+    if slug in BRANCH_NAV:
+        _, a, la, b, lb = BRANCH_NAV[slug]
+        cur = lambda x: ' aria-current="page"' if x == slug else ''
+        links = (f'<a href="/{a}"{cur(a)}>{la}</a><a href="/{b}"{cur(b)}>{lb}</a>'
+                 '<a href="/#ergebnisse">Ergebnisse</a><a href="/#raphael">Über Raphael</a>')
+    else:
+        links = (f'<a href="/pflege">Pflege</a><a href="/handwerk-mitarbeiter">Handwerk</a>'
+                 f'<a href="{p}#ergebnisse">Ergebnisse</a><a href="{p}#raphael">Über Raphael</a>')
     return f'''<body class="{theme}"><a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="nav"><div class="container nav-in">
 <a class="brand" href="{'#top' if home else '/'}" aria-label="Digitale Gewinner – Startseite"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a>
 <nav class="nav-links" id="menu" aria-label="Hauptnavigation">
-<a href="{p}#ziel" data-pick="p-mit">Mitarbeiter gewinnen</a>
-<a href="{p}#ziel" data-pick="p-kun">Kunden gewinnen</a>
-<a href="{p}#ergebnisse">Ergebnisse</a>
-<a href="{p}#raphael">Über Raphael</a>
+{links}
 <a class="btn btn-gold" href="{cta}" data-cta="nav">Kostenlose Analyse</a>
 </nav>
 <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü öffnen"><i></i><i></i></button>
@@ -188,8 +201,8 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', l
 {prf}</div><span class="scroll-hint" aria-hidden="true"></span></section>'''
 
 
-HERO_BTNS = (f'<a class="btn btn-gold" href="#ziel" data-goal="Mitarbeiter" data-cta="hero-mitarbeiter">Mitarbeiter gewinnen {ARROW}</a>'
-             f'<a class="btn" href="#ziel" data-goal="Kunden" data-cta="hero-kunden">Kunden gewinnen</a>')
+HERO_BTNS = (f'<a class="btn btn-gold" href="/pflege" data-cta="hero-pflege">Für Pflegebetriebe {ARROW}</a>'
+             f'<a class="btn" href="/handwerk-mitarbeiter" data-cta="hero-handwerk">Für Handwerksbetriebe</a>')
 
 
 def video_section():
@@ -236,28 +249,21 @@ def usp():
 
 
 def choose():
-    def ticks(t):
-        return ''.join(f'<li>{e(i)}</li>' for i in t)
+    def card(num, name, text, ticks, ma, ka):
+        return (f'<article class="panel" data-r><span class="num">{num}</span><h3>{name}</h3><p>{text}</p>'
+                f'<ul class="ticks">{lis(ticks)}</ul>'
+                f'<div class="btns"><a class="btn btn-gold" href="/{ma}" data-cta="panel-{ma}">Mitarbeiter gewinnen {ARROW}</a>'
+                f'<a class="btn" href="/{ka}" data-cta="panel-{ka}">{"Patienten gewinnen" if ka == "pflege-patienten" else "Kunden gewinnen"}</a></div></article>')
     return f'''<section class="section" id="ziel"><div class="container">
-<div class="choose-head"><span class="eyebrow" data-r>Auswahl des Ziels</span>
-<h2 class="h2" data-r>Wen möchten Sie gewinnen?</h2>
-<p class="lead" data-r>Sie wählen das wichtigste Ziel. Wir bauen den vollständigen Weg bis zum Gespräch.</p></div>
-<div class="seg" role="tablist" aria-label="Ziel wählen"><button type="button" role="tab" data-p="p-mit" aria-selected="true">Mitarbeiter</button><button type="button" role="tab" data-p="p-kun" aria-selected="false">Kunden</button></div>
-<div class="choose">
-<article class="panel" id="p-mit" data-r><span class="num">01</span><h3>Mitarbeiter gewinnen</h3>
-<p><strong>Mehr Gespräche mit passenden Fachkräften aus Ihrer Region.</strong> Wir zeigen, warum es sich lohnt, bei Ihnen zu arbeiten, erreichen geeignete Menschen und machen den ersten Kontakt so einfach wie möglich.</p>
-<ul class="ticks">{ticks(TICKS_MIT)}</ul>
-<a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="panel-mitarbeiter">Mitarbeiter gewinnen {ARROW}</a>
-<p class="micro">Branchen: <a class="gold" href="/pflege">Pflege</a> · <a class="gold" href="/handwerk-mitarbeiter">Handwerk</a></p></article>
-<article class="panel" id="p-kun" data-r><span class="num">02</span><h3>Kunden gewinnen</h3>
-<p><strong>Mehr passende Anfragen für die Aufträge, die Sie wirklich möchten.</strong> Wir machen Ihr Angebot verständlich, bringen es vor die richtigen Menschen und begleiten Interessenten bis zur konkreten Anfrage.</p>
-<ul class="ticks">{ticks(TICKS_KUN)}</ul>
-<a class="btn btn-gold" href="#analyse" data-goal="Kunden" data-cta="panel-kunden">Kunden gewinnen {ARROW}</a>
-<p class="micro">Branchen: <a class="gold" href="/pflege-patienten">Pflege (Patienten)</a> · <a class="gold" href="/handwerk-kunden">Handwerk</a></p></article>
+<div class="choose-head"><span class="eyebrow" data-r>Ihre Branche</span>
+<h2 class="h2" data-r>Für wen arbeiten <span class="gold it">Sie?</span></h2>
+<p class="lead" data-r>Wählen Sie Ihre Branche. Dort entscheiden Sie, ob Sie Mitarbeiter oder Kunden gewinnen möchten – wir bauen den vollständigen Weg bis zum Gespräch.</p></div>
+<div class="choose bran">
+{card('01', 'Pflegebetriebe', '<strong>Pflegekräfte finden. Patienten und Angehörige erreichen.</strong> Für ambulante Dienste, Tagespflege und stationäre Einrichtungen.', ['Arbeitgeberauftritt, der Pflegekräfte überzeugt', 'einfache Bewerbung – auf Wunsch ohne Lebenslauf', 'Anfragen von Patienten und Angehörigen'], 'pflege', 'pflege-patienten')}
+{card('02', 'Handwerksbetriebe', '<strong>Fachkräfte finden. Passende Aufträge gewinnen.</strong> Für Betriebe, die Mitarbeiter suchen oder mehr Anfragen aus der Region brauchen.', ['Arbeitgeberauftritt, der Fachkräfte überzeugt', 'klare Anfragewege für Ihre Leistungen', 'automatisches Erfassen und Nachfassen'], 'handwerk-mitarbeiter', 'handwerk-kunden')}
 </div>
 <p class="both" data-r><b>Sie benötigen beides?</b> Wir beginnen mit Ihrem größten Engpass und bauen den zweiten Weg anschließend gezielt auf.</p>
 </div></section>'''
-
 
 
 DEMO = {
@@ -489,11 +495,14 @@ def branch(slug, c):
     if slug == 'pflege':
         body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
+    _, ma, _la, ka, _lb = BRANCH_NAV[slug]
+    ot, ol = (ka, _lb) if slug == ma else (ma, _la)
+    other = f'<p class="micro" style="margin-top:18px">Stattdessen: <a class="gold" href="/{ot}">{ol} →</a></p>'
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
-<div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
+<div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
     body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
-    return h + nav(False, c['theme']) + body + footer()
+    return h + nav(False, c['theme'], slug=slug) + body + footer()
 
 
 def outbound():
@@ -517,7 +526,7 @@ def outbound():
 </div></section></div></div>'''
     body += about().replace('id="raphael"', 'id="raphael"') + results(list_=False) + final()
     body = body.replace('<div id="ob-body">', '<div id="ob-body" data-ob>')
-    return h + nav(False).replace('data-pick="p-mit"', '').replace('href="/#ziel"', 'href="/#ziel"') + body + footer()
+    return h + nav(False) + body + footer()
 
 
 def legal_page(key):
