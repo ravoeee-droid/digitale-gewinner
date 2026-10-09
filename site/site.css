@@ -833,3 +833,6 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .st-nav{display:flex;gap:10px;margin-top:26px}.st-nav .btn{min-height:50px;width:56px;padding:0;font-size:1.2rem}
 @media (max-width:860px){.st-panel{grid-template-columns:1fr}.cr{max-width:380px;margin-inline:auto}}
 @media (prefers-reduced-motion:reduce){.st-panel:not([hidden]){animation:none}}
+
+.ad-in img.cr-img{aspect-ratio:4/5;object-fit:cover}
+.ad-in:has(.cr-img) .ad-f{display:none}

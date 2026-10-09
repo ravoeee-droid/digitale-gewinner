@@ -506,6 +506,7 @@ GOOGLE_DATA = {
 
 def meta_manager(slug):
     d = META_DATA[slug]
+    ad_visual = ('<img src="/assets/images/creatives/stufe-1.webp" alt="" width="760" height="950" loading="lazy" decoding="async" class="cr-img">' if slug == 'pflege' else f'<img src="/assets/images/photos/{d["img"]}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">')
     rows = ''
     for i, (n, st, bud, _v, res, cpr, spent, reach, imp) in enumerate(d['rows']):
         act = st == 'Aktiv'
@@ -527,7 +528,7 @@ def meta_manager(slug):
 <div class="mg-tools"><span class="btn-b">{ico('plus')}Erstellen</span><span class="btn-o">Bearbeiten</span><span class="btn-o">Duplizieren</span><span class="btn-o dt">Letzte 30 Tage{ico('chev')}</span></div>
 <div class="mg-mid"><div class="mg-chart"><div class="mg-cl"><b>Bewerbungen pro Tag</b><small>Verlauf · Beispieldarstellung</small></div>{chart([18, 26, 22, 38, 34, 52, 46, 61, 58, 74, 70, 88], 'meta')}</div>
 <div class="ui ui-ad ad-in" aria-hidden="true"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>
-<img src="/assets/images/photos/{d['img']}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">
+{ad_visual}
 <div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div></div>
 </div>
 <div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Ergebnisse</th><th>Kosten pro Ergebnis</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
@@ -605,7 +606,7 @@ def stages():
 <h2 class="h2" id="stg-h" data-r>Keine „Wir suchen dich"-Anzeige. <span class="gold it">Sieben Stufen, die aufeinander aufbauen.</span></h2>
 <p class="lead" data-r>Nicht jede gute Pflegekraft will sofort wechseln. Deshalb führen wir sie Schritt für Schritt: vom Wiedererkennen bis zum ersten, unverbindlichen Kennenlernen.</p></div>
 <div class="st-box" data-r data-stages><div class="st-tabs" role="tablist" aria-label="Sieben Stufen der Kampagne">{tabs}</div>{panels}</div>
-<p class="micro" data-r>Beispielkampagne (Konzept) für ein fiktives Pflegehaus. Texte und Motive werden für Ihr Haus individuell entwickelt. Keine Garantie auf Bewerbungen.</p>
+<p class="micro" data-r>Beispielkampagne für das Pflegehaus Kögler. Texte und Motive werden für Ihr Haus individuell entwickelt. Keine Garantie auf Bewerbungen.</p>
 <div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="stufen-analyse">Diesen Weg für unser Haus besprechen {ARROW}</a></div>
 </div></section>'''
 
