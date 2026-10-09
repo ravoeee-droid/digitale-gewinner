@@ -257,9 +257,10 @@ def partner_strip():
     m = brand_img('meta-partner', 'Meta Business Partner')
     gi = g or '<span class="pt-txt">Google Partner</span>'
     mi = m or '<span class="pt-txt">Meta Business Partner</span>'
+    t = brand_img('tuev-zertifikat', 'TÜV-Zertifikat')  # nur mit echter, freigegebener Datei; kein Text-Ersatz
     return f'''<section class="partners" aria-label="Partnerstatus"><div class="container pt-in">
 <span class="pt-l">Zertifizierter Partner für Werbung auf</span>
-<div class="pt-i">{gi}{mi}</div></div></section>'''
+<div class="pt-i">{gi}{mi}{t}</div></div></section>'''
 
 
 def problem():
