@@ -486,12 +486,12 @@ def branch(slug, c):
     h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
     body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'])
+    if slug.startswith('pflege'):
+        body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
-    if slug == 'pflege':
-        body += video_section()
     body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme']) + body + footer()
 
