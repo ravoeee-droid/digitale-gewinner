@@ -633,6 +633,26 @@ def stages():
 </div></section>'''
 
 
+HW_CREATIVES = [
+    ('hw-1', 'Nutzen als Nachrichten', 'Sechs ungelesene Nachrichten: Gehalt, Arbeitszeiten, Fahrzeug, Arbeitgeber, Entwicklung. Neugier und Nutzenstapel in einem Bild.', 'Anlagenmechaniker SHK'),
+    ('hw-2', 'Einstiegshürde senken', '„Ausbildung egal! Hauptsache technisch." Ein Gesicht aus dem Team und eine klare Botschaft: Du darfst dich bewerben.', 'Mischmeister'),
+    ('hw-3', 'Muster durchbrechen', 'Südsee-Strand statt Stellenanzeige. Der Humor stoppt den Daumen, die Stelle steht trotzdem klar im Bild.', 'Anlagenmechaniker:in'),
+    ('hw-4', 'Direkt ansprechen', '„Ist Spannung dein Ding?" Eine Frage, die genau die Zielgruppe trifft, mit echtem Arbeitsplatz im Hintergrund.', 'Elektromonteur:in'),
+]
+
+
+def hw_creatives():
+    cards = ''.join(f'<figure class="hwc" data-r><img src="/assets/images/creatives/{i}.webp" alt="Beispiel-Anzeige: {e(t)} ({e(r)})" width="720" height="720" loading="lazy" decoding="async"><figcaption><b>{e(t)}</b><span>{e(d)}</span></figcaption></figure>' for i, t, d, r in HW_CREATIVES)
+    return f'''<section class="section stg" id="creatives" aria-labelledby="hwc-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Anzeigen, die Handwerker stoppen</span>
+<h2 class="h2" id="hwc-h" data-r>Keine Standard-Stellenanzeige. <span class="gold it">Motive mit Haltung.</span></h2>
+<p class="lead" data-r>Gute Fachkräfte scrollen an austauschbaren Anzeigen vorbei. Deshalb entwickeln wir Motive, die auffallen, Ihren Betrieb zeigen und den Einstieg leicht machen.</p></div>
+<div class="hwc-grid">{cards}</div>
+<p class="micro" data-r>Beispiele aus Handwerks-Kampagnen. Motive und Logos gehören den jeweiligen Betrieben. Keine Garantie auf Bewerbungen.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="creatives-analyse">Motive für meinen Betrieb besprechen {ARROW}</a></div>
+</div></section>'''
+
+
 def offer():
     t = ''.join(f'<li>{e(i)}</li>' for i in OFFER)
     return f'''<section class="section offer" id="paket"><div class="container offer-grid">
@@ -762,6 +782,8 @@ def branch(slug, c):
     body += meta_manager(slug) if slug in META_DATA else google_search(slug)
     if slug == 'pflege':
         body += stages()
+    if slug == 'handwerk-mitarbeiter':
+        body += hw_creatives()
     if slug == 'pflege':
         body += case_pflege()
     body += live()
