@@ -653,6 +653,21 @@ def hw_creatives():
 </div></section>'''
 
 
+PFLEGE_REFS = [('pflegehaus-koegler', 'Pflegehaus Kögler'), ('asklepios-parchim', 'Asklepios Klinik Parchim'), ('awo-pflege', 'AWO Pflege gGmbH'), ('caritas', 'Caritas'),
+               ('diakonie', 'Diakonie'), ('drk', 'Deutsches Rotes Kreuz'), ('asb', 'Arbeiter-Samariter-Bund'), ('korian', 'Korian'), ('bdh', 'BDH Bundesverband Rehabilitation'),
+               ('pflege-service-knoblauch', 'Pflege Service Knoblauch'), ('cura-tagespflege', 'CURA Tagespflege Hahn-Lehmden'), ('gbs-seniorenhilfe', 'GBS Seniorenhilfe'),
+               ('linimed', 'linimed'), ('die-bruecke', 'Die Brücke')]
+
+
+def refs_pflege():
+    def tile(n, a, hidden=False):
+        return f'<li{" aria-hidden=\"true\"" if hidden else ""}><img src="/assets/images/referenzen/{n}.webp" alt="{"" if hidden else e(a)}" loading="lazy" decoding="async" height="64"></li>'
+    one = ''.join(tile(n, a) for n, a in PFLEGE_REFS)
+    two = ''.join(tile(n, a, True) for n, a in PFLEGE_REFS)
+    return f'''<section class="refs" aria-label="Pflegeeinrichtungen und Träger"><div class="container"><p class="refs-l" data-r>Pflegeeinrichtungen und Träger, mit denen Raphael Hermann zusammengearbeitet hat</p></div>
+<div class="refs-w" data-anim><ul class="refs-t">{one}{two}</ul></div></section>'''
+
+
 def offer():
     t = ''.join(f'<li>{e(i)}</li>' for i in OFFER)
     return f'''<section class="section offer" id="paket"><div class="container offer-grid">
@@ -770,6 +785,8 @@ def branch(slug, c):
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
     body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'], kunden=c['goal'] == 'Kunden')
     body += partner_strip()
+    if slug.startswith('pflege'):
+        body += refs_pflege()
     if slug == 'pflege':
         body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])

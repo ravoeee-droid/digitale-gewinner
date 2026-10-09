@@ -877,3 +877,15 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .hwc figcaption b{font-size:1.02rem}.hwc figcaption span{color:var(--text2);font-size:.88rem}
 @media (max-width:1020px){.hwc-grid{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.hwc-grid{grid-template-columns:1fr}}
+
+/* Referenz-Logos (Laufband) */
+.refs{padding:34px 0 10px}
+.refs-l{margin:0 0 18px;text-align:center;color:var(--muted);font-size:.84rem;font-weight:600}
+.refs-w{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.refs-t{display:flex;gap:18px;list-style:none;margin:0;padding:6px 0;width:max-content;animation:refsmove 60s linear infinite}
+.refs-w:hover .refs-t{animation-play-state:paused}
+.refs-t li{flex:0 0 auto;width:168px;height:84px;background:#fff;border-radius:14px;display:grid;place-items:center;padding:12px 18px;box-shadow:0 8px 26px rgba(0,0,0,.12);border:1px solid rgba(0,0,0,.05)}
+.refs-t img{max-height:56px;max-width:100%;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.85;transition:filter .3s,opacity .3s}
+.refs-t li:hover img{filter:none;opacity:1}
+@keyframes refsmove{to{transform:translateX(calc(-50% - 9px))}}
+@media (prefers-reduced-motion:reduce){.refs-t{animation:none;flex-wrap:wrap;width:auto;justify-content:center}.refs-t li[aria-hidden]{display:none}.refs-w{-webkit-mask-image:none;mask-image:none}}

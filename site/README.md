@@ -19,3 +19,5 @@ Quelle der neuen Seiten: `build_site.py` (Copy + Markup), `site.css`, `site.js`,
 - **Kennzahlen/Fall:** Fall „2.000 € / 43 / 3" und Beispielwerte sind gekennzeichnet; Beispieldaten in den Dashboards sind keine Ergebnisse.
 - **Preise (bestätigt):** Die ersten 10 Kunden 4.900 € netto, danach 14.900 € netto (`offer()`), zuzüglich Werbebudget und USt.
 - **Build:** `rjsmin` (pip) minimiert `site.js`, falls installiert; CSS wird immer minimiert. Cache-Header in `netlify.toml`.
+- **Referenz-Logos (`/pflege`, `/pflege-patienten`):** 14 Pflege-Logos unter `assets/images/referenzen/` (Quelle: von Raphael bereitgestelltes Paket `pflegepartner.zip`). Vor Veröffentlichung schriftliche Freigabe jedes Trägers sicherstellen (v. a. AWO, Caritas, Diakonie, DRK, ASB, Asklepios, Korian). Formulierung bewusst: „… mit denen Raphael Hermann zusammengearbeitet hat".
+- **Handwerk-Creatives (`/handwerk-mitarbeiter`):** 4 Motive von Betrieben (Neubeiger, TB, Bochtler, BHK) – Freigabe der Betriebe für Logos/Motive prüfen.
