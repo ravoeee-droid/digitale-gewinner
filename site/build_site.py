@@ -444,6 +444,72 @@ def check(goal=''):
 </div></section>'''
 
 
+META_DATA = {
+    'pflege': dict(img='pflege-team', head='Pflege mit Zeit für Menschen', sub='Jetzt in Ihrer Region bewerben', rows=['Pflegefachkraft (m/w/d) · Region', 'Pflegehelfer (m/w/d) · Region', 'Karriere-Video · Team'], real=True, who='Pflegekräfte'),
+    'handwerk-mitarbeiter': dict(img='hw-elektriker', head='Elektroniker (m/w/d) gesucht', sub='Bei uns in Ihrer Region', rows=['Elektroniker (m/w/d) · Region', 'Dachdecker-Geselle · Region', 'Karriere-Video · Betrieb'], real=False, who='Fachkräfte'),
+}
+GOOGLE_DATA = {
+    'pflege-patienten': dict(q='Tagespflege in Ihrer Stadt', ad='Tagespflege – wir beraten Sie persönlich', desc='Unverbindlich anfragen. Wir melden uns zeitnah bei Ihnen.', links=['Beratung anfragen', 'Leistungen', 'So läuft es ab'], req='Anfrage: Tagespflege', who='Patienten und Angehörige'),
+    'handwerk-kunden': dict(q='Heizung erneuern in Ihrer Stadt', ad='Heizungstausch vom Fachbetrieb aus Ihrer Region', desc='Jetzt unverbindlich anfragen und Beratungstermin vereinbaren.', links=['Angebot anfragen', 'Leistungen', 'Referenzen'], req='Anfrage: Heizungstausch', who='Kunden'),
+}
+
+
+def meta_manager(slug):
+    d = META_DATA[slug]
+    if d['real']:
+        tiles = [('Werbebudget', '2.000 €'), ('Bewerbungen', '43'), ('Kosten pro Bewerbung', '46 €'), ('Einstellungen', '3')]
+        tiles_h = ''.join(f'<div class="mt"><small>{a}</small><b>{b}</b></div>' for a, b in tiles)
+        note = 'Die Kennzahlen stammen aus dem Fall weiter unten (eine Pflegeeinrichtung, Einzelergebnis).'
+    else:
+        tiles_h = ''.join(f'<div class="mt"><small>{a}</small><b class="sk"></b></div>' for a in ['Werbebudget', 'Bewerbungen', 'Kosten pro Bewerbung', 'Gespräche'])
+        note = 'Beispielansicht – die Werte legen wir gemeinsam nach Region, Zielgruppe und Wettbewerb fest.'
+    rows = ''.join(f'<tr style="--i:{i}"><td><span class="tg on" aria-hidden="true"></span></td><th scope="row">{e(r)}</th><td>Aktiv</td><td><span class="bar" style="--w:{w}%"></span></td></tr>' for i, (r, w) in enumerate(zip(d['rows'], (86, 64, 41))))
+    return f'''<section class="section toolsec" id="werbung" aria-labelledby="meta-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Ihre Anzeigen · Meta</span>
+<h2 class="h2" id="meta-h" data-r>Ihre Kampagne läuft dort, wo {d['who']} <span class="gold it">täglich unterwegs sind.</span></h2>
+<p class="lead" data-r>Wir richten Ihre Kampagne im Meta Werbeanzeigenmanager ein, steuern sie nach Region und Zielgruppe und werten sie laufend aus. Das Werbebudget zahlen Sie direkt an Meta.</p></div>
+<div class="tool-grid" data-r>
+<div class="ui ui-meta" role="img" aria-label="Beispielansicht eines Werbeanzeigenmanagers mit Kampagnen und Kennzahlen">
+<div class="ui-bar"><i></i><i></i><i></i><span>Werbeanzeigenmanager · Beispielansicht</span></div>
+<div class="ui-tabs"><b class="on">Kampagnen</b><b>Anzeigengruppen</b><b>Anzeigen</b><em>Letzte 30 Tage</em></div>
+<div class="mt-row">{tiles_h}</div>
+<table class="mt-t"><thead><tr><th></th><th>Kampagne</th><th>Status</th><th>Bewerbungen</th></tr></thead><tbody>{rows}</tbody></table>
+</div>
+<div class="ui ui-ad" role="img" aria-label="Beispiel einer Anzeige"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>
+<img src="/assets/images/photos/{d['img']}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">
+<div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div>
+<div class="ad-react" aria-hidden="true"><span>Gefällt mir</span><span>Neue Bewerbung</span></div></div>
+</div>
+<ul class="tool-pts" data-r><li>Zielgruppe nach Region und Interessen</li><li>Anzeigen mit Bild oder Video</li><li>Einfacher Kontakt – auf Wunsch ohne Lebenslauf</li><li>Laufende Auswertung und Optimierung</li></ul>
+<p class="micro" data-r>{note} Keine Garantie auf Bewerbungen oder Einstellungen.</p>
+</div></section>'''
+
+
+def google_search(slug):
+    d = GOOGLE_DATA[slug]
+    links = ''.join(f'<span>{e(l)}</span>' for l in d['links'])
+    return f'''<section class="section toolsec" id="werbung" aria-labelledby="g-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Gefunden werden · Google</span>
+<h2 class="h2" id="g-h" data-r>Wer sucht, soll Sie finden – <span class="gold it">und direkt anfragen.</span></h2>
+<p class="lead" data-r>{d['who']} suchen bei Google. Wir sorgen dafür, dass Ihr Angebot dort überzeugend erscheint, mit Anzeige, gepflegtem Profil und einem einfachen Weg zur Anfrage.</p></div>
+<div class="tool-grid one" data-r>
+<div class="ui ui-g" role="img" aria-label="Beispielansicht einer Google-Suche mit Anzeige, Karteneintrag und eingehender Anfrage">
+<div class="ui-bar"><i></i><i></i><i></i><span>Suche · Beispielansicht</span></div>
+<div class="g-search"><span class="gq"><em>{e(d['q'])}</em></span></div>
+<div class="g-res">
+<div class="g-ad r1"><small><b>Anzeige</b> · ihr-betrieb.de</small><h4>{e(d['ad'])}</h4><p>{e(d['desc'])}</p><div class="g-links">{links}</div></div>
+<div class="g-map r2"><div class="map" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="p3"></i></div>
+<ul><li class="me"><b>Ihr Betrieb</b><span class="st">★★★★★</span><small>Geöffnet · in Ihrer Nähe</small></li><li><b class="sk"></b></li><li><b class="sk"></b></li></ul></div>
+<div class="g-org r3"><small>ihr-betrieb.de</small><h4>Ihr Betrieb – Leistungen und Beratung</h4><b class="sk"></b></div>
+</div>
+<div class="g-toast" aria-hidden="true"><span class="dot"></span><span><b>Neue Anfrage</b><small>{e(d['req'])}</small></span></div>
+</div>
+</div>
+<ul class="tool-pts" data-r><li>Anzeigen bei der Suche in Ihrer Region</li><li>Gepflegtes Google-Profil mit Bewertungen</li><li>Einfacher Anfrageweg mit den wichtigsten Angaben</li><li>Automatisches Bestätigen und Nachfassen</li></ul>
+<p class="micro" data-r>Schematische Beispielansicht mit Platzhalter-Inhalten. Das Werbebudget zahlen Sie direkt an Google. Keine Garantie auf Platzierungen oder Anfragen.</p>
+</div></section>'''
+
+
 def offer():
     t = ''.join(f'<li>{e(i)}</li>' for i in OFFER)
     return f'''<section class="section offer" id="paket"><div class="container offer-grid">
@@ -568,6 +634,7 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
+    body += meta_manager(slug) if slug in META_DATA else google_search(slug)
     if slug == 'pflege':
         body += case_pflege()
     body += live()
