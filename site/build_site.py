@@ -457,7 +457,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += video_section() + problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
+    body += problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -486,7 +486,7 @@ def branch(slug, c):
     h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
     body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'])
-    if slug.startswith('pflege'):
+    if slug == 'pflege':
         body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
     body += f'''<section class="section" id="ziel"><div class="container auto">
