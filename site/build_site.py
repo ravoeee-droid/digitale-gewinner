@@ -188,9 +188,7 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', l
 <div><b data-count="500" data-suf="+">500+</b>Fachkräfte gewonnen</div>
 '''
     prf = f'''<div class="proof" data-r>
-<div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
 {prf_mid}<div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
-<div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b>bei Google</div>
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
 </div>''' if proof else ''
     cls = ('wide ' if wide else '') + ('has-vis' if visual else '')
