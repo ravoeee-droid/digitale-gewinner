@@ -180,7 +180,7 @@ VIS_HW_MIT = [('Elektroniker (m/w/d)', '8 km entfernt', 4), ('Anlagenmechaniker 
 VIS_HW_KUN = [('Anfrage: Heizungstausch', '6 km entfernt', 4), ('Anfrage: Dachsanierung', '9 km entfernt', 3), ('Anfrage: Badumbau', '4 km entfernt', 2), ('Anfrage: Photovoltaik', '13 km entfernt', 1)]
 
 
-def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop='', kunden=False):
+def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop='', kunden=False, pro=False, after=''):
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
     prf_mid = '''<div><b>Tag für Tag</b>neue Anfragen im Blick</div>
 <div><b>Jede Anfrage</b>wird erfasst und nachgefasst</div>
@@ -192,18 +192,33 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', l
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
 </div>''' if proof else ''
     cls = ('wide ' if wide else '') + ('has-vis' if visual else '')
-    return f'''<main id="main"><section class="hero" id="top">{loop_html(loop)}<canvas id="net" aria-hidden="true"></canvas>
+    return f'''<main id="main"><section class="hero{' pro' if pro else ''}" id="top">{loop_html(loop)}<canvas id="net" aria-hidden="true"></canvas>
 <div class="container"><div class="hero-grid {'with-vis' if visual else ''}"><div class="hero-main"><span class="eyebrow" data-r>{eyebrow}</span>
 <h1 class="{cls}">{ln}</h1>
 <p class="lead" data-r>{lead}</p>
-<p class="punch" data-r>{punch}</p>
-<div class="btns" data-r>{btns}</div></div>
+{('<p class="punch" data-r>' + punch + '</p>') if punch else ''}
+<div class="btns" data-r>{btns}</div>{after}</div>
 {('<div class="hero-vis" data-r>' + visual + '</div>') if visual else ''}</div>
 {prf}</div><span class="scroll-hint" aria-hidden="true"></span></section>'''
 
 
 HERO_BTNS = (f'<a class="btn btn-gold" href="/pflege" data-cta="hero-pflege">Für Pflegebetriebe {ARROW}</a>'
              f'<a class="btn" href="/handwerk-mitarbeiter" data-cta="hero-handwerk">Für Handwerksbetriebe</a>')
+
+
+def adstack():
+    return '''<div class="adstack" aria-hidden="true">
+<div class="ac ac1"><img src="/assets/images/creatives/stufe-3.webp" alt="" width="760" height="950" decoding="async"></div>
+<div class="ac ac3"><img src="/assets/images/creatives/stufe-5.webp" alt="" width="760" height="950" decoding="async"></div>
+<div class="ac ac2"><img src="/assets/images/creatives/stufe-1.webp" alt="" width="760" height="950" fetchpriority="high" decoding="async"></div>
+<div class="chip c1"><i></i><span><b>Neue Bewerbung</b><small>Pflegefachkraft · 8 km entfernt</small></span></div>
+<div class="chip c2"><i></i><span><b>Termin vorbereitet</b><small>Donnerstag, 10:00 Uhr</small></span></div>
+<span class="ad-note">Beispielansicht</span></div>'''
+
+
+def hero_case():
+    return (f'<div class="hero-case" data-r><a href="#fall" data-cta="hero-fall"><span class="hc-n"><b>2.000 €</b> Budget</span><i aria-hidden="true">→</i><span class="hc-n"><b>43</b> Bewerbungen</span><i aria-hidden="true">→</i><span class="hc-n"><b>3</b> Einstellungen</span><em>Ein Fall aus der Praxis ↓</em></a>'
+            '<span class="hc-who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="40" height="40" loading="lazy"><span>persönlich durch <strong>Raphael</strong></span></span></div>')
 
 
 def video_section():
@@ -783,6 +798,11 @@ def branch(slug, c):
     h = head(c['title'], c['lead'], '/' + slug, extra=schema(False) + f'<link rel="preload" as="image" href="/assets/images/loops/{c["loop"]}.webp" fetchpriority="high">')
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
     body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'], kunden=c['goal'] == 'Kunden')
+    if slug == 'pflege':
+        body = hero('Für Pflegebetriebe', ['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
+                    'Wir machen Ihr Haus als Arbeitgeber sichtbar – und führen passende Pflegekräfte Schritt für Schritt bis zum Gespräch.', '',
+                    f'<a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="branche-pflege"><span class="b-long">Mitarbeitergewinnung prüfen lassen</span><span class="b-short">Analyse anfragen</span> {ARROW}</a>',
+                    proof=False, wide=True, visual=adstack(), loop=c['loop'], pro=True, after=hero_case())
     body += partner_strip()
     if slug.startswith('pflege'):
         body += refs_pflege()
@@ -804,7 +824,7 @@ def branch(slug, c):
         body += case_pflege()
     body += live()
     body += photo_band(*c['band']) + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + check() + faq() + final(c['goal'])
-    return h + nav(False, c['theme'], slug=slug) + body + footer()
+    return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
 def outbound():

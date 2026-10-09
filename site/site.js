@@ -236,6 +236,17 @@
   initOutbound();
   if (!hasGsap) { finishForm(); return; }
 
+  /* ===== Hero: leichte Maus-Parallaxe für den Anzeigen-Stapel ===== */
+  var stack = $('.adstack');
+  if (stack && !reduce && window.matchMedia('(min-width:1021px)').matches) {
+    var hero = stack.closest('.hero');
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      stack.style.setProperty('--px', ((e.clientX - r.left) / r.width * 2 - 1).toFixed(3));
+      stack.style.setProperty('--py', ((e.clientY - r.top) / r.height * 2 - 1).toFixed(3));
+    });
+  }
+
   /* ===== Animationen nur im Sichtbereich ===== */
   if ('IntersectionObserver' in window) {
     var ao = new IntersectionObserver(function (es) { es.forEach(function (e2) { e2.target.classList.toggle('run', e2.isIntersecting); }); }, { rootMargin: '80px' });
