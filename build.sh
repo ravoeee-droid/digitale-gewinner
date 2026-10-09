@@ -56,6 +56,10 @@ if not repo_images.exists():
     raise SystemExit('Missing uploaded assets/images directory')
 shutil.copytree(repo_images, out / 'assets/images', dirs_exist_ok=True)
 
+repo_partners = root / 'assets/partners'
+if repo_partners.exists():
+    shutil.copytree(repo_partners, out / 'assets/partners', dirs_exist_ok=True)
+
 repo_video = root / 'assets/video'
 if repo_video.exists():
     shutil.copytree(repo_video, out / 'assets/video', dirs_exist_ok=True)

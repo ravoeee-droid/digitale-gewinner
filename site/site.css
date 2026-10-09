@@ -862,3 +862,8 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 @keyframes heroin{from{opacity:0;transform:translateY(24px)}}
 @keyframes lnin{from{transform:translateY(105%)}}
 @media (prefers-reduced-motion:reduce){.js .hero [data-r],.js .hero .ln>span{animation:none}}
+
+.pt-i img.bimg{height:84px;width:auto;border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.28);border:1px solid rgba(var(--ac-rgb),.25);transition:transform .35s var(--ease)}
+.pt-i img.bimg:hover{transform:translateY(-3px)}
+.partners{padding:26px 0}
+@media (max-width:640px){.pt-i img.bimg{height:68px}}

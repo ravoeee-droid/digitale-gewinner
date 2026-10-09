@@ -248,7 +248,7 @@ def brand_img(name, alt, cls='bimg'):
     """Offizielle Logo-/Badge-Dateien (aus dem Partnerportal) liegen unter assets/partners/. Nur wenn vorhanden, werden sie eingebunden."""
     for ext in ('svg', 'webp', 'png'):
         if (HERE.parent / 'assets' / 'partners' / f'{name}.{ext}').exists():
-            return f'<img class="{cls}" src="/assets/partners/{name}.{ext}" alt="{e(alt)}" height="40" loading="lazy" decoding="async">'
+            return f'<img class="{cls}" src="/assets/partners/{name}.{ext}" alt="{e(alt)}" width="750" height="360" loading="lazy" decoding="async">'
     return ''
 
 
