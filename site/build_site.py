@@ -527,6 +527,16 @@ def compare():
 </div></section>'''
 
 
+def recruiting_check(kind='pflege'):
+    return f'''<section class="section rc-sec" id="recruiting-check" aria-labelledby="rc-h"><div class="container">
+<div class="rc-head" data-r><span class="eyebrow">Recruiting-Check · 2 Minuten</span>
+<h2 class="h2" id="rc-h">Wie weit kommt ein Bewerber <span class="gold it">bei Ihnen?</span></h2>
+<p class="lead">Spielen Sie den Weg durch 8 Stationen. Am Ende sehen Sie Ihren Recruiting-Score und die drei größten Hebel.</p></div>
+<div class="rc" id="rc" data-rc data-kind="{kind}" data-r><noscript><p class="rc-ns">Für den Recruiting-Check wird JavaScript benötigt. Alternativ besprechen wir Ihre Situation direkt: <a href="https://calendar.app.google/jZqwYfHqfjufkFmx5">Termin wählen</a>.</p></noscript></div>
+<p class="micro rc-fine" data-r>Erste Orientierung auf Basis Ihrer Selbsteinschätzung, keine Analyse. Ihre Antworten werden nur an Raphael gesendet, wenn Sie das Ergebnis aktiv senden.</p>
+</div></section>'''
+
+
 def check(goal=''):
     return f'''<section class="section chk" id="check" aria-labelledby="chk-h"><div class="container">
 <div class="live-head"><span class="eyebrow" data-r>30-Sekunden-Check</span>
@@ -893,7 +903,7 @@ def branch(slug, c):
     if c.get('cases'):
         body += cases_section(c['cases'])
     body += live()
-    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + check() + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + final(c['goal'])
     return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
@@ -919,6 +929,12 @@ def outbound():
     body += about().replace('id="raphael"', 'id="raphael"') + results(list_=False) + final()
     body = body.replace('<div id="ob-body">', '<div id="ob-body" data-ob>')
     return h + nav(False) + body + footer()
+
+
+def check_page():
+    h = head('Recruiting-Check für Pflegebetriebe – Digitale Gewinner', 'In 2 Minuten sehen, wo Sie heute Bewerber verlieren: 8 Stationen, Recruiting-Score und die drei größten Hebel.', '/recruiting-check')
+    body = '<main id="main" class="theme-pflege-host"><div style="padding-top:90px">' + recruiting_check('pflege') + '</div>' + final('Mitarbeiter')
+    return h + nav(False, 'theme-pflege') + body + footer()
 
 
 def legal_page(key):
@@ -953,7 +969,7 @@ def minify_assets():
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    pages = {'index.html': home(), 'analyse.html': outbound()}
+    pages = {'index.html': home(), 'analyse.html': outbound(), 'recruiting-check.html': check_page()}
     for slug, c in BRANCH.items():
         pages[f'{slug}.html'] = branch(slug, c)
     for name, content in pages.items():
