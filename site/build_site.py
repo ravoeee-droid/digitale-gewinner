@@ -612,7 +612,7 @@ def meta_manager(slug):
         rows += (f'<tr style="--i:{i}"><td><span class="ck"></span></td><td><span class="tg{" on" if act else ""}"></span></td>'
                  f'<th scope="row"><b>{e(n)}</b><small>Kampagne · Bewerbungen</small></th>'
                  f'<td><span class="dot {"g" if act else "x"}"></span>{"Aktiv" if act else "Entwurf"}</td><td>{bud}</td><td class="n">{res}</td><td class="n">{cpr}</td><td class="n">{spent}</td><td class="n hide-s">{reach}</td><td class="n hide-s">{imp}</td></tr>')
-    foot = (f'<tfoot><tr><td></td><td></td><th scope="row">Ergebnisse aus {len(d["rows"])} Kampagnen</th><td></td><td></td><td class="n">{d["tot"][1]}</td><td class="n">{d["tot"][2]}</td><td class="n">{d["tot"][0]}</td><td class="n hide-s"></td><td class="n hide-s"></td></tr></tfoot>')
+    foot = (f'<tfoot><tr><td></td><td></td><th scope="row">Gesamt aus {len(d["rows"])} Kampagnen</th><td></td><td></td><td class="n">{d["tot"][1]}</td><td class="n">{d["tot"][2]}</td><td class="n">{d["tot"][0]}</td><td class="n hide-s"></td><td class="n hide-s"></td></tr></tfoot>')
     note = ('Die Werte der aktiven Kampagne stammen aus dem Fall weiter unten (eine Pflegeeinrichtung, Einzelergebnis). Reichweite und Impressionen sind Beispielwerte.' if d['real']
             else 'Beispieldaten zur Veranschaulichung – keine echten Ergebnisse. Die tatsächlichen Werte hängen von Region, Zielgruppe und Wettbewerb ab.')
     return f'''<section class="section toolsec" id="werbung" aria-labelledby="meta-h"><div class="container">
@@ -630,7 +630,7 @@ def meta_manager(slug):
 {ad_visual}
 <div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div></div>
 </div>
-<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Ergebnisse</th><th>Kosten pro Ergebnis</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Bewerbungen</th><th>Kosten pro Bewerbung</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
 </div></div>
 </div>
 <ul class="tool-pts" data-r><li>Zielgruppe nach Region und Interessen</li><li>Anzeigen mit Bild oder Video</li><li>Einfacher Kontakt – auf Wunsch ohne Lebenslauf</li><li>Laufende Auswertung und Optimierung</li></ul>
