@@ -253,8 +253,8 @@ def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', l
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
     prf_mid = '''<div><b>Tag für Tag</b>neue Anfragen im Blick</div>
 <div><b>Jede Anfrage</b>wird erfasst und nachgefasst</div>
-''' if kunden else '''<div><b data-count="3000" data-suf="+">3.000+</b>Bewerbungen generiert</div>
-<div><b data-count="500" data-suf="+">500+</b>Fachkräfte gewonnen</div>
+''' if kunden else '''<div><b data-count="500" data-suf="+">500+</b>Bewerbungen generiert</div>
+<div><b data-count="50" data-suf="+">50+</b>Fachkräfte gewonnen</div>
 '''
     prf = f'''<div class="proof" data-r>
 {prf_mid}<div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
@@ -433,7 +433,7 @@ def campaign():
 
 def demo(key):
     d = DEMO[key]
-    proof_line = '' if key.endswith('kun') else ' · <strong class="gold">3.000+ Bewerbungen generiert · 500+ Fachkräfte gewonnen</strong>'
+    proof_line = '' if key.endswith('kun') else ' · <strong class="gold">500+ Bewerbungen generiert · 50+ Fachkräfte gewonnen</strong>'
     ads = ''
     for i, (img, h, s) in enumerate(d['ads']):
         ads += (f'<div class="ad ad{i}"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>'
@@ -489,7 +489,7 @@ def results(reviews=True, list_=True):
     top = f'''<div class="res-top"><div><span class="eyebrow" data-r>Ergebnisse statt Fachbegriffe</span>
 <h2 class="h2" data-r style="margin-bottom:0">Entscheidend ist, <span class="gold it">was bei Ihnen ankommt.</span></h2></div></div>
 <ul class="res-list" data-r>{lst}</ul>
-<div class="stats" data-r><div><b data-count="3000" data-suf="+">3.000+</b><span>Bewerbungen generiert</span></div><div><b data-count="500" data-suf="+">500+</b><span>Fachkräfte gewonnen</span></div><div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b><span>bei Google</span></div></div>
+<div class="stats" data-r><div><b data-count="500" data-suf="+">500+</b><span>Bewerbungen generiert</span></div><div><b data-count="50" data-suf="+">50+</b><span>Fachkräfte gewonnen</span></div><div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b><span>bei Google</span></div></div>
 <p class="honest" data-r>Wir zeigen nur belegbare Ergebnisse – keine erfundenen Kennzahlen. Dokumentierte Fälle mit Ausgangslage, Weg, Ergebnis und Kundenzitat folgen.</p>''' if list_ else ''
     return f'''<section class="section" id="ergebnisse"><div class="container">{top}
 <div class="rev-head" data-r><div class="score"><span class="g" aria-hidden="true">G</span><div><b>5,0</b> <span class="stars" aria-hidden="true">★★★★★</span><br><small class="muted">9 Google-Rezensionen</small></div></div></div>
@@ -783,18 +783,26 @@ def about():
 </div></section>'''
 
 
-def raphael_kurz():
+def raphael_kurz(kind='pflege'):
+    heute = 'Pflege- und Handwerksbetriebe' if kind == 'handwerk' else 'Pflegebetriebe'
     return f'''<section class="section ra-sec" id="raphael-kurz" aria-labelledby="ra-h"><div class="container ra">
 <figure class="ra-photo" data-r><img src="/assets/images/raphael/raphael-hermann-buero.webp" alt="Raphael Hermann, Gründer von Digitale Gewinner, im Büro mit Kaffeetasse und Pflanze" width="800" height="1046" loading="lazy" decoding="async">
 <span class="ra-sticker">Ja, wirklich er.<small>Der antwortet auch selbst.</small></span></figure>
 <div class="ra-text"><span class="eyebrow" data-r>Wer hier antwortet</span>
 <h2 class="h2" id="ra-h" data-r>Hallo, ich bin Raphael. <span class="gold it">Ich hole Ihnen Bewerber. Den Kaffee holen Sie selbst.</span></h2>
-<p class="lead" data-r>Acht Jahre Recruiting-Werbung, über 3.000 Bewerbungen und kein Callcenter: Wenn Sie schreiben, antworte ich selbst.</p>
+<p class="lead" data-r>Eigentlich komme ich aus dem Onlineshop-Marketing. In die Pflege bin ich eher zufällig gerutscht. Und geblieben.</p>
+<ol class="ra-story" data-r>
+<li><b>Vorher</b><span>Ich habe Onlineshops gebrandet und Marketingkampagnen optimiert, die Millionenumsätze gemacht haben.</span></li>
+<li><b>Der Auslöser: meine Mutter</b><span>Sie arbeitet in der Pflege und musste ständig einspringen. Freie Wochenenden gab es wegen des Fachkräftemangels kaum.</span></li>
+<li><b>Die Idee</b><span>Also habe ich kurzerhand meine Marketing-Skills darauf angewendet. Das Problem ließ sich lösen.</span></li>
+<li><b>Seitdem</b><span>Ich mache das weiter, weil ich damit etwas wirklich Sinnvolles tun kann: Menschen unterstützen, die Hilfe brauchen, statt reiche Leute noch reicher zu machen. Heute gilt das für {heute}.</span></li>
+</ol>
+<blockquote class="ra-q" data-r><p>Auf die Politik zu warten, hilft heute niemandem. Deshalb packen wir selbst an und retten, was wir retten können: die Pflege und unsere Wirtschaft.</p></blockquote>
 <div class="ra-card" data-r><p class="ra-ct">Steckbrief · Level 8</p>
 <ul class="ra-stats">
 <li><span>Erfahrung</span><i style="--w:100%"></i><b data-count="8" data-suf=" Jahre">8 Jahre</b></li>
-<li><span>Bewerbungen generiert</span><i style="--w:92%"></i><b data-count="3000" data-suf="+">3.000+</b></li>
-<li><span>Fachkräfte gewonnen</span><i style="--w:78%"></i><b data-count="500" data-suf="+">500+</b></li>
+<li><span>Bewerbungen generiert</span><i style="--w:72%"></i><b data-count="500" data-suf="+">500+</b></li>
+<li><span>Fachkräfte gewonnen</span><i style="--w:46%"></i><b data-count="50" data-suf="+">50+</b></li>
 <li><span>Google-Bewertung</span><i style="--w:100%"></i><b>5,0 ★</b></li>
 <li class="ra-joke"><span>Kaffeekonsum</span><i style="--w:96%"></i><b>hoch</b></li>
 </ul></div>
@@ -923,7 +931,7 @@ def branch(slug, c):
     if c.get('cases'):
         body += cases_section(c['cases'])
     body += live()
-    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz() + final(c['goal'])
+    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + final(c['goal'])
     return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
