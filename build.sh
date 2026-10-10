@@ -56,6 +56,14 @@ if not repo_images.exists():
     raise SystemExit('Missing uploaded assets/images directory')
 shutil.copytree(repo_images, out / 'assets/images', dirs_exist_ok=True)
 
+repo_partners = root / 'assets/partners'
+if repo_partners.exists():
+    shutil.copytree(repo_partners, out / 'assets/partners', dirs_exist_ok=True)
+
+repo_video = root / 'assets/video'
+if repo_video.exists():
+    shutil.copytree(repo_video, out / 'assets/video', dirs_exist_ok=True)
+
 image_data = {
     'Strong Relationship Website': ('/assets/images/case-studies/case-study-strong-relationship.webp', 1567, 723),
     'ASMR Time Onlineshop': ('/assets/images/case-studies/case-study-asmr-time.webp', 1571, 720),
@@ -191,6 +199,7 @@ expected_images = [
     'assets/images/case-studies/case-study-libi-elektronik.webp',
     'assets/images/case-studies/case-study-fuehrungskraefte.webp',
     'assets/images/case-studies/case-study-neuromind-breathwork.webp',
+    'assets/video/websystem-erklaervideo-poster.webp',
 ]
 for rel in expected_images:
     path = out / rel
@@ -201,12 +210,13 @@ for rel in expected_images:
         raise SystemExit(f'Invalid WebP file: {rel}')
 
 required = (
+    'assets/video/websystem-erklaervideo.mp4',
     'index.html', 'case-studies.html', 'danke.html',
     'trust-upgrade.css', 'case-worlds.css', 'local-assets.css',
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
     'case-overview.css', 'case-overview.js',
-    'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html',
+    'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html', 'recruiting-check.html',
     'vendor/gsap.min.js', 'vendor/ScrollTrigger.min.js', 'vendor/lenis.min.js',
 )
 for name in required:

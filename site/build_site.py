@@ -87,7 +87,7 @@ def head(title, desc, path, noindex=False, extra=''):
     og = '' if noindex else (f'<meta property="og:type" content="website"><meta property="og:title" content="{e(title)}">'
                              f'<meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{SITE}{path}">'
                              f'<meta property="og:image" content="{SITE}/assets/images/raphael/raphael-hermann-hero.webp">')
-    return (f'<!doctype html><html lang="de"><head><meta charset="utf-8">'
+    return (f'<!doctype html><html lang="de" data-gtm=""><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
             f'<title>{e(title)}</title><meta name="description" content="{e(desc)}">{robots}{canon}{og}'
             f'<meta name="theme-color" content="#090806">'
@@ -109,16 +109,29 @@ def schema(faq=True):
     return out
 
 
-def nav(home, theme='', cta='#analyse'):
+BRANCH_NAV = {
+    'pflege': ('Pflege', 'pflege', 'Mitarbeiter gewinnen', 'pflege-patienten', 'Patienten gewinnen'),
+    'pflege-patienten': ('Pflege', 'pflege', 'Mitarbeiter gewinnen', 'pflege-patienten', 'Patienten gewinnen'),
+    'handwerk-mitarbeiter': ('Handwerk', 'handwerk-mitarbeiter', 'Mitarbeiter gewinnen', 'handwerk-kunden', 'Kunden gewinnen'),
+    'handwerk-kunden': ('Handwerk', 'handwerk-mitarbeiter', 'Mitarbeiter gewinnen', 'handwerk-kunden', 'Kunden gewinnen'),
+}
+
+
+def nav(home, theme='', cta='#analyse', slug=None):
     p = '' if home else '/'
+    if slug in BRANCH_NAV:
+        _, a, la, b, lb = BRANCH_NAV[slug]
+        cur = lambda x: ' aria-current="page"' if x == slug else ''
+        links = (f'<a href="/{a}"{cur(a)}>{la}</a><a href="/{b}"{cur(b)}>{lb}</a>'
+                 '<a href="/#ergebnisse">Ergebnisse</a><a href="/#raphael">Über Raphael</a>')
+    else:
+        links = (f'<a href="/pflege">Pflege</a><a href="/handwerk-mitarbeiter">Handwerk</a>'
+                 f'<a href="{p}#ergebnisse">Ergebnisse</a><a href="{p}#raphael">Über Raphael</a>')
     return f'''<body class="{theme}"><a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="nav"><div class="container nav-in">
 <a class="brand" href="{'#top' if home else '/'}" aria-label="Digitale Gewinner – Startseite"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a>
 <nav class="nav-links" id="menu" aria-label="Hauptnavigation">
-<a href="{p}#ziel" data-pick="p-mit">Mitarbeiter gewinnen</a>
-<a href="{p}#ziel" data-pick="p-kun">Kunden gewinnen</a>
-<a href="{p}#ergebnisse">Ergebnisse</a>
-<a href="{p}#raphael">Über Raphael</a>
+{links}
 <a class="btn btn-gold" href="{cta}" data-cta="nav">Kostenlose Analyse</a>
 </nav>
 <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü öffnen"><i></i><i></i></button>
@@ -147,7 +160,7 @@ def video_card(v):
             f'<span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span></a></div>')
 
 
-def video_section(v):
+def recruiting_videos(v):
     vids = v['videos']
     rest = ''.join(video_card(x) for x in vids[1:])
     more = f'<div class="vid-more">{rest}</div>' if rest else ''
@@ -157,7 +170,8 @@ def video_section(v):
 
 
 CASES_PFLEGE = [
-    dict(org='Pflegeresidenz Rose', who='Katja',
+    dict(org='Pflegeresidenz Rose', who='Katja', big=('3', 'neue Pflegefachkräfte', 'in nur 8 Wochen'),
+         bars=[('Bewerbungen', 22), ('Gespräche', 10), ('Einstellungen', 3)],
          lead='In nur acht Wochen erhielt Katja 22 Bewerbungen und führte dadurch 10 Bewerbungsgespräche. In dieser Zeit konnte die Pflegeresidenz 3 neue Pflegefachkräfte für sich gewinnen!',
          figs=[('8', 'Wochen'), ('22', 'Bewerbungen'), ('10', 'Gespräche'), ('3', 'neue Pflegefachkräfte')],
          start=['Mitarbeiter wurden knapp durch Elternzeit, Schwangerschaft und Kündigungen',
@@ -165,14 +179,16 @@ CASES_PFLEGE = [
                 'Erfolglose Social Media Kampagne mit nur zwei eingegangenen Bewerbungen',
                 'Kein Alleinstellungsmerkmal in den bisherigen Ausschreibungen'],
          quote='Ich empfehle den Weg über die sozialen Netzwerke zu gehen, weil ich glaube, dass das gerade aktuell ist und die Leute anspricht. Einfach neue Wege gehen und neue Sachen ausprobieren. Einfach mutig sein!'),
-    dict(org='Maternus', who='Olivia',
+    dict(org='Maternus', who='Olivia', big=('11', 'neue Mitarbeiter', 'in 4 Monaten'),
+         bars=[('Bewerbungen', 110), ('Einstellungen', 11)],
          lead='Nach nur 4 Monaten und einem nennenswerten Bewerbungsmarathon konnte Olivia aus 110 eingegangenen Bewerbungen selektiv 11 neue Mitarbeiter anstellen.',
          figs=[('4', 'Monate'), ('110', 'Bewerbungen'), ('11', 'neue Mitarbeiter')],
          start=['Beschränkten ihre Personalsuche durch normale Stellenanzeigen',
                 'Hatten bis vor der Zusammenarbeit keine Berührungspunkte mit Social Media',
                 'Fachkräftemangel wurde überwiegend mit Zeitarbeitern gedeckt'],
          quote='Ich würde jedem raten, sich zu trauen bei Fachkraft Marketing und deren Videodreh mitzumachen und diesen Tag zu erleben, der macht einfach Spaß.'),
-    dict(org='Häusliche Krankenpflege Raik Radloff', who='Raik',
+    dict(org='Häusliche Krankenpflege Raik Radloff', who='Raik', big=('2', 'neue Fachkräfte', 'in unter 4 Wochen'),
+         bars=[('Gespräche', 11), ('Einstellungen', 2)],
          lead='Nicht ganz vier Wochen vergingen seitdem und Raik hat 11 persönliche Gespräche geführt und 2 neue Fachkräfte eingestellt.',
          figs=[('< 4', 'Wochen'), ('11', 'persönliche Gespräche'), ('2', 'neue Fachkräfte')],
          start=['Offene Stellen blieben monatelang unbesetzt',
@@ -184,15 +200,25 @@ CASES_PFLEGE = [
 
 
 def cases_section(cases):
-    cards = ''
-    for c in cases:
-        figs = ''.join(f'<div><b>{e(n)}</b><span>{e(l)}</span></div>' for n, l in c['figs'])
+    rows = ''
+    for i, c in enumerate(cases, 1):
+        top = max(v for _, v in c['bars'])
+        bars = ''.join(
+            f'<li><span class="cs2-bl">{e(l)}</span><span class="cs2-bt"><i style="--w:{max(7, round(v / top * 100))}%"></i></span><b data-count="{v}">{v}</b></li>'
+            for l, v in c['bars'])
         start = ''.join(f'<li>{e(x)}</li>' for x in c['start'])
-        cards += (f'<article class="cs" data-r><h3 class="cs-org">{e(c["org"])}</h3><div class="cs-figs">{figs}</div>'
-                  f'<p class="cs-lead">{e(c["lead"])}</p><h4>Ausgangssituation</h4><ul class="cs-list">{start}</ul>'
-                  f'<blockquote class="cs-q"><p>„{e(c["quote"])}“</p><footer>{e(c["who"])}s Fazit</footer></blockquote></article>')
-    return (f'<section class="section" id="fallstudien"><div class="container"><div class="cs-head" data-r><span class="eyebrow">Fallstudien</span>'
-            f'<h2 class="h2">Echte Pflegebetriebe. <span class="gold it">Echte Ergebnisse.</span></h2></div><div class="cs-grid">{cards}</div></div></section>')
+        n, lab, when = c['big']
+        rows += (f'<article class="cs2" data-r><div class="cs2-stat"><span class="cs2-tag">Fallstudie {i:02d}</span>'
+                 f'<h3 class="cs2-org">{e(c["org"])}</h3>'
+                 f'<div class="cs2-big"><b data-count="{n}">{n}</b><span>{e(lab)}<small>{e(when)}</small></span></div>'
+                 f'<ul class="cs2-bars" aria-label="Weg von der Bewerbung bis zur Einstellung">{bars}</ul></div>'
+                 f'<div class="cs2-body"><p class="cs2-lead">{e(c["lead"])}</p>'
+                 f'<div class="cs2-before"><h4>Vorher</h4><ul>{start}</ul></div>'
+                 f'<blockquote class="cs2-q"><span class="cs2-qm" aria-hidden="true">“</span><p>{e(c["quote"])}</p>'
+                 f'<footer><span class="av" aria-hidden="true">{e(c["who"][0])}</span><span><b>{e(c["who"])}s Fazit</b><br>{e(c["org"])}</span></footer></blockquote></div></article>')
+    return (f'<section class="section cs-sec" id="fallstudien"><div class="container"><div class="cs-head" data-r><span class="eyebrow">Fallstudien</span>'
+            f'<h2 class="h2">Drei Betriebe. <span class="gold it">16 neue Mitarbeitende.</span></h2>'
+            f'<p class="lead">So sind diese Pflegebetriebe zu ihren Bewerbungen und Einstellungen gekommen.</p></div>{rows}</div></section>')
 
 
 def triptych():
@@ -223,29 +249,94 @@ VIS_HW_MIT = [('Elektroniker (m/w/d)', '8 km entfernt', 4), ('Anlagenmechaniker 
 VIS_HW_KUN = [('Anfrage: Heizungstausch', '6 km entfernt', 4), ('Anfrage: Dachsanierung', '9 km entfernt', 3), ('Anfrage: Badumbau', '4 km entfernt', 2), ('Anfrage: Photovoltaik', '13 km entfernt', 1)]
 
 
-def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop=''):
+def hero(eyebrow, lines, lead, punch, btns, proof=True, wide=False, visual='', loop='', kunden=False, pro=False, after=''):
     ln = ''.join(f'<span class="ln"><span>{l}</span></span>' for l in lines)
-    prf = '''<div class="proof" data-r>
-<div><b data-count="8" data-suf="">8</b>Jahre Erfahrung</div>
-<div><b data-count="3000" data-suf="+">3.000+</b>Bewerbungen generiert</div>
-<div><b data-count="500" data-suf="+">500+</b>Fachkräfte gewonnen</div>
-<div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
-<div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b>bei Google</div>
+    prf_mid = '''<div><b>Tag für Tag</b>neue Anfragen im Blick</div>
+<div><b>Jede Anfrage</b>wird erfasst und nachgefasst</div>
+''' if kunden else '''<div><b data-count="500" data-suf="+">500+</b>Bewerbungen generiert</div>
+<div><b data-count="50" data-suf="+">50+</b>Fachkräfte gewonnen</div>
+'''
+    prf = f'''<div class="proof" data-r>
+{prf_mid}<div><b data-count="200000" data-suf=" €+">200.000 €+</b>betreutes Werbebudget</div>
 <div class="who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="46" height="46" loading="lazy"><span>persönlich durch<br><strong>Raphael</strong></span></div>
 </div>''' if proof else ''
     cls = ('wide ' if wide else '') + ('has-vis' if visual else '')
-    return f'''<main id="main"><section class="hero" id="top">{loop_html(loop)}<canvas id="net" aria-hidden="true"></canvas>
+    return f'''<main id="main"><section class="hero{' pro' if pro else ''}" id="top">{loop_html(loop)}<canvas id="net" aria-hidden="true"></canvas>
 <div class="container"><div class="hero-grid {'with-vis' if visual else ''}"><div class="hero-main"><span class="eyebrow" data-r>{eyebrow}</span>
 <h1 class="{cls}">{ln}</h1>
 <p class="lead" data-r>{lead}</p>
-<p class="punch" data-r>{punch}</p>
-<div class="btns" data-r>{btns}</div></div>
+{('<p class="punch" data-r>' + punch + '</p>') if punch else ''}
+<div class="btns" data-r>{btns}</div>{after}</div>
 {('<div class="hero-vis" data-r>' + visual + '</div>') if visual else ''}</div>
 {prf}</div><span class="scroll-hint" aria-hidden="true"></span></section>'''
 
 
-HERO_BTNS = (f'<a class="btn btn-gold" href="#ziel" data-goal="Mitarbeiter" data-cta="hero-mitarbeiter">Mitarbeiter gewinnen {ARROW}</a>'
-             f'<a class="btn" href="#ziel" data-goal="Kunden" data-cta="hero-kunden">Kunden gewinnen</a>')
+HERO_BTNS = (f'<a class="btn btn-gold" href="/pflege" data-cta="hero-pflege">Für Pflegebetriebe {ARROW}</a>'
+             f'<a class="btn" href="/handwerk-mitarbeiter" data-cta="hero-handwerk">Für Handwerksbetriebe</a>')
+
+
+def adstack():
+    return '''<div class="adstack" aria-hidden="true">
+<div class="ac ac1"><img src="/assets/images/creatives/stufe-3-sm.webp" alt="" width="380" height="475" loading="lazy" decoding="async"></div>
+<div class="ac ac3"><img src="/assets/images/creatives/stufe-5-sm.webp" alt="" width="380" height="475" loading="lazy" decoding="async"></div>
+<div class="ac ac2"><img src="/assets/images/creatives/stufe-1-sm.webp" srcset="/assets/images/creatives/stufe-1-sm.webp 380w, /assets/images/creatives/stufe-1.webp 760w" sizes="(max-width:1020px) 320px, 420px" alt="" width="380" height="475" decoding="async"></div>
+<div class="chip c1"><i></i><span><b>Neue Bewerbung</b><small>Pflegefachkraft · 8 km entfernt</small></span></div>
+<div class="chip c2"><i></i><span><b>Termin vorbereitet</b><small>Donnerstag, 10:00 Uhr</small></span></div>
+<span class="ad-note">Beispielansicht</span></div>'''
+
+
+def hero_case():
+    return (f'<div class="hero-case" data-r><a href="#fall" data-cta="hero-fall"><span class="hc-n"><b>2.000 €</b> Budget</span><i aria-hidden="true">→</i><span class="hc-n"><b>43</b> Bewerbungen</span><i aria-hidden="true">→</i><span class="hc-n"><b>3</b> Einstellungen</span><em>Ein Fall aus der Praxis ↓</em></a>'
+            '<span class="hc-who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="40" height="40" loading="lazy"><span>persönlich durch <strong>Raphael</strong></span></span></div>')
+
+
+def video_section():
+    return f'''<section class="section video-sec" id="video" aria-labelledby="video-h"><div class="container">
+<div class="video-head"><span class="eyebrow" data-r>In 80 Sekunden erklärt · für Pflegeeinrichtungen</span>
+<h2 class="h2" id="video-h" data-r>Eine Website war gestern. <span class="gold it">Ein Websystem arbeitet für Sie.</span></h2>
+<p class="lead" data-r>Sehen Sie, wie aus einer Seite zum Anschauen ein System wird, das Ihnen wiederkehrende Arbeit abnimmt – und Sie behalten die Gespräche.</p></div>
+<figure class="vid" data-r><div class="vid-frame">
+<video id="expl" controls preload="none" playsinline poster="/assets/video/websystem-erklaervideo-poster.webp" width="1280" height="720">
+<source src="/assets/video/websystem-erklaervideo.mp4" type="video/mp4">
+Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websystem-erklaervideo.mp4">Video herunterladen</a>.</video>
+<button class="vid-play" type="button" aria-label="Erklärvideo abspielen (80 Sekunden, mit Untertiteln)"><span class="vid-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="vid-lab">Video ansehen<small>80 Sek. · mit Untertiteln</small></span></button></div>
+</figure>
+<div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="video-mehr">Wie das System funktioniert</a></div>
+</div></section>'''
+
+
+def case_pflege():
+    return f'''<section class="section case-sec" id="fall" aria-labelledby="fall-h"><div class="container">
+<div class="case-head"><span class="eyebrow" data-r>Ergebnis aus der Praxis · Pflege</span>
+<h2 class="h2" id="fall-h" data-r>2.000 € Werbebudget. <span class="gold it">43 Bewerbungen. 3 Einstellungen.</span></h2>
+<p class="lead" data-r>So sah eine Recruiting-Kampagne für eine Pflegeeinrichtung aus – mit durchschnittlich 46 € pro Bewerbung.</p></div>
+<ol class="case-flow" id="case-flow" data-r>
+<li><span class="cf-n" data-count="2000" data-suf=" €">2.000 €</span><span class="cf-l">Werbebudget<small>direkt an die Plattform gezahlt</small></span></li>
+<li><span class="cf-n" data-count="43">43</span><span class="cf-l">Bewerbungen<small>durchschnittlich 46 € pro Bewerbung</small></span></li>
+<li class="cf-end"><span class="cf-n" data-count="3">3</span><span class="cf-l">Einstellungen<small>aus den persönlichen Gesprächen</small></span></li>
+</ol>
+<p class="case-src" data-r>Quelle: Kampagnen, die Raphael Hermann bei Fachkraftmarketing verantwortet hat; Veröffentlichung mit schriftlicher Freigabe. Es sind Einzelergebnisse und keine Garantie – Bewerbungen und Einstellungen hängen auch von Region, Angebot und Ihrer Reaktionsgeschwindigkeit ab. Das Werbebudget ist nicht Teil unseres Honorars.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="fall-analyse">Was wäre bei Ihnen möglich? {ARROW}</a></div>
+</div></section>'''
+
+
+def brand_img(name, alt, cls='bimg'):
+    """Offizielle Logo-/Badge-Dateien (aus dem Partnerportal) liegen unter assets/partners/. Nur wenn vorhanden, werden sie eingebunden."""
+    for ext in ('svg', 'webp', 'png'):
+        if (HERE.parent / 'assets' / 'partners' / f'{name}.{ext}').exists():
+            return f'<img class="{cls}" src="/assets/partners/{name}.{ext}" alt="{e(alt)}" width="750" height="360" loading="lazy" decoding="async">'
+    return ''
+
+
+def partner_strip():
+    g = brand_img('google-partner', 'Google Partner')
+    m = brand_img('meta-partner', 'Meta Business Partner')
+    gi = g or '<span class="pt-txt">Google Partner</span>'
+    mi = m or '<span class="pt-txt">Meta Business Partner</span>'
+    t = brand_img('tuev-zertifikat', 'TÜV SÜD: ISO/IEC 27001, zertifiziertes Informationssicherheits-Managementsystem')  # nur mit echter, freigegebener Datei; kein Text-Ersatz
+    return f'''<section class="partners" aria-label="Partnerstatus"><div class="container pt-in">
+<span class="pt-l">Partner, Bewertungen und Erfahrung</span>
+<div class="pt-i">{gi}{mi}{t}<div class="seal"><b class="sl-n">5,0</b><span class="sl-s" aria-hidden="true">★★★★★</span><small>Google-Bewertungen</small></div><div class="seal"><b class="sl-n">8</b><span class="sl-t">Jahre</span><small>Erfahrung</small></div></div></div></section>'''
 
 
 def problem():
@@ -259,7 +350,7 @@ def problem():
 
 
 def usp():
-    fl = ''.join(f'<div class="fl"><i>{i + 1}</i><span>{e(t)}</span></div>' for i, t in enumerate(FLOW))
+    fl = ''.join(f'<div class="fl" role="listitem"><i>{i + 1}</i><span>{e(t)}</span></div>' for i, t in enumerate(FLOW))
     return f'''<section class="section" id="unterschied"><div class="container">
 <div class="usp-top"><span class="eyebrow" data-r>Der Unterschied</span>
 <h2 class="h2" data-r>Keine Website zum Anschauen. <span class="gold it">Ein System, das arbeitet.</span></h2>
@@ -277,28 +368,21 @@ def usp():
 
 
 def choose():
-    def ticks(t):
-        return ''.join(f'<li>{e(i)}</li>' for i in t)
+    def card(num, name, text, ticks, ma, ka):
+        return (f'<article class="panel" data-r><span class="num">{num}</span><h3>{name}</h3><p>{text}</p>'
+                f'<ul class="ticks">{lis(ticks)}</ul>'
+                f'<div class="btns"><a class="btn btn-gold" href="/{ma}" data-cta="panel-{ma}">Mitarbeiter gewinnen {ARROW}</a>'
+                f'<a class="btn" href="/{ka}" data-cta="panel-{ka}">{"Patienten gewinnen" if ka == "pflege-patienten" else "Kunden gewinnen"}</a></div></article>')
     return f'''<section class="section" id="ziel"><div class="container">
-<div class="choose-head"><span class="eyebrow" data-r>Auswahl des Ziels</span>
-<h2 class="h2" data-r>Wen möchten Sie gewinnen?</h2>
-<p class="lead" data-r>Sie wählen das wichtigste Ziel. Wir bauen den vollständigen Weg bis zum Gespräch.</p></div>
-<div class="seg" role="tablist" aria-label="Ziel wählen"><button type="button" role="tab" data-p="p-mit" aria-selected="true">Mitarbeiter</button><button type="button" role="tab" data-p="p-kun" aria-selected="false">Kunden</button></div>
-<div class="choose">
-<article class="panel" id="p-mit" data-r><span class="num">01</span><h3>Mitarbeiter gewinnen</h3>
-<p><strong>Mehr Gespräche mit passenden Fachkräften aus Ihrer Region.</strong> Wir zeigen, warum es sich lohnt, bei Ihnen zu arbeiten, erreichen geeignete Menschen und machen den ersten Kontakt so einfach wie möglich.</p>
-<ul class="ticks">{ticks(TICKS_MIT)}</ul>
-<a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="panel-mitarbeiter">Mitarbeiter gewinnen {ARROW}</a>
-<p class="micro">Branchen: <a class="gold" href="/pflege">Pflege</a> · <a class="gold" href="/handwerk-mitarbeiter">Handwerk</a></p></article>
-<article class="panel" id="p-kun" data-r><span class="num">02</span><h3>Kunden gewinnen</h3>
-<p><strong>Mehr passende Anfragen für die Aufträge, die Sie wirklich möchten.</strong> Wir machen Ihr Angebot verständlich, bringen es vor die richtigen Menschen und begleiten Interessenten bis zur konkreten Anfrage.</p>
-<ul class="ticks">{ticks(TICKS_KUN)}</ul>
-<a class="btn btn-gold" href="#analyse" data-goal="Kunden" data-cta="panel-kunden">Kunden gewinnen {ARROW}</a>
-<p class="micro">Branchen: <a class="gold" href="/pflege-patienten">Pflege (Patienten)</a> · <a class="gold" href="/handwerk-kunden">Handwerk</a></p></article>
+<div class="choose-head"><span class="eyebrow" data-r>Ihre Branche</span>
+<h2 class="h2" data-r>Für wen arbeiten <span class="gold it">Sie?</span></h2>
+<p class="lead" data-r>Wählen Sie Ihre Branche. Dort entscheiden Sie, ob Sie Mitarbeiter oder Kunden gewinnen möchten – wir bauen den vollständigen Weg bis zum Gespräch.</p></div>
+<div class="choose bran">
+{card('01', 'Pflegebetriebe', '<strong>Pflegekräfte finden. Patienten und Angehörige erreichen.</strong> Für ambulante Dienste, Tagespflege und stationäre Einrichtungen.', ['Arbeitgeberauftritt, der Pflegekräfte überzeugt', 'einfache Bewerbung – auf Wunsch ohne Lebenslauf', 'Anfragen von Patienten und Angehörigen'], 'pflege', 'pflege-patienten')}
+{card('02', 'Handwerksbetriebe', '<strong>Fachkräfte finden. Passende Aufträge gewinnen.</strong> Für Betriebe, die Mitarbeiter suchen oder mehr Anfragen aus der Region brauchen.', ['Arbeitgeberauftritt, der Fachkräfte überzeugt', 'klare Anfragewege für Ihre Leistungen', 'automatisches Erfassen und Nachfassen'], 'handwerk-mitarbeiter', 'handwerk-kunden')}
 </div>
 <p class="both" data-r><b>Sie benötigen beides?</b> Wir beginnen mit Ihrem größten Engpass und bauen den zweiten Weg anschließend gezielt auf.</p>
 </div></section>'''
-
 
 
 DEMO = {
@@ -349,6 +433,7 @@ def campaign():
 
 def demo(key):
     d = DEMO[key]
+    proof_line = '' if key.endswith('kun') else ' · <strong class="gold">500+ Bewerbungen generiert · 50+ Fachkräfte gewonnen</strong>'
     ads = ''
     for i, (img, h, s) in enumerate(d['ads']):
         ads += (f'<div class="ad ad{i}"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>'
@@ -359,7 +444,7 @@ def demo(key):
     cols = ''
     for name, cards in d['cols']:
         cc = ''.join(f'<div class="kb-c"><i>{e(n[0])}</i><span><b>{e(n)}</b><small>{e(r)}</small></span></div>' for n, r in cards)
-        cols += f'<div class="kb-col"><h4>{e(name)}<em>{len(cards)}</em></h4>{cc}</div>'
+        cols += f'<div class="kb-col"><h4 aria-level="3">{e(name)}<em>{len(cards)}</em></h4>{cc}</div>'
     return f'''<section class="section demo" id="beispiel"><div class="container">
 <div class="demo-head"><span class="eyebrow" data-r>So sieht das aus</span>
 <h2 class="h2" data-r>Von der Anzeige bis zum Gespräch – <span class="gold it">alles aus einer Hand.</span></h2>
@@ -368,13 +453,13 @@ def demo(key):
 <div class="dm-col" data-r><div class="dm-lbl"><b>1</b> Passende Menschen werden aufmerksam</div><div class="ads" aria-label="Beispiel-Anzeigen">{ads}</div></div>
 <div class="dm-arrow" aria-hidden="true"><i></i></div>
 <div class="dm-col" data-r><div class="dm-lbl"><b>2</b> Sie machen unkompliziert den nächsten Schritt</div>
-<div class="phone" aria-label="Beispiel: Bewerbungsseite auf dem Handy"><div class="ph-top"></div><div class="ph-body"><span class="ph-brand">{LOGO} Ihr Betrieb</span><h4>{e(d['page_h'])}</h4>{fields}<div class="ph-chips">{chips}</div><div class="ph-btn">{e(d['btn'])}</div><small class="ph-note">✓ Bestätigung kommt automatisch</small></div></div></div>
+<div class="phone" aria-label="Beispiel: Bewerbungsseite auf dem Handy"><div class="ph-top"></div><div class="ph-body"><span class="ph-brand">{LOGO} Ihr Betrieb</span><h4 aria-level="3">{e(d['page_h'])}</h4>{fields}<div class="ph-chips">{chips}</div><div class="ph-btn">{e(d['btn'])}</div><small class="ph-note">✓ Bestätigung kommt automatisch</small></div></div></div>
 <div class="dm-arrow" aria-hidden="true"><i></i></div>
 <div class="dm-col" data-r><div class="dm-lbl"><b>3</b> Sie erhalten vorbereitete Kontakte</div>
 <div class="kb" aria-label="Beispiel: Bewerber-Cockpit"><div class="kb-bar"><span class="hv-live"></span>Ihr Cockpit<em>Beispielansicht</em></div><div class="kb-cols">{cols}</div></div></div>
 </div>
 {campaign()}
-<p class="micro" style="text-align:center" data-r>Alle Namen und Inhalte sind Beispiele. Echte Ergebnisse zeigen wir ausschließlich belegt. · <strong class="gold">3.000+ Bewerbungen generiert · 500+ Fachkräfte gewonnen</strong></p>
+<p class="micro" style="text-align:center" data-r>Alle Namen und Inhalte sind Beispiele. Echte Ergebnisse zeigen wir ausschließlich belegt.{proof_line}</p>
 </div></section>'''
 
 
@@ -404,12 +489,270 @@ def results(reviews=True, list_=True):
     top = f'''<div class="res-top"><div><span class="eyebrow" data-r>Ergebnisse statt Fachbegriffe</span>
 <h2 class="h2" data-r style="margin-bottom:0">Entscheidend ist, <span class="gold it">was bei Ihnen ankommt.</span></h2></div></div>
 <ul class="res-list" data-r>{lst}</ul>
-<div class="stats" data-r><div><b data-count="3000" data-suf="+">3.000+</b><span>Bewerbungen generiert</span></div><div><b data-count="500" data-suf="+">500+</b><span>Fachkräfte gewonnen</span></div><div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b><span>bei Google</span></div></div>
+<div class="stats" data-r><div><b data-count="500" data-suf="+">500+</b><span>Bewerbungen generiert</span></div><div><b data-count="50" data-suf="+">50+</b><span>Fachkräfte gewonnen</span></div><div><b data-count="5" data-dec="1" data-suf=" ★">5,0 ★</b><span>bei Google</span></div></div>
 <p class="honest" data-r>Wir zeigen nur belegbare Ergebnisse – keine erfundenen Kennzahlen. Dokumentierte Fälle mit Ausgangslage, Weg, Ergebnis und Kundenzitat folgen.</p>''' if list_ else ''
     return f'''<section class="section" id="ergebnisse"><div class="container">{top}
 <div class="rev-head" data-r><div class="score"><span class="g" aria-hidden="true">G</span><div><b>5,0</b> <span class="stars" aria-hidden="true">★★★★★</span><br><small class="muted">9 Google-Rezensionen</small></div></div></div>
 <div class="revs" data-r tabindex="0" aria-label="Google-Rezensionen">{revs}</div>
 </div></section>'''
+
+
+def live():
+    return f'''<section class="section live" id="alltag" aria-labelledby="live-h"><div class="container">
+<div class="live-head"><span class="eyebrow" data-r>Das System im Alltag</span>
+<h2 class="h2" id="live-h" data-r>Drei Dinge, die Ihnen <span class="gold it">niemand mehr hinterhertragen muss.</span></h2></div>
+<div class="live-grid" data-anim>
+<article class="lv" data-r><div class="lv-ui lv-form" aria-hidden="true"><i class="l1"></i><i class="l2"></i><i class="l3"></i><b></b></div>
+<h3>Erfasst</h3><p>Die wichtigsten Angaben werden direkt abgefragt und übersichtlich gesammelt – ohne Zettel und ohne Nachtelefonieren.</p></article>
+<article class="lv" data-r><div class="lv-ui lv-bell" aria-hidden="true"><span class="n1">Bestätigung gesendet</span><span class="n2">Erinnerung geplant</span><span class="n3">Termin vorbereitet</span></div>
+<h3>Erinnert</h3><p>Bestätigungen und Erinnerungen gehen automatisch raus. Termine werden vorbereitet, bevor das Gespräch beginnt.</p></article>
+<article class="lv" data-r><div class="lv-ui lv-chat" aria-hidden="true"><em class="c1"></em><em class="c2"></em><em class="c3"></em></div>
+<h3>Fasst nach</h3><p>Bleibt eine Rückmeldung aus, wird nachgefasst. Offene nächste Schritte bleiben sichtbar.</p></article>
+</div>
+<p class="micro" data-r>Schematische Beispielansichten. Sie führen die Gespräche – das System übernimmt die wiederkehrende Arbeit davor.</p>
+</div></section>'''
+
+
+def compare():
+    rows = [('Ein Ansprechpartner für alles', 0, 0, 1), ('Kontakte werden automatisch erfasst', 0, 0, 1),
+            ('Bestätigen, erinnern und nachfassen', 0, 0, 1), ('Auftritt, Werbung und Ablauf sind aufeinander abgestimmt', 0, 1, 1),
+            ('Persönliche Gespräche bleiben bei Ihnen', 1, 1, 1)]
+    ok = '<span class="yes" aria-label="ja">✓</span>'; no = '<span class="no" aria-label="meist nicht">–</span>'
+    body = ''.join(f'<tr><th scope="row">{e(t)}</th>' + ''.join(f'<td>{ok if v else no}</td>' for v in (a, b, c)) + '</tr>' for t, a, b, c in rows)
+    return f'''<section class="section cmp" id="vergleich" aria-labelledby="cmp-h"><div class="container">
+<div class="live-head"><span class="eyebrow" data-r>Der Vergleich</span>
+<h2 class="h2" id="cmp-h" data-r>Selbst koordinieren oder <span class="gold it">ein Websystem nutzen?</span></h2></div>
+<div class="cmp-wrap" data-r><table class="cmp-t"><thead><tr><th><span class="sr" style="position:absolute;left:-9999px">Merkmal</span></th><th>Selbst machen</th><th>Mehrere Dienstleister</th><th class="me">Websystem</th></tr></thead><tbody>{body}</tbody></table></div>
+<p class="micro" data-r>Vereinfachte, typische Darstellung. Im Einzelfall kann es anders aussehen.</p>
+</div></section>'''
+
+
+def recruiting_check(kind='pflege'):
+    return f'''<section class="section rc-sec" id="recruiting-check" aria-labelledby="rc-h"><div class="container">
+<div class="rc-head" data-r><span class="eyebrow">Recruiting-Check · 2 Minuten</span>
+<h2 class="h2" id="rc-h">Wie weit kommt ein Bewerber <span class="gold it">bei Ihnen?</span></h2>
+<p class="lead">Spielen Sie den Weg durch 8 Stationen. Am Ende sehen Sie Ihren Recruiting-Score und die drei größten Hebel.</p></div>
+<div class="rc" id="rc" data-rc data-kind="{kind}" data-r><noscript><p class="rc-ns">Für den Recruiting-Check wird JavaScript benötigt. Alternativ besprechen wir Ihre Situation direkt: <a href="https://calendar.app.google/jZqwYfHqfjufkFmx5">Termin wählen</a>.</p></noscript></div>
+<p class="micro rc-fine" data-r>Erste Orientierung auf Basis Ihrer Selbsteinschätzung, keine Analyse. Ihre Antworten werden nur an Raphael gesendet, wenn Sie das Ergebnis aktiv senden.</p>
+</div></section>'''
+
+
+def check(goal=''):
+    return f'''<section class="section chk" id="check" aria-labelledby="chk-h"><div class="container">
+<div class="live-head"><span class="eyebrow" data-r>30-Sekunden-Check</span>
+<h2 class="h2" id="chk-h" data-r>Wo steckt bei Ihnen <span class="gold it">der Engpass?</span></h2></div>
+<div class="chk-box" data-r data-quiz>
+<ol class="q-list">
+<li class="q"><fieldset><legend>1 · Was möchten Sie gewinnen?</legend><div class="qo"><label><input type="radio" name="q1" value="Mitarbeiter"><span>Mitarbeiter</span></label><label><input type="radio" name="q1" value="Kunden"><span>Kunden</span></label><label><input type="radio" name="q1" value="Beides"><span>Beides</span></label></div></fieldset></li>
+<li class="q"><fieldset><legend>2 · Wie läuft der erste Kontakt heute?</legend><div class="qo"><label><input type="radio" name="q2" value="a"><span>Telefon oder E-Mail, ohne feste Abfolge</span></label><label><input type="radio" name="q2" value="b"><span>Es gibt ein Formular</span></label><label><input type="radio" name="q2" value="c"><span>Es gibt keinen klaren Weg</span></label></div></fieldset></li>
+<li class="q"><fieldset><legend>3 · Wie schnell melden Sie sich bei neuen Kontakten?</legend><div class="qo"><label><input type="radio" name="q3" value="a"><span>Am selben Tag</span></label><label><input type="radio" name="q3" value="b"><span>Nach zwei bis drei Tagen</span></label><label><input type="radio" name="q3" value="c"><span>Unregelmäßig</span></label></div></fieldset></li>
+</ol>
+<div class="q-res" role="status" aria-live="polite" hidden><p class="q-txt"></p><a class="btn btn-gold" href="#analyse" data-cta="check-analyse" data-quiz-cta>Das in 15 Minuten besprechen {ARROW}</a></div>
+</div>
+<p class="micro" data-r>Ihre Auswahl wird nicht gespeichert. Das Ergebnis ist eine erste Orientierung und ersetzt keine Analyse.</p>
+</div></section>'''
+
+
+ICO = {
+    'menu': '<path d="M4 7h16M4 12h16M4 17h16"/>', 'home': '<path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/>', 'camp': '<path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/>',
+    'grp': '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
+    'ad': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/>', 'aud': '<circle cx="9" cy="9" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 8a3 3 0 1 1 0 6"/>',
+    'set': '<circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+    'key': '<circle cx="8" cy="12" r="4"/><path d="M12 12h9m-3 0v3"/>', 'goal': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+    'srch': '<circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/>', 'plus': '<path d="M12 5v14M5 12h14"/>', 'chev': '<path d="m6 9 6 6 6-6"/>',
+}
+
+
+def ico(n):
+    return f'<svg viewBox="0 0 24 24" aria-hidden="true">{ICO[n]}</svg>'
+
+
+def chart(pts, cls=''):
+    """Linienchart (Platzhalterverlauf, ohne Achsenwerte) als SVG."""
+    w, h = 600, 150
+    xs = [i * w / (len(pts) - 1) for i in range(len(pts))]
+    ys = [h - 12 - v * (h - 30) / 100 for v in pts]
+    d = 'M' + ' L'.join(f'{x:.0f},{y:.0f}' for x, y in zip(xs, ys))
+    grid = ''.join(f'<line x1="0" x2="{w}" y1="{y}" y2="{y}"/>' for y in (30, 70, 110))
+    return (f'<svg class="ch {cls}" viewBox="0 0 {w} {h}" preserveAspectRatio="none" aria-hidden="true"><g class="gr">{grid}</g>'
+            f'<path class="ar" d="{d} L{w},{h} L0,{h}Z"/><path class="ln" d="{d}" pathLength="1"/></svg>')
+
+
+def fmt_de(n):
+    return f'{n:,}'.replace(',', '.')
+
+
+def spark(pts):
+    w, h = 120, 36
+    xs = [i * w / (len(pts) - 1) for i in range(len(pts))]
+    ys = [h - 4 - v * (h - 8) / 100 for v in pts]
+    return f'<svg class="sp" viewBox="0 0 {w} {h}" preserveAspectRatio="none" aria-hidden="true"><path d="M' + ' L'.join(f'{x:.0f},{y:.0f}' for x, y in zip(xs, ys)) + '" pathLength="1"/></svg>'
+
+
+def nav_rail(items):
+    return '<div class="rail-ui" aria-hidden="true">' + ''.join(f'<span class="{"on" if i == 0 else ""}">{ico(n)}</span>' for i, n in enumerate(items)) + '</div>'
+
+
+META_DATA = {
+    'pflege': dict(img='pflege-team', head='Pflege mit Zeit für Menschen', sub='Jetzt in Ihrer Region bewerben', who='Pflegekräfte', real=True,
+                   rows=[('Pflegefachkraft (m/w/d) · Region', 'Aktiv', '2.000 €', 2000, '43', '46 €', '2.000 €', '184.220', '421.980'),
+                         ('Pflegehelfer (m/w/d) · Region', 'Entwurf', '—', 0, '—', '—', '—', '—', '—'),
+                         ('Karriere-Video · Team', 'Entwurf', '—', 0, '—', '—', '—', '—', '—')],
+                   tot=('2.000 €', '43', '46 €')),
+    'handwerk-mitarbeiter': dict(img='hw-elektriker', head='Elektroniker (m/w/d) gesucht', sub='Bei uns in Ihrer Region', who='Fachkräfte', real=False,
+                   rows=[('Elektroniker (m/w/d) · Region', 'Aktiv', '25 € / Tag', 0, '18', '41 €', '738 €', '61.420', '140.310'),
+                         ('Dachdecker-Geselle · Region', 'Aktiv', '20 € / Tag', 0, '11', '45 €', '495 €', '38.905', '92.760'),
+                         ('Karriere-Video · Betrieb', 'Entwurf', '—', 0, '—', '—', '—', '—', '—')],
+                   tot=('1.233 €', '29', '43 €')),
+}
+GOOGLE_DATA = {
+    'pflege-patienten': dict(q='Tagespflege in Ihrer Stadt', ad='Tagespflege – wir beraten Sie persönlich', desc='Unverbindlich anfragen. Wir melden uns zeitnah bei Ihnen.', links=['Beratung anfragen', 'Leistungen', 'So läuft es ab'], req='Anfrage: Tagespflege', who='Patienten und Angehörige',
+                             camps=['Tagespflege · Region', 'Pflege zu Hause · Region', 'Pflegeberatung · Region']),
+    'handwerk-kunden': dict(q='Heizung erneuern in Ihrer Stadt', ad='Heizungstausch vom Fachbetrieb aus Ihrer Region', desc='Jetzt unverbindlich anfragen und Beratungstermin vereinbaren.', links=['Angebot anfragen', 'Leistungen', 'Referenzen'], req='Anfrage: Heizungstausch', who='Kunden',
+                            camps=['Heizungstausch · Region', 'Dachsanierung · Region', 'Badumbau · Region']),
+}
+
+
+def meta_manager(slug):
+    d = META_DATA[slug]
+    ad_visual = ('<img src="/assets/images/creatives/stufe-1.webp" alt="" width="760" height="950" loading="lazy" decoding="async" class="cr-img">' if slug == 'pflege' else f'<img src="/assets/images/photos/{d["img"]}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">')
+    rows = ''
+    for i, (n, st, bud, _v, res, cpr, spent, reach, imp) in enumerate(d['rows']):
+        act = st == 'Aktiv'
+        rows += (f'<tr style="--i:{i}"><td><span class="ck"></span></td><td><span class="tg{" on" if act else ""}"></span></td>'
+                 f'<th scope="row"><b>{e(n)}</b><small>Kampagne · Bewerbungen</small></th>'
+                 f'<td><span class="dot {"g" if act else "x"}"></span>{"Aktiv" if act else "Entwurf"}</td><td>{bud}</td><td class="n">{res}</td><td class="n">{cpr}</td><td class="n">{spent}</td><td class="n hide-s">{reach}</td><td class="n hide-s">{imp}</td></tr>')
+    foot = (f'<tfoot><tr><td></td><td></td><th scope="row">Gesamt aus {len(d["rows"])} Kampagnen</th><td></td><td></td><td class="n">{d["tot"][1]}</td><td class="n">{d["tot"][2]}</td><td class="n">{d["tot"][0]}</td><td class="n hide-s"></td><td class="n hide-s"></td></tr></tfoot>')
+    note = ('Die Werte der aktiven Kampagne stammen aus dem Fall weiter unten (eine Pflegeeinrichtung, Einzelergebnis). Reichweite und Impressionen sind Beispielwerte.' if d['real']
+            else 'Beispieldaten zur Veranschaulichung – keine echten Ergebnisse. Die tatsächlichen Werte hängen von Region, Zielgruppe und Wettbewerb ab.')
+    return f'''<section class="section toolsec" id="werbung" aria-labelledby="meta-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Ihre Anzeigen · Meta</span>
+<h2 class="h2" id="meta-h" data-r>Ihre Kampagne läuft dort, wo {d['who']} <span class="gold it">täglich unterwegs sind.</span></h2>
+<p class="lead" data-r>Wir richten Ihre Kampagne im Meta Werbeanzeigenmanager ein, steuern sie nach Region und Zielgruppe und werten sie laufend aus. Das Werbebudget zahlen Sie direkt an Meta.</p></div>
+<div class="ui ui-mgr" data-anim data-r role="img" aria-label="Beispielansicht eines Werbeanzeigenmanagers mit Kampagnenübersicht und Kennzahlen">
+<div class="mg-top"><span class="mg-burger">{ico('menu')}</span>{brand_img('meta', 'Meta', 'mg-logo')}<b>Werbeanzeigenmanager</b><span class="acc">Ihr Betrieb · Werbekonto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen und filtern</span><em>Beispieldaten</em></div>
+<div class="mg-body">{nav_rail(['home', 'camp', 'grp', 'ad', 'aud', 'set'])}
+<div class="mg-main">
+<div class="mg-tabs"><b class="on">Kampagnen</b><b>Anzeigengruppen</b><b>Anzeigen</b></div>
+<div class="mg-tools"><span class="btn-b">{ico('plus')}Erstellen</span><span class="btn-o">Bearbeiten</span><span class="btn-o">Duplizieren</span><span class="btn-o dt">Letzte 30 Tage{ico('chev')}</span></div>
+<div class="mg-mid"><div class="mg-chart"><div class="mg-cl"><b>Bewerbungen pro Tag</b><small>Verlauf · Beispieldarstellung</small></div>{chart([18, 26, 22, 38, 34, 52, 46, 61, 58, 74, 70, 88], 'meta')}</div>
+<div class="ui ui-ad ad-in" aria-hidden="true"><div class="ad-h"><span class="ad-av">{LOGO}</span><span><b>Ihr Betrieb</b><small>Anzeige</small></span></div>
+{ad_visual}
+<div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div></div>
+</div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Bewerbungen</th><th>Kosten pro Bewerbung</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
+</div></div>
+</div>
+<ul class="tool-pts" data-r><li>Zielgruppe nach Region und Interessen</li><li>Anzeigen mit Bild oder Video</li><li>Einfacher Kontakt – auf Wunsch ohne Lebenslauf</li><li>Laufende Auswertung und Optimierung</li></ul>
+<p class="micro" data-r>{note} Keine Garantie auf Bewerbungen oder Einstellungen.</p>
+</div></section>'''
+
+
+def google_search(slug):
+    d = GOOGLE_DATA[slug]
+    links = ''.join(f'<span>{e(l)}</span>' for l in d['links'])
+    kpis = [('Klicks', 'k'), ('Impressionen', 'i'), ('Anfragen', 'a'), ('Kosten', 'c')]
+    sp = {'k': [20, 34, 30, 46, 52, 64, 78], 'i': [30, 36, 44, 42, 58, 66, 72], 'a': [12, 22, 18, 40, 44, 60, 82], 'c': [40, 44, 42, 50, 54, 58, 60]}
+    vals = {'k': (1284, ''), 'i': (38410, ''), 'a': (47, ''), 'c': (1150, ' €')}
+    kp = ''.join(f'<div class="kp"><small>{a}</small><b data-count="{vals[k][0]}" data-suf="{vals[k][1]}">{fmt_de(vals[k][0])}{vals[k][1]}</b>{spark(sp[k])}</div>' for a, k in kpis)
+    data = [('20 € / Tag', '612', '18.200', '24'), ('15 € / Tag', '401', '11.900', '14'), ('10 € / Tag', '271', '8.310', '9')]
+    camps = ''.join(f'<tr style="--i:{i}"><td><span class="ck"></span></td><th scope="row"><b>{e(c)}</b><small>Suchnetzwerk</small></th><td><span class="dot g"></span>Aktiv</td><td>{v[0]}</td><td class="n">{v[1]}</td><td class="n hide-s">{v[2]}</td><td class="n">{v[3]}</td></tr>' for i, (c, v) in enumerate(zip(d['camps'], data)))
+    return f'''<section class="section toolsec" id="werbung" aria-labelledby="g-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Gefunden werden · Google</span>
+<h2 class="h2" id="g-h" data-r>Wer sucht, soll Sie finden – <span class="gold it">und direkt anfragen.</span></h2>
+<p class="lead" data-r>{d['who']} suchen bei Google. Wir richten Ihre Kampagne in Google Ads ein, pflegen Ihr Profil und sorgen für einen einfachen Weg zur Anfrage. Das Werbebudget zahlen Sie direkt an Google.</p></div>
+<div class="ui ui-gads" data-anim data-r role="img" aria-label="Beispielansicht eines Google-Ads-Dashboards mit Kennzahlen, Verlauf und Kampagnen">
+<div class="mg-top ga"><span class="mg-burger">{ico('menu')}</span>{brand_img('google', 'Google', 'mg-logo')}<b>Google Ads</b><span class="acc">Ihr Betrieb · Konto<i>{ico('chev')}</i></span><span class="mg-search">{ico('srch')}Suchen</span><em>Beispieldaten</em></div>
+<div class="mg-body">{nav_rail(['home', 'camp', 'grp', 'ad', 'key', 'goal'])}
+<div class="mg-main">
+<div class="mg-tabs"><b class="on">Übersicht</b><b>Kampagnen</b><b>Keywords</b><b>Ziele</b><span class="dtp">Letzte 30 Tage{ico('chev')}</span></div>
+<div class="kp-row">{kp}</div>
+<div class="mg-chart"><div class="mg-cl"><b>Anfragen im Zeitverlauf</b><small>Verlauf · Beispieldarstellung</small></div>{chart([14, 20, 18, 30, 28, 42, 38, 55, 52, 66, 72, 84], 'goog')}</div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th>Kampagne</th><th>Status</th><th>Budget</th><th>Klicks</th><th class="hide-s">Impressionen</th><th>Anfragen</th></tr></thead><tbody>{camps}</tbody></table></div>
+</div></div></div>
+<div class="serp-lbl" data-r><b>So erscheint Ihr Angebot bei der Suche</b></div>
+<div class="tool-grid one" data-r>
+<div class="ui ui-g" data-anim role="img" aria-label="Beispielansicht einer Google-Suche mit Anzeige, Karteneintrag und eingehender Anfrage">
+<div class="ui-bar"><i></i><i></i><i></i><span>Suche · Beispielansicht</span></div>
+<div class="g-search"><span class="gq"><em>{e(d['q'])}</em></span></div>
+<div class="g-res">
+<div class="g-ad r1"><small><b>Anzeige</b> · ihr-betrieb.de</small><h4 aria-level="3">{e(d['ad'])}</h4><p>{e(d['desc'])}</p><div class="g-links">{links}</div></div>
+<div class="g-map r2"><div class="map" aria-hidden="true"><i class="p1"></i><i class="p2"></i><i class="p3"></i></div>
+<ul><li class="me"><b>Ihr Betrieb</b><span class="st">★★★★★</span><small>Geöffnet · in Ihrer Nähe</small></li><li><b class="sk"></b></li><li><b class="sk"></b></li></ul></div>
+</div>
+<div class="g-toast" aria-hidden="true"><span class="dot"></span><span><b>Neue Anfrage</b><small>{e(d['req'])}</small></span></div>
+</div>
+</div>
+<ul class="tool-pts" data-r><li>Anzeigen bei der Suche in Ihrer Region</li><li>Gepflegtes Google-Profil mit Bewertungen</li><li>Einfacher Anfrageweg mit den wichtigsten Angaben</li><li>Automatisches Bestätigen und Nachfassen</li></ul>
+<p class="micro" data-r>Beispieldaten zur Veranschaulichung, keine echten Ergebnisse. Keine Garantie auf Platzierungen oder Anfragen.</p>
+</div></section>'''
+
+
+STAGES = [
+    ('Wiedererkennung', 'Die Pflegekraft erkennt sich wieder.', 'Kein „Wir suchen dich". Die Anzeige beginnt bei ihr: Vielleicht ist sie gar nicht müde von der Pflege, sondern vom Drumherum.', 'Mehr über uns', 'stufe-1'),
+    ('Konflikt bewusst machen', 'Das Problem bekommt einen Namen.', 'Dienstplanung, Einspringen, fehlende Absprachen: Es liegt oft nicht am Beruf, sondern am System drumherum.', 'Warum wir anders sind', 'stufe-2'),
+    ('Möglichkeit öffnen', 'Es gibt einen anderen Weg.', 'Voll- oder Teilzeit, echte Planbarkeit, ein Umfeld mit mehr Raum für Menschen. Die Alternative wird vorstellbar.', 'Arbeiten bei uns', 'stufe-3'),
+    ('Vertrauen & Beweis', 'Nicht nur nette Worte.', 'Gute Einarbeitung, kurze Entscheidungswege, ein Team, auf das man sich verlassen kann. Jetzt braucht es Belege.', 'Team kennenlernen', 'stufe-4'),
+    ('Risiko reduzieren', 'Du musst dich noch nicht bewerben.', 'Erst mal unverbindlich reinschauen. Kein Bewerbungsmarathon, kein Druck, kein Lebenslauf. Die Hürde sinkt.', 'Unverbindlich ansehen', 'stufe-5'),
+    ('Selbstqualifikation', 'Was ist dir bei einem Wechsel wichtig?', 'Planbarkeit, Teamgefühl, Entwicklung, Wertschätzung: Die Person prüft selbst, ob es passt. Sie entscheidet mit.', 'Quick-Match starten', 'stufe-6'),
+    ('Entscheidung', 'Wenn es sich gut anfühlt, lass uns sprechen.', 'In 60 Sekunden zum ersten Kennenlernen, ohne Lebenslauf, ohne Anschreiben, ohne Druck. Der nächste Schritt ist klein.', 'Jetzt Kennenlernen', 'stufe-7'),
+]
+
+
+def stages():
+    tabs = ''.join(f'<button type="button" role="tab" id="st-t{i}" aria-controls="st-p{i}" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}"><i>{i + 1}</i><span>{e(n)}</span></button>' for i, (n, *_r) in enumerate(STAGES))
+    panels = ''
+    for i, (n, h, t, cta, img) in enumerate(STAGES):
+        if img:
+            vis = f'<img src="/assets/images/creatives/{img}.webp" alt="Beispiel-Anzeige Stufe {i + 1}: {e(n)}" width="760" height="950" loading="lazy" decoding="async">'
+        else:
+            vis = f'<div class="cr-text"><small>Karriere · Beispiel</small><h4 aria-level="3">{e(h)}</h4><p>{e(t)}</p><span class="cr-cta">{e(cta)} →</span><em>Stufe {i + 1} · {e(n)}</em></div>'
+        panels += (f'<div class="st-panel" role="tabpanel" id="st-p{i}" aria-labelledby="st-t{i}"{"" if i == 0 else " hidden"}>'
+                   f'<figure class="cr">{vis}</figure><div class="st-txt"><span class="eyebrow">Stufe {i + 1} von 7</span><h3>{e(n)}</h3><p class="st-h">{e(h)}</p><p>{e(t)}</p>'
+                   f'<div class="st-nav"><button type="button" class="btn" data-st="prev" aria-label="Vorherige Stufe">←</button><button type="button" class="btn" data-st="next" aria-label="Nächste Stufe">→</button></div></div></div>')
+    return f'''<section class="section stg" id="stufen" aria-labelledby="stg-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Unsere Kampagnen-Methode</span>
+<h2 class="h2" id="stg-h" data-r>Keine „Wir suchen dich"-Anzeige. <span class="gold it">Sieben Stufen, die aufeinander aufbauen.</span></h2>
+<p class="lead" data-r>Nicht jede gute Pflegekraft will sofort wechseln. Deshalb führen wir sie Schritt für Schritt: vom Wiedererkennen bis zum ersten, unverbindlichen Kennenlernen.</p></div>
+<div class="st-box" data-r data-stages><div class="st-tabs" role="tablist" aria-label="Sieben Stufen der Kampagne">{tabs}</div>{panels}</div>
+<p class="micro" data-r>Beispielkampagne für das Pflegehaus Kögler. Texte und Motive werden für Ihr Haus individuell entwickelt. Keine Garantie auf Bewerbungen.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="stufen-analyse">Diesen Weg für unser Haus besprechen {ARROW}</a></div>
+</div></section>'''
+
+
+HW_CREATIVES = [
+    ('hw-1', 'Nutzen als Nachrichten', 'Sechs ungelesene Nachrichten: Gehalt, Arbeitszeiten, Fahrzeug, Arbeitgeber, Entwicklung. Neugier und Nutzenstapel in einem Bild.', 'Anlagenmechaniker SHK'),
+    ('hw-2', 'Einstiegshürde senken', '„Ausbildung egal! Hauptsache technisch." Ein Gesicht aus dem Team und eine klare Botschaft: Du darfst dich bewerben.', 'Mischmeister'),
+    ('hw-3', 'Muster durchbrechen', 'Südsee-Strand statt Stellenanzeige. Der Humor stoppt den Daumen, die Stelle steht trotzdem klar im Bild.', 'Anlagenmechaniker:in'),
+    ('hw-4', 'Direkt ansprechen', '„Ist Spannung dein Ding?" Eine Frage, die genau die Zielgruppe trifft, mit echtem Arbeitsplatz im Hintergrund.', 'Elektromonteur:in'),
+]
+
+
+def hw_creatives():
+    cards = ''.join(f'<figure class="hwc" data-r><img src="/assets/images/creatives/{i}.webp" alt="Beispiel-Anzeige: {e(t)} ({e(r)})" width="720" height="720" loading="lazy" decoding="async"><figcaption><b>{e(t)}</b><span>{e(d)}</span></figcaption></figure>' for i, t, d, r in HW_CREATIVES)
+    return f'''<section class="section stg" id="creatives" aria-labelledby="hwc-h"><div class="container">
+<div class="tool-head"><span class="eyebrow" data-r>Anzeigen, die Handwerker stoppen</span>
+<h2 class="h2" id="hwc-h" data-r>Keine Standard-Stellenanzeige. <span class="gold it">Motive mit Haltung.</span></h2>
+<p class="lead" data-r>Gute Fachkräfte scrollen an austauschbaren Anzeigen vorbei. Deshalb entwickeln wir Motive, die auffallen, Ihren Betrieb zeigen und den Einstieg leicht machen.</p></div>
+<div class="hwc-grid">{cards}</div>
+<p class="micro" data-r>Beispiele aus Handwerks-Kampagnen. Motive und Logos gehören den jeweiligen Betrieben. Keine Garantie auf Bewerbungen.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="creatives-analyse">Motive für meinen Betrieb besprechen {ARROW}</a></div>
+</div></section>'''
+
+
+PFLEGE_REFS = [('pflegehaus-koegler', 'Pflegehaus Kögler'), ('asklepios-parchim', 'Asklepios Klinik Parchim'), ('awo-pflege', 'AWO Pflege gGmbH'), ('caritas', 'Caritas'),
+               ('diakonie', 'Diakonie'), ('drk', 'Deutsches Rotes Kreuz'), ('asb', 'Arbeiter-Samariter-Bund'), ('korian', 'Korian'), ('bdh', 'BDH Bundesverband Rehabilitation'),
+               ('pflege-service-knoblauch', 'Pflege Service Knoblauch'), ('cura-tagespflege', 'CURA Tagespflege Hahn-Lehmden'), ('gbs-seniorenhilfe', 'GBS Seniorenhilfe'),
+               ('linimed', 'linimed'), ('die-bruecke', 'Die Brücke')]
+
+
+def refs_pflege():
+    def tile(n, a, hidden=False):
+        return f'<li{" aria-hidden=\"true\"" if hidden else ""}><img src="/assets/images/referenzen/{n}.webp" alt="{"" if hidden else e(a)}" loading="lazy" decoding="async" height="64"></li>'
+    one = ''.join(tile(n, a) for n, a in PFLEGE_REFS)
+    two = ''.join(tile(n, a, True) for n, a in PFLEGE_REFS)
+    return f'''<section class="refs" aria-label="Pflegeeinrichtungen und Träger"><div class="container"><p class="refs-l" data-r>Pflegeeinrichtungen und Träger, mit denen Raphael Hermann zusammengearbeitet hat</p></div>
+<div class="refs-w" data-anim><ul class="refs-t">{one}{two}</ul></div></section>'''
 
 
 def offer():
@@ -437,6 +780,52 @@ def about():
 <p data-r><strong>Keine Massenabfertigung:</strong> Ich kümmere mich wirklich persönlich um meine Kunden.</p>
 <p data-r>Deshalb verbindet Digitale Gewinner alles Notwendige in einem verständlichen System – ohne anonymen Agenturprozess und ohne Weitergabe an wechselnde Ansprechpartner.</p>
 <div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-cta="raphael">Kostenlose Analyse mit Raphael buchen {ARROW}</a></div></div>
+</div></section>'''
+
+
+def raphael_kurz(kind='pflege'):
+    heute = 'Pflege- und Handwerksbetriebe' if kind == 'handwerk' else 'Pflegebetriebe'
+    return f'''<section class="section ra-sec" id="raphael-kurz" aria-labelledby="ra-h"><div class="container ra">
+<figure class="ra-photo" data-r><img src="/assets/images/raphael/raphael-hermann-buero.webp" alt="Raphael Hermann, Gründer von Digitale Gewinner, im Büro mit Kaffeetasse und Pflanze" width="800" height="1046" loading="lazy" decoding="async">
+<span class="ra-sticker">Ja, wirklich er.<small>Der antwortet auch selbst.</small></span></figure>
+<div class="ra-text"><span class="eyebrow" data-r>Wer hier antwortet</span>
+<h2 class="h2" id="ra-h" data-r>Hallo, ich bin Raphael. <span class="gold it">Ich hole Ihnen Bewerber. Den Kaffee holen Sie selbst.</span></h2>
+<p class="lead" data-r>Eigentlich komme ich aus dem Onlineshop-Marketing. In die Pflege bin ich eher zufällig gerutscht. Und geblieben.</p>
+<ol class="ra-story" data-r>
+<li><b>Vorher</b><span>Ich habe Onlineshops gebrandet und Marketingkampagnen optimiert, die Millionenumsätze gemacht haben.</span></li>
+<li><b>Der Auslöser: meine Mutter</b><span>Sie arbeitet in der Pflege und musste ständig einspringen. Freie Wochenenden gab es wegen des Fachkräftemangels kaum.</span></li>
+<li><b>Die Idee</b><span>Also habe ich kurzerhand meine Marketing-Skills darauf angewendet. Das Problem ließ sich lösen.</span></li>
+<li><b>Seitdem</b><span>Ich mache das weiter, weil ich damit etwas wirklich Sinnvolles tun kann: Menschen unterstützen, die Hilfe brauchen, statt reiche Leute noch reicher zu machen. Heute gilt das für {heute}.</span></li>
+</ol>
+<blockquote class="ra-q" data-r><p>Auf die Politik zu warten, hilft heute niemandem. Deshalb packen wir selbst an und retten, was wir retten können: die Pflege und unsere Wirtschaft.</p></blockquote>
+<div class="ra-card" data-r><p class="ra-ct">Steckbrief · Level 8</p>
+<ul class="ra-stats">
+<li><span>Erfahrung</span><i style="--w:100%"></i><b data-count="8" data-suf=" Jahre">8 Jahre</b></li>
+<li><span>Bewerbungen generiert</span><i style="--w:72%"></i><b data-count="500" data-suf="+">500+</b></li>
+<li><span>Fachkräfte gewonnen</span><i style="--w:46%"></i><b data-count="50" data-suf="+">50+</b></li>
+<li><span>Google-Bewertung</span><i style="--w:100%"></i><b>5,0 ★</b></li>
+<li class="ra-joke"><span>Kaffeekonsum</span><i style="--w:96%"></i><b>hoch</b></li>
+</ul></div>
+<p class="ra-line" data-r>Kein Callcenter. Kein Chatbot. Kein anonymer Agenturprozess. Nur ein Gespräch, in dem wir klären, was bei Ihnen wirklich bremst.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-cta="raphael-kurz">Kostenlos mit Raphael sprechen {ARROW}</a></div></div>
+</div></section>'''
+
+
+def partner_matthias():
+    return f'''<section class="section pm-sec" id="partner" aria-labelledby="pm-h"><div class="container pm">
+<div class="pm-head" data-r><span class="eyebrow">Wenn es eilig wird</span>
+<h2 class="h2" id="pm-h">Die Hütte brennt? <span class="gold it">Dann kommt Matthias.</span></h2></div>
+<article class="pm-card" data-r>
+<figure class="pm-photo"><img src="/assets/images/partner/matthias-manthel.webp" alt="Matthias Manthel, MPP-Recruit" width="545" height="517" loading="lazy" decoding="async"></figure>
+<div class="pm-body"><span class="pm-tag">Kooperationspartner · MPP-Recruit</span>
+<h3>Matthias Manthel</h3>
+<p>Unser enger Partner und Fachmann für Direktvermittlung. Wenn eine Stelle schnell besetzt werden muss, spricht er passende Fachkräfte direkt an. Zeitrahmen und Konditionen klärt er mit Ihnen persönlich.</p>
+<ul class="pm-chips"><li><b>8 bis 10 Wochen</b><span>üblicher Zeitrahmen laut MPP-Recruit</span></li><li><b>Direktansprache</b><span>passende Fachkräfte persönlich erreichen</span></li><li><b>Alle bisherigen Stellen besetzt</b><span>Angabe von MPP-Recruit</span></li></ul>
+</div></article>
+<div class="pm-two" data-r><div><span>Dauerhaft Bewerber gewinnen</span><b>Raphael</b><small>Planbare Bewerbungen aus Ihrer Region, Woche für Woche.</small></div>
+<i aria-hidden="true">+</i>
+<div><span>Eine dringende Stelle besetzen</span><b>Matthias</b><small>Direktansprache, wenn es schnell gehen muss.</small></div></div>
+<div class="btns" data-r style="justify-content:center"><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="partner-matthias">Dringende Stelle besprechen {ARROW}</a></div>
 </div></section>'''
 
 
@@ -473,7 +862,7 @@ def final(preset=''):
 <button class="btn btn-gold" type="submit" data-cta="form-senden">Kostenlose 15-Minuten-Analyse buchen {ARROW}</button>
 <button class="back-btn" type="button" style="background:none;border:0;color:var(--muted);margin:14px auto 0;display:block;cursor:pointer;min-height:44px">← Zurück</button></div>
 <p class="fine">Unverbindlich. Ihre Angaben nutzen wir nur für die Kontaktaufnahme – siehe <a href="/datenschutz.html">Datenschutz</a>.</p>
-<p class="alt">Lieber direkt? <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
+<p class="alt">Lieber direkt? <a href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender-alt">Termin wählen</a> · <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
 </div>
 <div class="done" role="status"><h3>Danke – WhatsApp öffnet sich.</h3><p class="done-txt"></p>
 <a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">WhatsApp-Nachricht erneut öffnen {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
@@ -482,10 +871,11 @@ def final(preset=''):
 
 def footer(cta='#analyse'):
     return f'''</main><footer class="site"><div class="container foot">
-<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p></div>
+<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p><p class="micro" style="margin-top:6px">Google Partner · Meta Business Partner</p></div>
 <nav aria-label="Fußzeile"><a href="/pflege">Pflege · Mitarbeiter</a><a href="/pflege-patienten">Pflege · Patienten</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
 </div></footer>
 <div class="mcta"><a class="btn btn-gold" href="{cta}" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
+<div class="consent" id="consent" role="dialog" aria-labelledby="consent-t" aria-modal="false" hidden><b id="consent-t">Ihre Privatsphäre</b><p>Mit Ihrer Einwilligung messen wir anonym, welche Inhalte helfen, um die Seite zu verbessern. Details in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</p><div class="consent-b"><button type="button" class="btn" data-consent="no">Ablehnen</button><button type="button" class="btn" data-consent="yes">Akzeptieren</button></div></div>
 <script src="/vendor/gsap.min.js"></script><script src="/vendor/ScrollTrigger.min.js"></script><script src="/vendor/lenis.min.js"></script><script src="/site.js"></script></body></html>'''
 
 
@@ -493,12 +883,12 @@ def footer(cta='#analyse'):
 def home():
     h = head('Digitale Gewinner – Mehr Bewerbungen. Mehr Kundenanfragen. Weniger Arbeit.',
              'Intelligente Websysteme für Pflege- und Handwerksbetriebe: passende Menschen aus Ihrer Region erreichen, Angaben erfassen und bis zum persönlichen Gespräch begleiten. Persönlich durch Raphael Hermann.',
-             '/', extra=schema(True))
+             '/', extra=schema(True) + '<link rel="preload" as="image" href="/assets/images/loops/werkstatt.webp" fetchpriority="high">')
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += problem() + triptych() + usp() + choose() + flow() + demo('home') + auto() + results() + offer() + about() + faq() + final()
+    body += partner_strip() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -529,15 +919,38 @@ BRANCH = {
 
 
 def branch(slug, c):
-    h = head(c['title'], c['lead'], '/' + slug, extra=schema(False))
+    h = head(c['title'], c['lead'], '/' + slug, extra=schema(False) + f'<link rel="preload" as="image" href="/assets/images/loops/{c["loop"]}.webp" fetchpriority="high">')
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
-    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'])
+    body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'], kunden=c['goal'] == 'Kunden')
+    if slug == 'pflege':
+        body = hero('Für Pflegebetriebe', ['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
+                    'Wir machen Ihr Haus als Arbeitgeber sichtbar – und führen passende Pflegekräfte Schritt für Schritt bis zum Gespräch.', '',
+                    f'<a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="branche-pflege"><span class="b-long">Mitarbeitergewinnung prüfen lassen</span><span class="b-short">Analyse anfragen</span> {ARROW}</a>',
+                    proof=False, wide=True, visual=adstack(), loop=c['loop'], pro=True, after=hero_case())
+    body += partner_strip()
+    if slug.startswith('pflege'):
+        body += refs_pflege()
+    if slug == 'pflege':
+        body += video_section()
     t = ''.join(f'<li>{e(i)}</li>' for i in c['ticks'])
+    _, ma, _la, ka, _lb = BRANCH_NAV[slug]
+    ot, ol = (ka, _lb) if slug == ma else (ma, _la)
+    other = f'<p class="micro" style="margin-top:18px">Stattdessen: <a class="gold" href="/{ot}">{ol} →</a></p>'
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
-<div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
-    body += photo_band(*c['band']) + (video_section(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + auto() + (cases_section(c['cases']) if c.get('cases') else '') + results(list_=False) + offer() + faq() + final(c['goal'])
-    return h + nav(False, c['theme']) + body + footer()
+<div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
+    body += meta_manager(slug) if slug in META_DATA else google_search(slug)
+    if slug == 'pflege':
+        body += stages()
+    if slug == 'handwerk-mitarbeiter':
+        body += hw_creatives()
+    if slug == 'pflege':
+        body += case_pflege()
+    if c.get('cases'):
+        body += cases_section(c['cases'])
+    body += live()
+    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
+    return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
 def outbound():
@@ -561,7 +974,13 @@ def outbound():
 </div></section></div></div>'''
     body += about().replace('id="raphael"', 'id="raphael"') + results(list_=False) + final()
     body = body.replace('<div id="ob-body">', '<div id="ob-body" data-ob>')
-    return h + nav(False).replace('data-pick="p-mit"', '').replace('href="/#ziel"', 'href="/#ziel"') + body + footer()
+    return h + nav(False) + body + footer()
+
+
+def check_page():
+    h = head('Recruiting-Check für Pflegebetriebe – Digitale Gewinner', 'In 2 Minuten sehen, wo Sie heute Bewerber verlieren: 8 Stationen, Recruiting-Score und die drei größten Hebel.', '/recruiting-check')
+    body = '<main id="main" class="theme-pflege-host"><div style="padding-top:90px">' + recruiting_check('pflege') + '</div>' + final('Mitarbeiter')
+    return h + nav(False, 'theme-pflege') + body + footer()
 
 
 def legal_page(key):
@@ -576,9 +995,27 @@ def legal_page(key):
     return h + nav(False, cta='/#analyse') + top + footer('/#analyse')
 
 
+def minify_assets():
+    """Verkleinert site.css und site.js im Ausgabeordner (nur dist, Quellen bleiben lesbar)."""
+    import re
+    css = OUT / 'site.css'
+    t = css.read_text(encoding='utf-8')
+    t = re.sub(r'/\*.*?\*/', '', t, flags=re.S)
+    t = re.sub(r'\s+', ' ', t)
+    t = re.sub(r'\s*([{};,>])\s*', r'\1', t)
+    t = t.replace(';}', '}')
+    css.write_text(t.strip(), encoding='utf-8')
+    try:
+        import rjsmin
+        js = OUT / 'site.js'
+        js.write_text(rjsmin.jsmin(js.read_text(encoding='utf-8')), encoding='utf-8')
+    except ImportError:
+        pass
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    pages = {'index.html': home(), 'analyse.html': outbound()}
+    pages = {'index.html': home(), 'analyse.html': outbound(), 'recruiting-check.html': check_page()}
     for slug, c in BRANCH.items():
         pages[f'{slug}.html'] = branch(slug, c)
     for name, content in pages.items():
@@ -598,6 +1035,7 @@ def main():
         for f in data.glob('*.json'):
             if not f.name.startswith('_'):
                 shutil.copy2(f, dest / f.name)
+    minify_assets()
     print(f'Site built: {", ".join(pages)}')
 
 
