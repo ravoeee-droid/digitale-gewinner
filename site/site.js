@@ -28,9 +28,18 @@
 
   /* ===== Nav ===== */
   var nav = $('.nav'), burger = $('.burger'), mcta = $('.mcta'), hero = $('.hero');
+  var lastY = 0;
   function onScroll() {
-    var y = window.scrollY || 0;
-    if (nav) nav.classList.toggle('scrolled', y > 30);
+    var y = Math.max(0, window.scrollY || 0);
+    if (nav) {
+      nav.classList.toggle('scrolled', y > 30);
+      /* Smart Header: beim Runterscrollen ausblenden, beim Hochscrollen wieder einblenden */
+      var dy = y - lastY;
+      if (root.classList.contains('menu-open') || y < 90 || nav.contains(d.activeElement)) nav.classList.remove('nav-hide');
+      else if (dy > 6) nav.classList.add('nav-hide');
+      else if (dy < -6) nav.classList.remove('nav-hide');
+      if (Math.abs(dy) > 6 || y < 90) lastY = y;
+    }
     if (mcta && hero) mcta.classList.toggle('show', y > hero.offsetHeight * .6);
   }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -730,4 +739,10 @@
   }
 
   build();
+})();
+
+/* Mobil: lange Listen standardmäßig eingeklappt */
+(function () {
+  if (!window.matchMedia('(max-width:860px)').matches) return;
+  document.querySelectorAll('details.cs2-before').forEach(function (d) { d.open = false; });
 })();

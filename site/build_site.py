@@ -213,7 +213,7 @@ def cases_section(cases):
                  f'<div class="cs2-big"><b data-count="{n}">{n}</b><span>{e(lab)}<small>{e(when)}</small></span></div>'
                  f'<ul class="cs2-bars" aria-label="Weg von der Bewerbung bis zur Einstellung">{bars}</ul></div>'
                  f'<div class="cs2-body"><p class="cs2-lead">{e(c["lead"])}</p>'
-                 f'<div class="cs2-before"><h4>Vorher</h4><ul>{start}</ul></div>'
+                 f'<details class="cs2-before" open><summary>Vorher: Ausgangssituation</summary><ul>{start}</ul></details>'
                  f'<blockquote class="cs2-q"><span class="cs2-qm" aria-hidden="true">“</span><p>{e(c["quote"])}</p>'
                  f'<footer><span class="av" aria-hidden="true">{e(c["who"][0])}</span><span><b>{e(c["who"])}s Fazit</b><br>{e(c["org"])}</span></footer></blockquote></div></article>')
     return (f'<section class="section cs-sec" id="fallstudien"><div class="container"><div class="cs-head" data-r><span class="eyebrow">Fallstudien</span>'
