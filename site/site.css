@@ -57,8 +57,11 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;line-he
 .nav.scrolled{padding:10px 0;background:rgba(var(--bg-rgb),.72);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);border-color:var(--line2)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.1em;font-size:.82rem;line-height:1.1}
-.brand-mark{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--gold2);border:1px solid var(--line);background:rgba(var(--ac2-rgb),.08)}
-.brand-mark svg{width:22px;height:22px}
+.brand-mark{width:46px;height:46px;display:grid;place-items:center;flex:none;filter:drop-shadow(0 4px 14px rgba(240,138,36,.35))}
+.brand-mark svg{width:100%;height:100%}
+.brand-word{display:flex;flex-direction:column;gap:3px;font-size:.92rem;letter-spacing:.07em;line-height:1}
+.brand-word b{font-weight:900}
+.brand-word .o{color:#f08a24}
 .nav-links{display:flex;gap:30px;align-items:center}
 .nav-links a:not(.btn){font-size:.93rem;color:var(--text2);position:relative;padding:6px 0}
 .nav-links a:not(.btn):after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold2);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
@@ -369,7 +372,7 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .theme-pflege .step .n{-webkit-text-stroke:1px rgba(20,105,95,.45)}
 .theme-pflege .stats div{background:linear-gradient(160deg,rgba(63,181,163,.14),#fffdf8)}
 .theme-pflege .field input{background:#fff}
-.theme-pflege .brand-mark{background:rgba(31,143,128,.1)}
+
 .theme-pflege .nav-links a:not(.btn){color:var(--text2)}
 .theme-pflege .offer{background:radial-gradient(ellipse at 50% 0,rgba(63,181,163,.2),transparent 60%),var(--bg2)}
 .theme-pflege .final{background:radial-gradient(ellipse at 50% 100%,rgba(63,181,163,.25),transparent 60%),var(--bg)}
@@ -911,7 +914,7 @@ footer.site{border-top:1px solid var(--line2);padding:54px 0 110px;color:var(--m
 .hero.pro .b-short{display:none}
 .hero.pro #net{opacity:.55}
 body.hero-dark .nav:not(.scrolled) .brand,body.hero-dark .nav:not(.scrolled) .nav-links a:not(.btn){color:#eaf7f3}
-body.hero-dark .nav:not(.scrolled) .brand-mark{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+
 body.hero-dark .nav:not(.scrolled) .burger i{background:#fff}
 body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}
 .hero.pro .scroll-hint{background:linear-gradient(#7fe0c8,transparent)}
