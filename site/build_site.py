@@ -16,8 +16,7 @@ SITE = 'https://digitalegewinner.de'
 WA = 'https://wa.me/4971134063951'
 ARROW = '<span class="arr" aria-hidden="true">→</span>'
 
-LOGO = ('<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">'
-        '<path d="M7 24V8h9c6 0 9 3 9 8s-3 8-9 8H7Z"/><path d="m11 20 4-4 3 2 6-7"/><path d="M20 11h4v4"/></svg>')
+LOGO = ('<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g fill="none" stroke="#f08a24" stroke-linejoin="round"><path d="M10 44V10h40c24 0 40 17 40 40S74 90 50 90H10V70" stroke-width="12"/><path d="M24 70 42 48 56 60 76 37" stroke-width="6.5" stroke-linecap="round"/></g><g fill="#f08a24"><circle cx="24" cy="70" r="6.5"/><circle cx="42" cy="48" r="6"/><circle cx="56" cy="60" r="6"/><path d="M86 26 83 42 71 31.5z"/></g></svg>')
 
 REVIEWS = [
     ('Julian Arndt', 'Danke an Raphael für den mega Support! Er hat es übernommen und innerhalb von 3 Tagen eine perfekte Website für uns gebaut.'),
@@ -91,6 +90,7 @@ def head(title, desc, path, noindex=False, extra=''):
             f'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
             f'<title>{e(title)}</title><meta name="description" content="{e(desc)}">{robots}{canon}{og}'
             f'<meta name="theme-color" content="#090806">'
+            f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2314171a%22/%3E%3Cg transform=%22translate%2814 14%29 scale%28.72%29%22%3E%3Cg fill=%22none%22 stroke=%22%23f08a24%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M10 44V10h40c24 0 40 17 40 40S74 90 50 90H10V70%22 stroke-width=%2212%22/%3E%3Cpath d=%22M24 70 42 48 56 60 76 37%22 stroke-width=%226.5%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg fill=%22%23f08a24%22%3E%3Ccircle cx=%2224%22 cy=%2270%22 r=%226.5%22/%3E%3Ccircle cx=%2242%22 cy=%2248%22 r=%226%22/%3E%3Ccircle cx=%2256%22 cy=%2260%22 r=%226%22/%3E%3Cpath d=%22M86 26 83 42 71 31.5z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E">'
             f'<script>document.documentElement.classList.add("js")</script>'
             f'<link rel="stylesheet" href="/site.css">{extra}</head>')
 
@@ -129,7 +129,7 @@ def nav(home, theme='', cta='#analyse', slug=None):
                  f'<a href="{p}#ergebnisse">Ergebnisse</a><a href="{p}#raphael">Über Raphael</a>')
     return f'''<body class="{theme}"><a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="nav"><div class="container nav-in">
-<a class="brand" href="{'#top' if home else '/'}" aria-label="Digitale Gewinner – Startseite"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a>
+<a class="brand" href="{'#top' if home else '/'}" aria-label="Digitale Gewinner – Startseite"><span class="brand-mark">{LOGO}</span><span class="brand-word"><b>DIGITALE</b><b class="o">GEWINNER</b></span></a>
 <nav class="nav-links" id="menu" aria-label="Hauptnavigation">
 {links}
 <a class="btn btn-gold" href="{cta}" data-cta="nav">Kostenlose Analyse</a>
@@ -871,7 +871,7 @@ def final(preset=''):
 
 def footer(cta='#analyse'):
     return f'''</main><footer class="site"><div class="container foot">
-<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span>DIGITALE GEWINNER</span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p><p class="micro" style="margin-top:6px">Google Partner · Meta Business Partner</p></div>
+<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span class="brand-word"><b>DIGITALE</b><b class="o">GEWINNER</b></span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p><p class="micro" style="margin-top:6px">Google Partner · Meta Business Partner</p></div>
 <nav aria-label="Fußzeile"><a href="/pflege">Pflege · Mitarbeiter</a><a href="/pflege-patienten">Pflege · Patienten</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
 </div></footer>
 <div class="mcta"><a class="btn btn-gold" href="{cta}" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
