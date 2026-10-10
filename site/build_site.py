@@ -139,15 +139,60 @@ def photo_band(name, alt, caption, ratio=''):
             f'<figcaption><b>{e(caption)}</b><span>Symbolbild</span></figcaption></figure></div></section>')
 
 
-def video_section(v):
+def video_card(v):
     url = f"https://fast.wistia.net/embed/iframe/{v['id']}?autoPlay=true&videoFoam=true"
-    return (f'<section class="band vid-sec" id="video"><div class="container"><div class="vid-head" data-r><span class="eyebrow">{e(v["eyebrow"])}</span>'
-            f'<h2 class="h2">{v["h2"]}</h2></div>'
-            f'<div class="vid" data-r data-embed="{url}" data-title="{e(v["title"])}">'
-            f'<a class="vid-open" href="{v["link"]}" target="_blank" rel="noopener" aria-label="{e(v["title"])} abspielen">'
+    return (f'<div class="vid" data-r data-embed="{url}" data-title="{e(v["title"])}">'
+            f'<a class="vid-open" href="https://fachkraftmarketing.de?wvideo={v["id"]}" target="_blank" rel="noopener" aria-label="{e(v["title"])} abspielen">'
             f'<img src="/assets/images/video/{v["poster"]}.webp" alt="{e(v["alt"])}" width="1280" height="720" loading="lazy" decoding="async">'
-            f'<span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span></a></div>'
+            f'<span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span></a></div>')
+
+
+def video_section(v):
+    vids = v['videos']
+    rest = ''.join(video_card(x) for x in vids[1:])
+    more = f'<div class="vid-more">{rest}</div>' if rest else ''
+    return (f'<section class="band vid-sec" id="video"><div class="container"><div class="vid-head" data-r><span class="eyebrow">{e(v["eyebrow"])}</span>'
+            f'<h2 class="h2">{v["h2"]}</h2></div>{video_card(vids[0])}{more}'
             f'<p class="micro vid-note">{e(v["note"])}</p></div></section>')
+
+
+CASES_PFLEGE = [
+    dict(org='Pflegeresidenz Rose', who='Katja',
+         lead='In nur acht Wochen erhielt Katja 22 Bewerbungen und führte dadurch 10 Bewerbungsgespräche. In dieser Zeit konnte die Pflegeresidenz 3 neue Pflegefachkräfte für sich gewinnen!',
+         figs=[('8', 'Wochen'), ('22', 'Bewerbungen'), ('10', 'Gespräche'), ('3', 'neue Pflegefachkräfte')],
+         start=['Mitarbeiter wurden knapp durch Elternzeit, Schwangerschaft und Kündigungen',
+                'Erfolglose Stellenanzeigen in Tageszeitungen, Apotheken Umschau, eBay Kleinanzeigen, Flyerwerbung',
+                'Erfolglose Social Media Kampagne mit nur zwei eingegangenen Bewerbungen',
+                'Kein Alleinstellungsmerkmal in den bisherigen Ausschreibungen'],
+         quote='Ich empfehle den Weg über die sozialen Netzwerke zu gehen, weil ich glaube, dass das gerade aktuell ist und die Leute anspricht. Einfach neue Wege gehen und neue Sachen ausprobieren. Einfach mutig sein!'),
+    dict(org='Maternus', who='Olivia',
+         lead='Nach nur 4 Monaten und einem nennenswerten Bewerbungsmarathon konnte Olivia aus 110 eingegangenen Bewerbungen selektiv 11 neue Mitarbeiter anstellen.',
+         figs=[('4', 'Monate'), ('110', 'Bewerbungen'), ('11', 'neue Mitarbeiter')],
+         start=['Beschränkten ihre Personalsuche durch normale Stellenanzeigen',
+                'Hatten bis vor der Zusammenarbeit keine Berührungspunkte mit Social Media',
+                'Fachkräftemangel wurde überwiegend mit Zeitarbeitern gedeckt'],
+         quote='Ich würde jedem raten, sich zu trauen bei Fachkraft Marketing und deren Videodreh mitzumachen und diesen Tag zu erleben, der macht einfach Spaß.'),
+    dict(org='Häusliche Krankenpflege Raik Radloff', who='Raik',
+         lead='Nicht ganz vier Wochen vergingen seitdem und Raik hat 11 persönliche Gespräche geführt und 2 neue Fachkräfte eingestellt.',
+         figs=[('< 4', 'Wochen'), ('11', 'persönliche Gespräche'), ('2', 'neue Fachkräfte')],
+         start=['Offene Stellen blieben monatelang unbesetzt',
+                'Keinerlei Erfolg über die eigene Homepage und bei Zeitungsanzeigen',
+                'Erfolglose Versuche von Mundpropaganda',
+                'Suche nach Quereinsteigern, Kontakte über Berufsschulen sowie Fort- und Weiterbildungsangebote brachten auch keine ausreichenden Ergebnisse'],
+         quote='Für uns als Pflegebetrieb ist es ein neues Gefühl, auch mal wieder selektieren zu dürfen! Das hatten wir die letzten 7 Jahre nicht mehr.'),
+]
+
+
+def cases_section(cases):
+    cards = ''
+    for c in cases:
+        figs = ''.join(f'<div><b>{e(n)}</b><span>{e(l)}</span></div>' for n, l in c['figs'])
+        start = ''.join(f'<li>{e(x)}</li>' for x in c['start'])
+        cards += (f'<article class="cs" data-r><h3 class="cs-org">{e(c["org"])}</h3><div class="cs-figs">{figs}</div>'
+                  f'<p class="cs-lead">{e(c["lead"])}</p><h4>Ausgangssituation</h4><ul class="cs-list">{start}</ul>'
+                  f'<blockquote class="cs-q"><p>„{e(c["quote"])}“</p><footer>{e(c["who"])}s Fazit</footer></blockquote></article>')
+    return (f'<section class="section" id="fallstudien"><div class="container"><div class="cs-head" data-r><span class="eyebrow">Fallstudien</span>'
+            f'<h2 class="h2">Echte Pflegebetriebe. <span class="gold it">Echte Ergebnisse.</span></h2></div><div class="cs-grid">{cards}</div></div></section>')
 
 
 def triptych():
@@ -462,9 +507,11 @@ BRANCH = {
                    h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
                    btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.'),
-                   video=dict(id='48cu4owxsl', link='https://fachkraftmarketing.de?wvideo=48cu4owxsl', poster='recruiting-pflege', eyebrow='Recruiting-Video',
-                              h2='So kann ein Video <span class="gold it">für Ihren Betrieb</span> aussehen.', title='Recruiting-Video für Pflegebetriebe',
-                              alt='Zwei Pflegekräfte schauen gemeinsam in einen Ordner im Stationszimmer', note='Videobeispiel · Beim Abspielen wird der Videoanbieter Wistia geladen.')),
+                   video=dict(eyebrow='Recruiting-Videos', h2='So können Videos <span class="gold it">für Ihren Betrieb</span> aussehen.', note='Videobeispiele · Beim Abspielen wird der Videoanbieter Wistia geladen.',
+                              videos=[dict(id='48cu4owxsl', poster='recruiting-pflege', title='Recruiting-Video: Alltag im Stationszimmer', alt='Zwei Pflegekräfte schauen gemeinsam in einen Ordner im Stationszimmer'),
+                                      dict(id='3he2cmekbh', poster='recruiting-pflege-2', title='Recruiting-Video: Team der Caritas-Kreisstelle', alt='Zwei lächelnde Pflegekräfte in roten Jacken vor dem Schild einer Caritas-Kreisstelle'),
+                                      dict(id='9b3xpgkeip', poster='recruiting-pflege-3', title='Recruiting-Video: Team vor einem Senioren- und Therapiezentrum', alt='Pflegeteam mit Fahrrädern und erhobenen Armen vor einem Senioren- und Therapiezentrum')]),
+                   cases=CASES_PFLEGE),
     'pflege-patienten': dict(title='Mehr Anfragen von Patienten und Angehörigen für Pflegebetriebe – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                              h1=['Mehr Anfragen von', 'Patienten und Angehörigen', '<span class="gold it">aus Ihrer Region.</span>'],
                              lead='Wir machen Ihre Pflegeleistungen verständlich, erreichen Pflegebedürftige und Angehörige aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
@@ -489,7 +536,7 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
-    body += photo_band(*c['band']) + (video_section(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + (video_section(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + auto() + (cases_section(c['cases']) if c.get('cases') else '') + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme']) + body + footer()
 
 
