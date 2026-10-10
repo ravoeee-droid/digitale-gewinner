@@ -170,6 +170,10 @@ def recruiting_videos(v):
 
 
 CASES_PFLEGE = [
+    dict(org='Pflegeeinrichtung mit 2.000 € Werbebudget', who='', big=('3', 'Einstellungen', 'aus den persönlichen Gesprächen'),
+         bars=[('Bewerbungen', 43), ('Einstellungen', 3)],
+         lead='So sah eine Recruiting-Kampagne für eine Pflegeeinrichtung aus: 2.000 € Werbebudget, 43 Bewerbungen und 3 Einstellungen.',
+         extra='Durchschnittlich 46 € pro Bewerbung. Das Werbebudget wurde direkt an die Plattform gezahlt.'),
     dict(org='Pflegeresidenz Rose', who='Katja', big=('3', 'neue Pflegefachkräfte', 'in nur 8 Wochen'),
          bars=[('Bewerbungen', 22), ('Gespräche', 10), ('Einstellungen', 3)],
          lead='In nur acht Wochen erhielt Katja 22 Bewerbungen und führte dadurch 10 Bewerbungsgespräche. In dieser Zeit konnte die Pflegeresidenz 3 neue Pflegefachkräfte für sich gewinnen!',
@@ -199,26 +203,47 @@ CASES_PFLEGE = [
 ]
 
 
-def cases_section(cases):
+def cases_section(cases, note=''):
     rows = ''
     for i, c in enumerate(cases, 1):
         top = max(v for _, v in c['bars'])
         bars = ''.join(
             f'<li><span class="cs2-bl">{e(l)}</span><span class="cs2-bt"><i style="--w:{max(7, round(v / top * 100))}%"></i></span><b data-count="{v}">{v}</b></li>'
             for l, v in c['bars'])
-        start = ''.join(f'<li>{e(x)}</li>' for x in c['start'])
         n, lab, when = c['big']
+        start = ''.join(f'<li>{e(x)}</li>' for x in c.get('start', []))
+        before = (f'<details class="cs2-before" open><summary>Vorher: Ausgangssituation</summary><ul>{start}</ul></details>' if start else '')
+        extra = f'<p class="cs2-extra">{e(c["extra"])}</p>' if c.get('extra') else ''
+        quote = ''
+        if c.get('quote'):
+            quote = (f'<blockquote class="cs2-q"><span class="cs2-qm" aria-hidden="true">“</span><p>{e(c["quote"])}</p>'
+                     f'<footer><span class="av" aria-hidden="true">{e(c["who"][0])}</span><span><b>{e(c["who"])}s Fazit</b><br>{e(c["org"])}</span></footer></blockquote>')
         rows += (f'<article class="cs2" data-r><div class="cs2-stat"><span class="cs2-tag">Fallstudie {i:02d}</span>'
                  f'<h3 class="cs2-org">{e(c["org"])}</h3>'
                  f'<div class="cs2-big"><b data-count="{n}">{n}</b><span>{e(lab)}<small>{e(when)}</small></span></div>'
                  f'<ul class="cs2-bars" aria-label="Weg von der Bewerbung bis zur Einstellung">{bars}</ul></div>'
-                 f'<div class="cs2-body"><p class="cs2-lead">{e(c["lead"])}</p>'
-                 f'<details class="cs2-before" open><summary>Vorher: Ausgangssituation</summary><ul>{start}</ul></details>'
-                 f'<blockquote class="cs2-q"><span class="cs2-qm" aria-hidden="true">“</span><p>{e(c["quote"])}</p>'
-                 f'<footer><span class="av" aria-hidden="true">{e(c["who"][0])}</span><span><b>{e(c["who"])}s Fazit</b><br>{e(c["org"])}</span></footer></blockquote></div></article>')
+                 f'<div class="cs2-body"><p class="cs2-lead">{e(c["lead"])}</p>{extra}{before}{quote}</div></article>')
+    note_html = f'<p class="case-src" data-r>{e(note)}</p>' if note else ''
     return (f'<section class="section cs-sec" id="fallstudien"><div class="container"><div class="cs-head" data-r><span class="eyebrow">Fallstudien</span>'
-            f'<h2 class="h2">Drei Betriebe. <span class="gold it">16 neue Mitarbeitende.</span></h2>'
-            f'<p class="lead">So sind diese Pflegebetriebe zu ihren Bewerbungen und Einstellungen gekommen.</p></div>{rows}</div></section>')
+            f'<h2 class="h2">Echte Pflegebetriebe. <span class="gold it">Echte Ergebnisse.</span></h2>'
+            f'<p class="lead">So sind diese Pflegebetriebe zu ihren Bewerbungen und Einstellungen gekommen.</p></div>{rows}{note_html}'
+            f'<div class="btns" data-r style="justify-content:center"><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="fall-analyse">Was wäre bei Ihnen möglich? {ARROW}</a></div></div></section>')
+
+
+def loom_section():
+    vid = '6bb935de242d4ea5bc711b7a26b4d8b4'
+    url = f'https://www.loom.com/embed/{vid}?autoplay=1&hide_owner=true&hide_share=true&hideEmbedTopBar=true'
+    return (f'<section class="section loom-sec" id="cockpit" aria-labelledby="loom-h"><div class="container">'
+            f'<div class="loom-head" data-r><span class="eyebrow">Das Cockpit im Video</span>'
+            f'<h2 class="h2" id="loom-h">So sehen Sie, was bei Ihnen <span class="gold it">läuft.</span></h2>'
+            f'<p class="lead">Vier Minuten, in denen ich Ihnen das Cockpit zeige: Bewerbungen, Termine, Nachfassen und Ergebnis auf einen Blick.</p></div>'
+            f'<div class="vid vid-loom" data-r data-embed="{url}" data-title="System Cockpit, Recruiting und Patientenwachstum im Blick">'
+            f'<a class="vid-open" href="https://www.loom.com/share/{vid}" target="_blank" rel="noopener" aria-label="Video zum Cockpit abspielen">'
+            f'<img src="/assets/images/video/loom-cockpit.webp" alt="Das Cockpit mit Kennzahlen zu Bewerbungen, Interviews und Anfragen" width="1280" height="698" loading="lazy" decoding="async">'
+            f'<span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span></a></div>'
+            f'<p class="micro vid-note">Demo mit Beispieldaten · Beim Abspielen wird der Videoanbieter Loom geladen.</p>'
+            f'<div class="btns" data-r style="justify-content:center"><a class="btn btn-gold" href="#analyse" data-cta="cockpit-video">Das Cockpit für unser Haus besprechen {ARROW}</a></div>'
+            f'</div></section>')
 
 
 def triptych():
@@ -286,7 +311,7 @@ def adstack():
 
 
 def hero_case():
-    return (f'<div class="hero-case" data-r><a href="#fall" data-cta="hero-fall"><span class="hc-n"><b>2.000 €</b> Budget</span><i aria-hidden="true">→</i><span class="hc-n"><b>43</b> Bewerbungen</span><i aria-hidden="true">→</i><span class="hc-n"><b>3</b> Einstellungen</span><em>Ein Fall aus der Praxis ↓</em></a>'
+    return (f'<div class="hero-case" data-r><a href="#fallstudien" data-cta="hero-fall"><span class="hc-n"><b>2.000 €</b> Budget</span><i aria-hidden="true">→</i><span class="hc-n"><b>43</b> Bewerbungen</span><i aria-hidden="true">→</i><span class="hc-n"><b>3</b> Einstellungen</span><em>Ein Fall aus der Praxis ↓</em></a>'
             '<span class="hc-who"><img src="/assets/images/raphael/raphael-hermann-portrait.webp" alt="Raphael Hermann" width="40" height="40" loading="lazy"><span>persönlich durch <strong>Raphael</strong></span></span></div>')
 
 
@@ -944,11 +969,9 @@ def branch(slug, c):
         body += stages()
     if slug == 'handwerk-mitarbeiter':
         body += hw_creatives()
-    if slug == 'pflege':
-        body += case_pflege()
     if c.get('cases'):
-        body += cases_section(c['cases'])
-    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + demo(c['demo']) + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
+        body += cases_section(c['cases'], note='Quelle: Kampagnen, die Raphael Hermann bei Fachkraftmarketing verantwortet hat; Veröffentlichung mit schriftlicher Freigabe. Es sind Einzelergebnisse und keine Garantie – Bewerbungen und Einstellungen hängen auch von Region, Angebot und Ihrer Reaktionsgeschwindigkeit ab. Das Werbebudget ist nicht Teil unseres Honorars.')
+    body += (recruiting_videos(c['video']) if c.get('video') else '') + loom_section() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
     return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
