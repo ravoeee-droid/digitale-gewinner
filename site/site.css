@@ -1129,3 +1129,24 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
  .rc-gn{background:#0f6258!important;color:#fff!important}
 }
 @media (max-width:760px){.rc-float{top:-24px}}
+
+/* ===== Raphael kurz vorgestellt ===== */
+.ra{display:grid;grid-template-columns:5fr 6fr;gap:clamp(28px,5vw,72px);align-items:center;max-width:1120px;margin:0 auto}
+.ra-photo{position:relative;margin:0;border-radius:calc(var(--r) + 14px);overflow:hidden;border:1px solid var(--line);box-shadow:0 40px 100px rgba(0,0,0,.28);aspect-ratio:800/1046}
+.ra-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.ra-sticker{position:absolute;left:clamp(14px,2.4vw,26px);bottom:clamp(14px,2.4vw,26px);transform:rotate(-3deg);padding:12px 18px;border-radius:16px;background:var(--gold);color:#16120a;font-weight:800;font-size:1rem;line-height:1.2;box-shadow:0 14px 34px rgba(0,0,0,.35);animation:rawobble 5s ease-in-out infinite}
+.ra-sticker small{display:block;font-weight:600;font-size:.76rem;opacity:.8;margin-top:2px}
+@keyframes rawobble{50%{transform:rotate(1.5deg) translateY(-3px)}}
+.ra-text .h2{font-size:clamp(2rem,4vw,3.3rem)}
+.ra-card{margin:22px 0 18px;padding:20px 22px;border-radius:20px;background:var(--panel);border:1px solid var(--line2)}
+.ra-ct{margin:0 0 14px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.ra-stats{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.ra-stats li{display:grid;grid-template-columns:178px 1fr 82px;gap:12px;align-items:center;font-size:.92rem}
+.ra-stats li span{color:var(--muted)}
+.ra-stats i{position:relative;display:block;height:8px;border-radius:99px;background:var(--line2);overflow:hidden}
+.ra-stats i:after{content:"";position:absolute;inset:0;width:var(--w);border-radius:inherit;background:linear-gradient(90deg,var(--gold3),var(--gold));transform-origin:left;animation:csbar 1.2s cubic-bezier(.2,.8,.2,1) both;animation-timeline:view();animation-range:entry 10% cover 35%}
+.ra-stats b{text-align:right;font-variant-numeric:tabular-nums}
+.ra-joke b{color:var(--gold)}
+.ra-line{color:var(--muted);margin:0 0 20px}
+@media (max-width:860px){.ra{grid-template-columns:1fr}.ra-photo{max-width:420px;margin:0 auto;aspect-ratio:4/5}.ra-stats li{grid-template-columns:1fr 74px;gap:6px 10px}.ra-stats li span{grid-column:1/-1}.ra-stats li i{grid-column:1}}
+@media (prefers-reduced-motion:reduce){.ra-sticker{animation:none}.ra-stats i:after{animation:none}}

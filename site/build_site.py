@@ -783,6 +783,26 @@ def about():
 </div></section>'''
 
 
+def raphael_kurz():
+    return f'''<section class="section ra-sec" id="raphael-kurz" aria-labelledby="ra-h"><div class="container ra">
+<figure class="ra-photo" data-r><img src="/assets/images/raphael/raphael-hermann-buero.webp" alt="Raphael Hermann, Gründer von Digitale Gewinner, im Büro mit Kaffeetasse und Pflanze" width="800" height="1046" loading="lazy" decoding="async">
+<span class="ra-sticker">Ja, wirklich er.<small>Der antwortet auch selbst.</small></span></figure>
+<div class="ra-text"><span class="eyebrow" data-r>Wer hier antwortet</span>
+<h2 class="h2" id="ra-h" data-r>Hallo, ich bin Raphael. <span class="gold it">Ich hole Ihnen Bewerber. Den Kaffee holen Sie selbst.</span></h2>
+<p class="lead" data-r>Acht Jahre Recruiting-Werbung, über 3.000 Bewerbungen und kein Callcenter: Wenn Sie schreiben, antworte ich selbst.</p>
+<div class="ra-card" data-r><p class="ra-ct">Steckbrief · Level 8</p>
+<ul class="ra-stats">
+<li><span>Erfahrung</span><i style="--w:100%"></i><b data-count="8" data-suf=" Jahre">8 Jahre</b></li>
+<li><span>Bewerbungen generiert</span><i style="--w:92%"></i><b data-count="3000" data-suf="+">3.000+</b></li>
+<li><span>Fachkräfte gewonnen</span><i style="--w:78%"></i><b data-count="500" data-suf="+">500+</b></li>
+<li><span>Google-Bewertung</span><i style="--w:100%"></i><b>5,0 ★</b></li>
+<li class="ra-joke"><span>Kaffeekonsum</span><i style="--w:96%"></i><b>hoch</b></li>
+</ul></div>
+<p class="ra-line" data-r>Kein Callcenter. Kein Chatbot. Kein anonymer Agenturprozess. Nur ein Gespräch, in dem wir klären, was bei Ihnen wirklich bremst.</p>
+<div class="btns" data-r><a class="btn btn-gold" href="#analyse" data-cta="raphael-kurz">Kostenlos mit Raphael sprechen {ARROW}</a></div></div>
+</div></section>'''
+
+
 def faq():
     items = ''.join(f'<details><summary>{e(q)}</summary><div class="a"><p>{e(a)}</p></div></details>' for q, a in FAQ)
     return f'''<section class="section" id="faq"><div class="container faq-grid">
@@ -903,7 +923,7 @@ def branch(slug, c):
     if c.get('cases'):
         body += cases_section(c['cases'])
     body += live()
-    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz() + final(c['goal'])
     return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
