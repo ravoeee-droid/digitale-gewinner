@@ -811,6 +811,24 @@ def raphael_kurz(kind='pflege'):
 </div></section>'''
 
 
+def partner_matthias():
+    return f'''<section class="section pm-sec" id="partner" aria-labelledby="pm-h"><div class="container pm">
+<div class="pm-head" data-r><span class="eyebrow">Wenn es eilig wird</span>
+<h2 class="h2" id="pm-h">Die Hütte brennt? <span class="gold it">Dann kommt Matthias.</span></h2></div>
+<article class="pm-card" data-r>
+<figure class="pm-photo"><img src="/assets/images/partner/matthias-manthel.webp" alt="Matthias Manthel, MPP-Recruit" width="545" height="517" loading="lazy" decoding="async"></figure>
+<div class="pm-body"><span class="pm-tag">Kooperationspartner · MPP-Recruit</span>
+<h3>Matthias Manthel</h3>
+<p>Unser enger Partner und Fachmann für Direktvermittlung. Wenn eine Stelle schnell besetzt werden muss, spricht er passende Fachkräfte direkt an. Zeitrahmen und Konditionen klärt er mit Ihnen persönlich.</p>
+<ul class="pm-chips"><li><b>8 bis 10 Wochen</b><span>üblicher Zeitrahmen laut MPP-Recruit</span></li><li><b>Direktansprache</b><span>passende Fachkräfte persönlich erreichen</span></li><li><b>Alle bisherigen Stellen besetzt</b><span>Angabe von MPP-Recruit</span></li></ul>
+</div></article>
+<div class="pm-two" data-r><div><span>Dauerhaft Bewerber gewinnen</span><b>Raphael</b><small>Planbare Bewerbungen aus Ihrer Region, Woche für Woche.</small></div>
+<i aria-hidden="true">+</i>
+<div><span>Eine dringende Stelle besetzen</span><b>Matthias</b><small>Direktansprache, wenn es schnell gehen muss.</small></div></div>
+<div class="btns" data-r style="justify-content:center"><a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="partner-matthias">Dringende Stelle besprechen {ARROW}</a></div>
+</div></section>'''
+
+
 def faq():
     items = ''.join(f'<details><summary>{e(q)}</summary><div class="a"><p>{e(a)}</p></div></details>' for q, a in FAQ)
     return f'''<section class="section" id="faq"><div class="container faq-grid">
@@ -931,7 +949,7 @@ def branch(slug, c):
     if c.get('cases'):
         body += cases_section(c['cases'])
     body += live()
-    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + final(c['goal'])
+    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
     return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 

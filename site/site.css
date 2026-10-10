@@ -1161,3 +1161,26 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 .ra-q{margin:24px 0 0;padding:4px 0 4px 18px;border-left:3px solid var(--gold)}
 .ra-q p{margin:0;font-family:var(--serif);font-size:clamp(1.2rem,1.8vw,1.55rem);line-height:1.4;letter-spacing:-.01em}
 @media (max-width:860px){.ra-photo{position:relative;top:0}}
+
+/* ===== Partner Matthias ===== */
+.pm{max-width:1040px;margin:0 auto}
+.pm-head{text-align:center;max-width:760px;margin:0 auto clamp(24px,4vw,44px)}
+.pm-card{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:0;border-radius:calc(var(--r) + 14px);overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:0 30px 90px rgba(0,0,0,.14)}
+.pm-photo{margin:0;position:relative;min-height:280px}
+.pm-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.pm-body{padding:clamp(22px,3.2vw,44px);display:flex;flex-direction:column;gap:12px}
+.pm-tag{align-self:flex-start;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;padding:6px 12px;border-radius:99px;background:rgba(var(--ac2-rgb),.16);color:var(--gold)}
+.pm-body h3{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3vw,2.5rem);letter-spacing:-.02em;line-height:1.1}
+.pm-body p{margin:0;color:var(--muted);line-height:1.55}
+.pm-chips{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pm-chips li{padding:14px;border-radius:16px;background:var(--panel2);border:1px solid var(--line2)}
+.pm-chips b{display:block;font-size:.98rem;line-height:1.25}
+.pm-chips span{display:block;margin-top:4px;font-size:.78rem;color:var(--muted);line-height:1.35}
+.pm-two{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(12px,2vw,24px);align-items:center;margin:clamp(20px,3vw,32px) auto;max-width:800px}
+.pm-two>div{padding:18px 20px;border-radius:18px;border:1px dashed var(--line);text-align:center}
+.pm-two span{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pm-two b{display:block;font-family:var(--serif);font-weight:400;font-size:1.6rem;margin:6px 0 4px}
+.pm-two small{color:var(--muted)}
+.pm-two i{font-style:normal;font-size:1.8rem;color:var(--gold);font-weight:700}
+@media (max-width:860px){.pm-card{grid-template-columns:1fr}.pm-photo{min-height:260px;aspect-ratio:16/10}.pm-chips{grid-template-columns:1fr}.pm-two{grid-template-columns:1fr}.pm-two i{justify-self:center}}
+.pm-two{align-items:stretch}.pm-two i{align-self:center}
