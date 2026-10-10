@@ -948,8 +948,7 @@ def branch(slug, c):
         body += case_pflege()
     if c.get('cases'):
         body += cases_section(c['cases'])
-    body += live()
-    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + compare() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
+    body += photo_band(*c['band']) + (recruiting_videos(c['video']) if c.get('video') else '') + demo(c['demo']) + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
     return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
 
 
