@@ -389,3 +389,21 @@
     }).catch(function () { setShown(false); });
   }
 })();
+
+/* Video erst auf Klick laden (Datenschutz): Vorschaubild -> Wistia-Player */
+(function () {
+  document.querySelectorAll('.vid[data-embed]').forEach(function (box) {
+    var link = box.querySelector('.vid-open');
+    if (!link) return;
+    link.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = box.getAttribute('data-embed');
+      f.title = box.getAttribute('data-title') || 'Video';
+      f.allow = 'autoplay; fullscreen; picture-in-picture';
+      f.setAttribute('allowfullscreen', '');
+      box.replaceChildren(f);
+      f.focus();
+    });
+  });
+})();

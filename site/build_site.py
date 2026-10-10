@@ -139,6 +139,17 @@ def photo_band(name, alt, caption, ratio=''):
             f'<figcaption><b>{e(caption)}</b><span>Symbolbild</span></figcaption></figure></div></section>')
 
 
+def video_section(v):
+    url = f"https://fast.wistia.net/embed/iframe/{v['id']}?autoPlay=true&videoFoam=true"
+    return (f'<section class="band vid-sec" id="video"><div class="container"><div class="vid-head" data-r><span class="eyebrow">{e(v["eyebrow"])}</span>'
+            f'<h2 class="h2">{v["h2"]}</h2></div>'
+            f'<div class="vid" data-r data-embed="{url}" data-title="{e(v["title"])}">'
+            f'<a class="vid-open" href="{v["link"]}" target="_blank" rel="noopener" aria-label="{e(v["title"])} abspielen">'
+            f'<img src="/assets/images/video/{v["poster"]}.webp" alt="{e(v["alt"])}" width="1280" height="720" loading="lazy" decoding="async">'
+            f'<span class="vid-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span></a></div>'
+            f'<p class="micro vid-note">{e(v["note"])}</p></div></section>')
+
+
 def triptych():
     items = [('pflege-pflegekraft', 'Pflegekraft hält die Hand einer älteren Dame', 'Passende Pflegekräfte', '/pflege'),
              ('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte fürs Handwerk', '/handwerk-mitarbeiter'),
@@ -450,7 +461,10 @@ BRANCH = {
     'pflege': dict(title='Mehr Bewerbungen von Pflegekräften aus Ihrer Region – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                    h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
-                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.')),
+                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.'),
+                   video=dict(id='48cu4owxsl', link='https://fachkraftmarketing.de?wvideo=48cu4owxsl', poster='recruiting-pflege', eyebrow='Recruiting-Video',
+                              h2='So kann ein Video <span class="gold it">für Ihren Betrieb</span> aussehen.', title='Recruiting-Video für Pflegebetriebe',
+                              alt='Zwei Pflegekräfte schauen gemeinsam in einen Ordner im Stationszimmer', note='Videobeispiel · Beim Abspielen wird der Videoanbieter Wistia geladen.')),
     'pflege-patienten': dict(title='Mehr Anfragen von Patienten und Angehörigen für Pflegebetriebe – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                              h1=['Mehr Anfragen von', 'Patienten und Angehörigen', '<span class="gold it">aus Ihrer Region.</span>'],
                              lead='Wir machen Ihre Pflegeleistungen verständlich, erreichen Pflegebedürftige und Angehörige aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
@@ -475,7 +489,7 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div></div></div></section>'''
-    body += photo_band(*c['band']) + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
+    body += photo_band(*c['band']) + (video_section(c['video']) if c.get('video') else '') + flow() + demo(c['demo']) + auto() + results(list_=False) + offer() + faq() + final(c['goal'])
     return h + nav(False, c['theme']) + body + footer()
 
 
