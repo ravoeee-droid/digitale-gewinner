@@ -164,7 +164,7 @@ def recruiting_videos(v):
     vids = v['videos']
     rest = ''.join(video_card(x) for x in vids[1:])
     more = f'<div class="vid-more">{rest}</div>' if rest else ''
-    return (f'<section class="band vid-sec" id="video"><div class="container"><div class="vid-head" data-r><span class="eyebrow">{e(v["eyebrow"])}</span>'
+    return (f'<section class="band vid-sec" id="recruiting-videos"><div class="container"><div class="vid-head" data-r><span class="eyebrow">{e(v["eyebrow"])}</span>'
             f'<h2 class="h2">{v["h2"]}</h2></div>{video_card(vids[0])}{more}'
             f'<p class="micro vid-note">{e(v["note"])}</p></div></section>')
 
@@ -937,7 +937,7 @@ def branch(slug, c):
     ot, ol = (ka, _lb) if slug == ma else (ma, _la)
     other = f'<p class="micro" style="margin-top:18px">Stattdessen: <a class="gold" href="/{ot}">{ol} →</a></p>'
     body += f'''<section class="section" id="ziel"><div class="container auto">
-<div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Ein vollständiger Weg <span class="gold it">bis zum Gespräch.</span></h2></div>
+<div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Damit passende Menschen <span class="gold it">wirklich bei Ihnen ankommen.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
     body += meta_manager(slug) if slug in META_DATA else google_search(slug)
     if slug == 'pflege':
