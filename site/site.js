@@ -125,6 +125,15 @@
     v.addEventListener('error', function () { v.style.display = 'none'; }, true);
   });
 
+  /* ===== Abschnitts-Loop (dezent): nur im Sichtbereich abspielen, bei reduzierter Bewegung/Mobil nur Standbild ===== */
+  $$('.sec-bg').forEach(function (v) {
+    v.addEventListener('error', function () { v.style.display = 'none'; }, true);
+    if (reduce || window.innerWidth < 700 || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else { v.pause(); } });
+    }, { threshold: .05 }).observe(v);
+  });
+
   /* ===== Hero: Intro ===== */
 
   /* ===== Hero-Canvas: Signalnetz ===== */

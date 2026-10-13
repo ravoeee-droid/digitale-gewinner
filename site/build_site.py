@@ -365,7 +365,7 @@ def partner_strip():
 
 
 def problem():
-    return '''<section class="section statement" id="problem"><div class="container">
+    return '''<section class="section statement" id="problem"><video class="sec-bg" muted loop playsinline preload="none" poster="/assets/images/loops/vertrauen.webp" aria-hidden="true" tabindex="-1"><source src="/assets/images/loops/vertrauen.webm" type="video/webm"><source src="/assets/images/loops/vertrauen.mp4" type="video/mp4"></video><div class="container">
 <span class="eyebrow" data-r>Problembewusstsein</span>
 <h2 class="big" style="margin-top:22px">Empfehlungen sind wertvoll. Planbar sind sie nicht.</h2>
 <div class="two"><p data-r>Wenn Stellen lange offen bleiben, Kundenanfragen schwanken oder Interessenten nicht konsequent bearbeitet werden, wird Wachstum vom <b>Zufall</b> abhängig.</p>
