@@ -12,6 +12,11 @@
   to = "/handwerk.html"
   status = 200
 
+[[redirects]]
+  from = "/ki-websites"
+  to = "/ki-websites.html"
+  status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
