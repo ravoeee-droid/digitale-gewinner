@@ -21,7 +21,20 @@ export const Users: CollectionConfig = {
       options: [
         { label: 'Administrator', value: 'admin' },
         { label: 'Redaktion', value: 'editor' },
+        { label: 'Kunde (Portal)', value: 'customer' },
       ],
+    },
+    {
+      name: 'managedPages',
+      label: 'Freigegebene Seiten (Kundenportal)',
+      type: 'relationship',
+      relationTo: 'pages',
+      hasMany: true,
+      admin: {
+        description:
+          'Nur für die Rolle "Kunde": welche Seiten darf dieser Kunde im Kundenportal per KI-Chat bearbeiten (als Entwurf, Veröffentlichung bleibt bei euch).',
+        condition: (data) => data?.role === 'customer',
+      },
     },
   ],
   timestamps: true,

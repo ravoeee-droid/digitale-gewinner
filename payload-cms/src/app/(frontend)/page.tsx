@@ -14,6 +14,7 @@ export default function HomePage() {
           <Link className="primary" href="/admin">
             Zum Admin-Login →
           </Link>
+          <Link href="/portal">Kundenportal →</Link>
           <a href="https://digitale-gewinner.de" target="_blank" rel="noreferrer">
             Website öffnen ↗
           </a>

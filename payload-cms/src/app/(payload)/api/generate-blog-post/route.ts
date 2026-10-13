@@ -72,7 +72,6 @@ export async function GET(request: Request) {
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: `Schreib den Blogbeitrag zum Thema: "${topic}"` },
         ],
-        temperature: 0.7,
         max_tokens: 1800,
       }),
     })
