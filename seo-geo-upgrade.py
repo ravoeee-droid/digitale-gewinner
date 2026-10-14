@@ -47,7 +47,7 @@ def faq_items(sector: dict, intent: dict) -> list[tuple[str, str]]:
 
 def schema_for(sector: dict, intent: dict, slug: str, title: str, description: str, faqs: list[tuple[str, str]]) -> dict:
     return {"@context":"https://schema.org","@graph":[
-        {"@type":"Service","@id":f"{page_url(slug)}#service","name":title,"description":description,"provider":{"@type":"Organization","name":"Digitale Gewinner","url":SITE+"/"},"areaServed":["DE","AT","CH"],"audience":{"@type":"Audience","audienceType":sector["audience"]},"serviceType":intent["label"]},
+        {"@type":"Service","@id":f"{page_url(slug)}#service","name":title,"description":description,"provider":{"@type":"Organization","name":"Digitale Gewinner","url":SITE+"/","telephone":f"+{PHONE}"},"areaServed":["DE","AT","CH"],"audience":{"@type":"Audience","audienceType":sector["audience"]},"serviceType":intent["label"]},
         {"@type":"FAQPage","@id":f"{page_url(slug)}#faq","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faqs]}
     ]}
 
@@ -216,7 +216,15 @@ def generate_pages() -> list[str]:
     return slugs
 
 def write_discovery(slugs: list[str]) -> None:
-    urls = [(SITE+"/","1.0","weekly"),(SITE+"/case-studies.html","0.8","monthly"),(SITE+"/impressum.html","0.1","yearly"),(SITE+"/datenschutz.html","0.1","yearly")]
+    urls = [
+        (SITE+"/","1.0","weekly"),
+        (SITE+"/pflege","0.9","weekly"),
+        (SITE+"/handwerk","0.9","weekly"),
+        (SITE+"/ki-websites","0.9","weekly"),
+        (SITE+"/case-studies.html","0.8","monthly"),
+        (SITE+"/impressum.html","0.1","yearly"),
+        (SITE+"/datenschutz.html","0.1","yearly"),
+    ]
     urls.extend((page_url(slug),"0.8","monthly") for slug in slugs)
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n']
     for url,priority,freq in urls:
