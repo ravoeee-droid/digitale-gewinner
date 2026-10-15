@@ -843,6 +843,13 @@ def offer():
 
 
 
+def vertrieb_teaser():
+    return f"""<section class="section" id="vertriebsbibliothek" aria-labelledby="vb-h"><div class="container vb">
+<div><span class="eyebrow" data-r>30 Einblicke</span><h2 class="h2" id="vb-h" data-r>Von der ersten Bewerbung <span class="gold it">bis zum Gespräch.</span></h2>
+<p class="lead" data-r>Cockpit-Rundgang, 80-Sekunden-Video, Praxisbeispiele, Vergleich und 2-Minuten-Check: 30 kurze Einblicke, wie ein Websystem im Alltag arbeitet.</p></div>
+<div class="btns" data-r><a class="btn btn-gold" href="/vertriebswaffen.html" data-cta="home-vertriebsbibliothek">30 Einblicke entdecken {ARROW}</a><a class="btn" href="/vertriebsbibliothek.html" data-cta="home-7-einblicke">Die 7 wichtigsten zuerst</a></div></div></section>"""
+
+
 def ablauf_garantie():
     steps = [('Kostenlose 15-Minuten-Analyse', 'Wir schauen gemeinsam, wo Sie heute Bewerber oder Kundenanfragen verlieren. Unverbindlich und ohne Verkaufsdruck.'),
              ('Persönliches Angebot', 'Raphael sagt Ihnen konkret, was gebaut wird, was es kostet und was Sie dafür bekommen. Schriftlich und verständlich.'),
@@ -1042,7 +1049,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME, timeline=True), loop='werkstatt', after=f'<p class="hero-direct" data-r>Schon sicher? <a href="#analyse" data-cta="hero-analyse">Kostenlose 15-Min-Analyse buchen {ARROW}</a></p>')
-    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + leitfaeden_home() + check() + flow() + demo('home') + compare() + results() + offer() + about() + faq() + final()
+    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + leitfaeden_home() + check() + flow() + demo('home') + compare() + results() + offer() + about() + faq() + vertrieb_teaser() + final()
     return h + nav(True) + body + footer()
 
 

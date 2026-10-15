@@ -1329,3 +1329,7 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 .gs-card .micro{margin-top:14px}
 @media (max-width:900px){.gs{grid-template-columns:1fr}}
 .gs-card p.gs-big{color:var(--cream)}.gs-card .micro{color:var(--muted)}
+
+.vb{display:grid;grid-template-columns:minmax(0,1.2fr) auto;gap:30px;align-items:center}
+.vb .btns{margin:0;justify-content:flex-end}
+@media (max-width:900px){.vb{grid-template-columns:1fr}.vb .btns{justify-content:flex-start}}
