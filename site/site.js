@@ -116,6 +116,19 @@
       window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_play', video: ev.getAttribute('data-video') || 'websystem-erklaervideo' });
     });
     ev.addEventListener('play', function () { eb.hidden = true; });
+    var chs = $$('.vid-chap button');
+    chs.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var at = Number(c.getAttribute('data-t')) || 0;
+        var go = function () { ev.currentTime = at; eb.hidden = true; ev.setAttribute('controls', ''); ev.play().catch(function () { }); };
+        if (ev.readyState === 0) { ev.addEventListener('loadedmetadata', go, { once: true }); ev.load(); } else { go(); }
+        window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_chapter', video: ev.getAttribute('data-video'), chapter: c.textContent });
+      });
+    });
+    ev.addEventListener('timeupdate', function () {
+      var cur = -1; chs.forEach(function (c, i) { if (ev.currentTime >= Number(c.getAttribute('data-t'))) cur = i; });
+      chs.forEach(function (c, i) { c.classList.toggle('on', i === cur); if (i === cur) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current'); });
+    });
     ev.addEventListener('ended', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_complete', video: ev.getAttribute('data-video') || 'websystem-erklaervideo' }); });
   }
 

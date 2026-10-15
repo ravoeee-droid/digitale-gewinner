@@ -345,8 +345,12 @@ VIDEO_HOME_TEXT = [
 ]
 
 
+VIDEO_CHAPTERS = [(0, 'Ein Dashboard'), (25, 'Mitarbeiter finden'), (32, 'Neue Kunden'), (40, 'Bewertungen'), (50, 'Telefon & Erinnerung'), (59, 'Website selbst pflegen')]
+
+
 def home_video():
     text = ''.join(f'<p>{e(t)}</p>' for t in VIDEO_HOME_TEXT)
+    chaps = ''.join(f'<button type="button" data-t="{t}"><time>{t // 60}:{t % 60:02d}</time>{e(n)}</button>' for t, n in VIDEO_CHAPTERS)
     return f'''<section class="section video-sec video-home" id="video" aria-labelledby="video-h"><div class="container">
 <div class="video-head"><span class="eyebrow" data-r>In 80 Sekunden erklärt</span>
 <h2 class="h2" id="video-h" data-r>Websites waren gestern. <span class="gold it">Ihr Websystem arbeitet mit.</span></h2>
@@ -357,6 +361,7 @@ def home_video():
 Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websysteme-erklaervideo.mp4">Video herunterladen</a>.</video>
 <button class="vid-play" type="button" aria-label="Erklärvideo abspielen (79 Sekunden, mit Untertiteln)"><span class="vid-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="vid-lab">Video ansehen<small>79 Sek. · mit Untertiteln</small></span></button></div>
 </figure>
+<div class="vid-chap" role="group" aria-label="Kapitel des Videos">{chaps}</div>
 <p class="micro vid-note">Beispieldarstellung: Alle Namen und Zahlen im Video sind Beispieldaten.</p>
 <details class="vid-tr" id="vid-tr"><summary>Video als Text lesen</summary><div>{text}</div></details>
 <div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="home-video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="home-video-mehr">Wie das System funktioniert</a></div>
@@ -955,7 +960,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME, timeline=True), loop='werkstatt', after=f'<p class="hero-direct" data-r>Schon sicher? <a href="#analyse" data-cta="hero-analyse">Kostenlose 15-Min-Analyse buchen {ARROW}</a></p>')
-    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
+    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + check() + flow() + demo('home') + compare() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 

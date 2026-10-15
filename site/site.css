@@ -1249,3 +1249,11 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 .hv-tl time{font-variant-numeric:tabular-nums;color:var(--cream);font-weight:600;margin-right:10px}
 .form-fail{margin-top:14px;padding:14px 16px;border:1px solid rgba(255,138,128,.5);border-radius:12px;font-size:.95rem}
 .form-fail a{text-decoration:underline;text-underline-offset:3px}
+
+/* Video-Kapitel */
+.vid-chap{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px auto 0;max-width:860px}
+.vid-chap button{display:inline-flex;align-items:baseline;gap:8px;min-height:44px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(var(--fg-rgb),.04);color:var(--text2);font:inherit;font-size:.92rem;cursor:pointer;transition:border-color .25s,color .25s,background .25s}
+.vid-chap button time{font-variant-numeric:tabular-nums;color:var(--gold2);font-weight:700;font-size:.8rem}
+.vid-chap button:hover{border-color:var(--gold);color:var(--cream)}
+.vid-chap button.on{border-color:var(--gold);color:var(--cream);background:rgba(var(--ac2-rgb),.16)}
+.vid-chap button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
