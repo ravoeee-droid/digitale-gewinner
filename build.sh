@@ -182,6 +182,27 @@ subprocess.run(['python3', 'render-cases.py'], check=True)
 # Relaunch: neue Startseite, Branchenseiten und Outbound-Template überschreiben die alte Startseite.
 subprocess.run(['python3', 'site/build_site.py', str(out)], check=True)
 
+# Sieben öffentlich erklärende Verkaufs-Inhalte, inklusive klar gekennzeichneter Muster-Demo.
+shutil.copy2(root / 'vertriebsbibliothek.html', out / 'vertriebsbibliothek.html')
+shutil.copy2(root / 'vertriebswaffen.html', out / 'vertriebswaffen.html')
+home = out / 'index.html'
+home_html = home.read_text(encoding='utf-8')
+library_section = """<section id="vertriebsbibliothek" style="padding:52px 0;background:#15191d;color:#fff;border-top:1px solid #364048;border-bottom:1px solid #364048">
+<div style="width:min(1100px,calc(100% - 40px));margin:auto"><span style="color:#f08a24;letter-spacing:.12em;font-weight:800;font-size:.8rem">30 VERTRIEBS-EINBLICKE</span>
+<h2 style="font-size:clamp(2rem,4vw,3rem);margin:14px 0">Von der ersten Bewerbung bis zum Gespräch – alles transparent.</h2>
+<p style="max-width:680px;color:#bec8ce">Echter Loom-Dashboard-Rundgang, 80-Sekunden-Video, Praxisbeispiele, Vergleich und 2-Minuten-Check – 30 kurze Einblicke.</p>
+<a href="/vertriebswaffen.html" style="display:inline-block;background:#f08a24;color:#17120d;font-weight:800;text-decoration:none;padding:14px 21px;border-radius:12px;margin-top:8px">30 Einblicke entdecken →</a>
+</div></section>"""
+if 'id="vertriebsbibliothek"' not in home_html:
+    if '</main>' in home_html:
+        home_html = home_html.replace('</main>', library_section + '</main>', 1)
+    elif '<footer' in home_html:
+        home_html = home_html.replace('<footer', library_section + '<footer', 1)
+    else:
+        raise SystemExit("Could not find safe position for sales library CTA")
+    home.write_text(home_html, encoding='utf-8')
+
+
 expected_images = [
     'assets/images/raphael/raphael-hermann-hero.webp',
     'assets/images/raphael/raphael-hermann-portrait.webp',
@@ -216,7 +237,7 @@ required = (
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
     'case-overview.css', 'case-overview.js',
-    'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html', 'recruiting-check.html',
+    'vertriebsbibliothek.html', 'vertriebswaffen.html', 'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html', 'recruiting-check.html',
     'vendor/gsap.min.js', 'vendor/ScrollTrigger.min.js', 'vendor/lenis.min.js',
 )
 for name in required:

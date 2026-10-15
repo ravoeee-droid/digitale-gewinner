@@ -1,0 +1,95 @@
+{
+  "name": "Digitale Gewinner – Top-7 Vertriebswaffen",
+  "description": "7 kurze persönliche Info-Mails aus 30 Vertriebsinhalten",
+  "version": 1,
+  "createdDate": "2026-10-15",
+  "locale": "de-DE",
+  "status": "draft",
+  "autoSend": false,
+  "requiresLawfulMarketingBasis": true,
+  "requiresPersonalization": true,
+  "stopOn": [
+    "reply",
+    "appointment",
+    "opt_out",
+    "rejection",
+    "invalid_email",
+    "deal_closed"
+  ],
+  "requirePerMessageUnsubscribe": true,
+  "personalizationKeys": [
+    "ANSPRECHPARTNER",
+    "KONKRETE BEOBACHTUNG",
+    "THEMA AUS GESPRÄCH",
+    "AKTUELLE STELLE",
+    "BETRIEB",
+    "BELEGTE QUELLE ODER ANZEIGE",
+    "GENANNTER ENG PASS",
+    "OFFENE STELLE"
+  ],
+  "touches": [
+    {
+      "step": 1,
+      "dayOffset": 1,
+      "weaponId": 1,
+      "subject": "Ein Gedanke zu Ihrer Karriereseite",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nBeim Blick auf [KONKRETE BEOBACHTUNG] ist mir aufgefallen, dass Ihre Bewerbungsstrecke hier möglicherweise noch Potenzial hat.\n\nDieses kurze Video zeigt ziemlich gut, warum wir nicht einfach nur Karriereseiten bauen.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-1\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-1",
+      "editorNote": "Nur verschicken, wenn der aktuell sichtbare Bewerbungsweg geprüft wurde."
+    },
+    {
+      "step": 2,
+      "dayOffset": 3,
+      "weaponId": 6,
+      "subject": "So sieht es hinter den Kulissen aus",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nSie hatten [THEMA AUS GESPRÄCH] angesprochen.\n\nIch habe den Rundgang durch unser tatsächliches Dashboard einmal verlinkt – das erklärt die Abläufe besser als eine lange E-Mail.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-6\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-6",
+      "editorNote": "Im Gespräch verankern; alternativ Original-Loom verlinken."
+    },
+    {
+      "step": 3,
+      "dayOffset": 6,
+      "weaponId": 16,
+      "subject": "Eine kleine Beispielrechnung",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nBei [AKTUELLE STELLE] wollte ich noch einen anderen Punkt mitgeben: Wie schnell werden Interessenten bei Ihnen eigentlich kontaktiert?\n\nHier können Sie verschiedene Rückmeldequoten durchrechnen. Das sind bewusst Beispieldaten und keine behaupteten Ergebnisse.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-16\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-16",
+      "editorNote": "Kein rechnerisches Ergebnis als reale Kundenkennzahl angeben."
+    },
+    {
+      "step": 4,
+      "dayOffset": 10,
+      "weaponId": 11,
+      "subject": "Zwei Beispiele aus unserer Arbeit",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nStatt Ihnen lange zu erzählen, was wir umsetzen, zeige ich Ihnen lieber die veröffentlichten Projekte.\n\nDaran sieht man ganz gut, wie wir digitale Auftritte strukturieren. Die Beispiele belegen Projektarbeit, nicht automatisch Recruiting-Einstellungen.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-11\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-11",
+      "editorNote": "Bei Interesse konkrete zwei passende Fallbeispiele manuell ergänzen."
+    },
+    {
+      "step": 5,
+      "dayOffset": 15,
+      "weaponId": 17,
+      "subject": "Eine andere Sicht auf Jobportale",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nMir ging noch durch den Kopf, dass [BETRIEB] ja bereits [BELEGTE QUELLE ODER ANZEIGE] nutzt.\n\nIch habe drei Ansätze kurz nebeneinandergestellt: Anzeige, Vermittlung und eigener Kontaktprozess. Vielleicht ist der Vergleich interessant.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-17\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-17",
+      "editorNote": "Keine pauschale negative Behauptung über Wettbewerber."
+    },
+    {
+      "step": 6,
+      "dayOffset": 22,
+      "weaponId": 9,
+      "subject": "Was sich ohne Extraaufwand vorbereiten lässt",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nIch musste beim Thema [GENANNTER ENG PASS] noch an Ihren Betrieb denken.\n\nHier sehen Sie, welche wiederkehrenden Bewerberschritte sich mit klaren Zuständigkeiten und automatischer Wiedervorlage strukturieren lassen.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-9\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-9",
+      "editorNote": "Diese Formulierung nur bei tatsächlichem Bezug auf zuvor genannten Engpass."
+    },
+    {
+      "step": 7,
+      "dayOffset": 30,
+      "weaponId": 26,
+      "subject": "Ich lasse Ihnen den Check einfach hier",
+      "body": "Hallo [ANSPRECHPARTNER],\n\nFalls die Suche nach [OFFENE STELLE] noch aktuell ist, gibt es hier einen kurzen Selbstcheck für den Bewerbungsweg.\n\nDer ist auch ohne Gespräch nützlich. Ansonsten wünsche ich Ihnen viel Erfolg bei der weiteren Suche.\n\nhttps://digitalegewinner.de/vertriebswaffen.html#waffe-26\n\nViele Grüße\nRaphael",
+      "url": "https://digitalegewinner.de/vertriebswaffen.html#waffe-26",
+      "editorNote": "Automatische Sequenz nach dieser Nachricht beenden."
+    }
+  ]
+}
