@@ -330,6 +330,46 @@ Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websystem-erk
 </div></section>'''
 
 
+VIDEO_HOME_TEXT = [
+    'Websites waren gestern. Die Zukunft sind intelligente Websysteme: ein Dashboard, das für Ihr Unternehmen arbeitet.',
+    'Heute jonglieren Sie mit Agenturen, Anzeigen, Telefon und Zetteln, und trotzdem geht immer etwas verloren.',
+    'Ein System, ein Dashboard. Hier läuft alles zusammen, kinderleicht bedienbar und ganz ohne Abhängigkeit von einer Agentur.',
+    'Stelle offen? Ein Klick, und sie erscheint auf Facebook und Instagram, bei allen Fachkräften in Ihrer Umgebung.',
+    'Wird ein Platz frei oder ist im Auftragsbuch Luft, findet das System neue Patienten und neue Aufträge bei Google.',
+    'Zufriedene Kunden werden zur Google-Bewertung eingeladen. Unzufriedene landen auf einer eigenen Seite, wo Sie zuhören, bevor es öffentlich wird.',
+    'Das System erinnert Sie rechtzeitig, erledigt Wiederkehrendes von allein und nimmt das Telefon ab, wenn es zu viel wird oder niemand mehr im Büro ist.',
+    'Und Ihre Website pflegen Sie selbst: ein paar Fotos, zwei Sätze, und die KI schreibt in zwei Minuten einen fertigen Beitrag.',
+    'Es wächst mit Ihrem Unternehmen. Fordern Sie jetzt Ihre kostenlose Demo an und sehen Sie, wie Ihr System bei Ihnen aussieht.',
+]
+
+
+def home_video():
+    text = ''.join(f'<p>{e(t)}</p>' for t in VIDEO_HOME_TEXT)
+    return f'''<section class="section video-sec video-home" id="video" aria-labelledby="video-h"><div class="container">
+<div class="video-head"><span class="eyebrow" data-r>In 80 Sekunden erklärt</span>
+<h2 class="h2" id="video-h" data-r>Websites waren gestern. <span class="gold it">Ihr Websystem arbeitet mit.</span></h2>
+<p class="lead" data-r>Ein Dashboard für Mitarbeiter- und Kundengewinnung, Bewertungen, Telefon und Website: so sieht das System in der Praxis aus.</p></div>
+<figure class="vid" data-r><div class="vid-frame">
+<video id="expl" data-video="websysteme-erklaervideo" controls preload="none" playsinline poster="/assets/video/websysteme-erklaervideo-poster.webp" width="1920" height="1080" aria-describedby="vid-tr">
+<source src="/assets/video/websysteme-erklaervideo.mp4" type="video/mp4">
+Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websysteme-erklaervideo.mp4">Video herunterladen</a>.</video>
+<button class="vid-play" type="button" aria-label="Erklärvideo abspielen (79 Sekunden, mit Untertiteln)"><span class="vid-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="vid-lab">Video ansehen<small>79 Sek. · mit Untertiteln</small></span></button></div>
+</figure>
+<p class="micro vid-note">Beispieldarstellung: Alle Namen und Zahlen im Video sind Beispieldaten.</p>
+<details class="vid-tr" id="vid-tr"><summary>Video als Text lesen</summary><div>{text}</div></details>
+<div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="home-video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="home-video-mehr">Wie das System funktioniert</a></div>
+</div></section>'''
+
+
+def video_schema():
+    v = {"@context": "https://schema.org", "@type": "VideoObject",
+         "name": "Websites waren gestern: Das Websystem für Mitarbeiter- und Kundengewinnung",
+         "description": "Erklärvideo: Ein Dashboard für Mitarbeiter- und Kundengewinnung, Bewertungen, Telefon und Website. Alle Namen und Zahlen im Video sind Beispieldaten.",
+         "thumbnailUrl": f"{SITE}/assets/video/websysteme-erklaervideo-poster.webp", "uploadDate": "2026-10-15", "duration": "PT1M19S",
+         "contentUrl": f"{SITE}/assets/video/websysteme-erklaervideo.mp4", "inLanguage": "de"}
+    return f'<script type="application/ld+json">{json.dumps(v, ensure_ascii=False)}</script>'
+
+
 def case_pflege():
     return f'''<section class="section case-sec" id="fall" aria-labelledby="fall-h"><div class="container">
 <div class="case-head"><span class="eyebrow" data-r>Ergebnis aus der Praxis · Pflege</span>
@@ -908,12 +948,12 @@ def footer(cta='#analyse'):
 def home():
     h = head('Digitale Gewinner – Mehr Bewerbungen. Mehr Kundenanfragen. Weniger Arbeit.',
              'Intelligente Websysteme für Pflege- und Handwerksbetriebe: passende Menschen aus Ihrer Region erreichen, Angaben erfassen und bis zum persönlichen Gespräch begleiten. Persönlich durch Raphael Hermann.',
-             '/', extra=schema(True) + '<link rel="preload" as="image" href="/assets/images/loops/werkstatt.webp" fetchpriority="high">')
+             '/', extra=schema(True) + video_schema() + '<link rel="preload" as="image" href="/assets/images/loops/werkstatt.webp" fetchpriority="high">')
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += partner_strip() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
+    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 

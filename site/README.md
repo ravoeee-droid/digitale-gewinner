@@ -4,6 +4,7 @@ Quelle der neuen Seiten: `build_site.py` (Copy + Markup), `site.css`, `site.js`,
 `bash build.sh` erzeugt daraus `dist/`: `index.html`, `pflege.html`, `handwerk-mitarbeiter.html`, `handwerk-kunden.html`, `analyse.html`.
 
 ## Offen / zu bestätigen
+- **Startseiten-Erklärvideo (`home_video()`, `assets/video/websysteme-erklaervideo.mp4`):** Aussagen im Video noch zu bestätigen: Telefon-Assistent, Bewertungsschleuse (zufriedene zu Google, unzufriedene auf eigene Seite), „KI schreibt in zwei Minuten einen Beitrag", „ohne Abhängigkeit von einer Agentur". Das Video endet mit „kostenlose Demo anfordern", der Button darunter lautet „Kostenlose 15-Min-Analyse": Angebot vereinheitlichen. Alle Namen und Zahlen im Video sind Beispieldaten (auf der Seite gekennzeichnet). Video ohne Firmenlogo und Kontakt am Ende.
 - Kalender: Google-Terminlink ist als Button eingebunden (kein Embed möglich). Formular öffnet direkt WhatsApp.
 - Aktuelle Anzahl der Google-Rezensionen (aktuell 9 laut bisherigem Schema), Belegbarkeit „200.000 €+“.
 - Echte Kundenfälle/-zitate (Case-Template erst einbauen, wenn belegt). Die 90-%-Aussage ist bewusst NICHT verwendet.

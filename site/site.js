@@ -113,10 +113,10 @@
     ev.removeAttribute('controls');
     eb.addEventListener('click', function () {
       eb.hidden = true; ev.setAttribute('controls', ''); ev.play().catch(function () { eb.hidden = false; ev.removeAttribute('controls'); });
-      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_play', video: 'websystem-erklaervideo' });
+      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_play', video: ev.getAttribute('data-video') || 'websystem-erklaervideo' });
     });
     ev.addEventListener('play', function () { eb.hidden = true; });
-    ev.addEventListener('ended', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_complete', video: 'websystem-erklaervideo' }); });
+    ev.addEventListener('ended', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_complete', video: ev.getAttribute('data-video') || 'websystem-erklaervideo' }); });
   }
 
   /* ===== Hero-Loop: bei reduzierter Bewegung anhalten ===== */
