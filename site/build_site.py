@@ -4,6 +4,7 @@
 Aufruf: python3 site/build_site.py <ausgabeordner>
 Copy-Quelle ist der vom Auftraggeber freigegebene Text – hier keine neuen Fakten ergänzen.
 """
+import os
 import html as H
 import json
 import shutil
@@ -86,7 +87,7 @@ def head(title, desc, path, noindex=False, extra=''):
     og = '' if noindex else (f'<meta property="og:type" content="website"><meta property="og:title" content="{e(title)}">'
                              f'<meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{SITE}{path}">'
                              f'<meta property="og:image" content="{SITE}/assets/images/raphael/raphael-hermann-hero.webp">')
-    return (f'<!doctype html><html lang="de" data-gtm=""><head><meta charset="utf-8">'
+    return (f'<!doctype html><html lang="de" data-gtm="{e(os.environ.get('DG_GTM_ID', ''))}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
             f'<title>{e(title)}</title><meta name="description" content="{e(desc)}">{robots}{canon}{og}'
             f'<meta name="theme-color" content="#090806">'
@@ -254,7 +255,7 @@ def triptych():
     return f'<section class="band"><div class="container"><div class="tps">{cards}</div><p class="micro" style="text-align:right">Symbolbilder</p></div></section>'
 
 
-def hero_visual(items, title='Ihr Kontakt-Cockpit'):
+def hero_visual(items, title='Ihr Kontakt-Cockpit', timeline=False):
     cards = ''
     labels = ['Angaben erfasst', 'Bestätigung gesendet', 'Erinnerung geplant', 'Termin vorbereitet']
     for i, (role, meta, lvl) in enumerate(items):
@@ -264,7 +265,8 @@ def hero_visual(items, title='Ihr Kontakt-Cockpit'):
                   f'<span class="hv-chip">{labels[lvl - 1]}</span></div>')
     return (f'<aside class="hv" aria-label="Beispielansicht: So landen Kontakte bei Ihnen"><div class="hv-bar"><span class="hv-live"></span>{e(title)}<em>Beispielansicht</em></div>'
             f'<div class="hv-list">{cards}</div>'
-            f'<div class="hv-foot">Alles vorbereitet – <b>Sie führen nur noch das Gespräch.</b></div></aside>')
+            + ('<ul class="hv-tl"><li><time>03:12</time>Bewerbung geht ein, Angaben sind erfasst</li><li><time>03:12</time>Bestätigung ist raus</li><li><time>07:30</time>Terminvorschlag liegt im Cockpit bereit</li></ul>' if timeline else '')
+            + f'<div class="hv-foot">Alles vorbereitet – <b>Sie führen nur noch das Gespräch.</b></div></aside>')
 
 
 VIS_HOME = [('Pflegefachkraft (m/w/d)', '8 km entfernt', 4), ('Elektroniker (m/w/d)', '12 km entfernt', 3), ('Anfrage: Badumbau', '6 km entfernt', 2), ('Pflegehelfer (m/w/d)', '15 km entfernt', 1)]
@@ -705,7 +707,7 @@ def meta_manager(slug):
 {ad_visual}
 <div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div></div>
 </div>
-<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Bewerbungen</th><th>Kosten pro Bewerbung</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th><span class="sr" style="position:absolute;left:-9999px">Auswahl</span></th><th><span class="sr" style="position:absolute;left:-9999px">Status</span></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Bewerbungen</th><th>Kosten pro Bewerbung</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
 </div></div>
 </div>
 <ul class="tool-pts" data-r><li>Zielgruppe nach Region und Interessen</li><li>Anzeigen mit Bild oder Video</li><li>Einfacher Kontakt – auf Wunsch ohne Lebenslauf</li><li>Laufende Auswertung und Optimierung</li></ul>
@@ -733,7 +735,7 @@ def google_search(slug):
 <div class="mg-tabs"><b class="on">Übersicht</b><b>Kampagnen</b><b>Keywords</b><b>Ziele</b><span class="dtp">Letzte 30 Tage{ico('chev')}</span></div>
 <div class="kp-row">{kp}</div>
 <div class="mg-chart"><div class="mg-cl"><b>Anfragen im Zeitverlauf</b><small>Verlauf · Beispieldarstellung</small></div>{chart([14, 20, 18, 30, 28, 42, 38, 55, 52, 66, 72, 84], 'goog')}</div>
-<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th>Kampagne</th><th>Status</th><th>Budget</th><th>Klicks</th><th class="hide-s">Impressionen</th><th>Anfragen</th></tr></thead><tbody>{camps}</tbody></table></div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th><span class="sr" style="position:absolute;left:-9999px">Auswahl</span></th><th>Kampagne</th><th>Status</th><th>Budget</th><th>Klicks</th><th class="hide-s">Impressionen</th><th>Anfragen</th></tr></thead><tbody>{camps}</tbody></table></div>
 </div></div></div>
 <div class="serp-lbl" data-r><b>So erscheint Ihr Angebot bei der Suche</b></div>
 <div class="tool-grid one" data-r>
@@ -923,14 +925,14 @@ def final(preset=''):
 <div class="s2" hidden><h3>Wohin dürfen wir uns melden?</h3>
 <div class="field"><label for="f-name">Ihr Name</label><input id="f-name" name="name" autocomplete="name" required></div>
 <div class="field"><label for="f-contact">Telefon oder E-Mail</label><input id="f-contact" name="contact" autocomplete="tel" inputmode="text" required></div>
-<p class="err err2" role="alert"></p>
+<p class="err err2" role="alert"></p><div class="form-fail" role="alert" hidden></div>
 <button class="btn btn-gold" type="submit" data-cta="form-senden">Kostenlose 15-Minuten-Analyse buchen {ARROW}</button>
 <button class="back-btn" type="button" style="background:none;border:0;color:var(--muted);margin:14px auto 0;display:block;cursor:pointer;min-height:44px">← Zurück</button></div>
 <p class="fine">Unverbindlich. Ihre Angaben nutzen wir nur für die Kontaktaufnahme – siehe <a href="/datenschutz.html">Datenschutz</a>.</p>
 <p class="alt">Lieber direkt? <a href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender-alt">Termin wählen</a> · <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
 </div>
-<div class="done" role="status"><h3>Danke – WhatsApp öffnet sich.</h3><p class="done-txt"></p>
-<a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">WhatsApp-Nachricht erneut öffnen {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
+<div class="done" role="status"><h3>Danke, Ihre Anfrage ist angekommen.</h3><p class="done-txt"></p>
+<a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">Zusätzlich per WhatsApp schreiben {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
 </form></div></section>'''
 
 
@@ -952,7 +954,7 @@ def home():
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
-                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
+                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME, timeline=True), loop='werkstatt', after=f'<p class="hero-direct" data-r>Schon sicher? <a href="#analyse" data-cta="hero-analyse">Kostenlose 15-Min-Analyse buchen {ARROW}</a></p>')
     body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
     return h + nav(True) + body + footer()
 

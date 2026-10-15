@@ -443,13 +443,23 @@
       var link = $('.wa-link', form);
       var msg = 'Hallo Raphael, ich möchte die kostenlose 15-Minuten-Analyse.\n\nName: ' + name + '\nKontakt: ' + contact + '\nZiel: ' + goal;
       var wa = WA + '?text=' + encodeURIComponent(msg);
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() }).catch(function () { });
-      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'lead_submit', goal: goal });
-      form.classList.add('sent');
-      link.href = wa;
-      $('.done-txt', form).textContent = 'Senden Sie die vorbereitete Nachricht in WhatsApp ab. Oder wählen Sie direkt einen freien Termin im Kalender.';
-      window.open(wa, '_blank', 'noopener');
-      form.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      var fail = $('.form-fail', form); fail.hidden = true;
+      window.dataLayer = window.dataLayer || [];
+      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); })
+        .then(function () {
+          window.dataLayer.push({ event: 'lead_submit', goal: goal });
+          form.classList.add('sent');
+          link.href = wa;
+          $('.done-txt', form).textContent = 'Wir melden uns persönlich bei Ihnen. Wenn es schneller gehen soll, wählen Sie direkt einen freien Termin im Kalender oder schreiben Sie uns zusätzlich per WhatsApp.';
+          form.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        })
+        .catch(function () {
+          window.dataLayer.push({ event: 'lead_error', goal: goal });
+          btn.disabled = false;
+          fail.innerHTML = 'Das Senden hat nicht geklappt, Ihre Angaben sind noch nicht bei uns. Bitte schreiben Sie uns direkt: <a href="' + wa + '" target="_blank" rel="noopener">WhatsApp mit vorbereiteter Nachricht</a> oder rufen Sie an unter <a href="tel:+4971134063951">+49 711 34063951</a>.';
+          fail.hidden = false;
+        });
     });
   }
 
