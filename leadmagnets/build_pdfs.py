@@ -9,6 +9,27 @@ OUT_PDF = REPO / 'assets' / 'downloads'
 OUT_IMG = REPO / 'assets' / 'images' / 'leadmagnets'
 TMP = ROOT / '_tmp'
 PORTRAIT = (REPO / 'assets/images/raphael/raphael-hermann-portrait.webp').as_uri()
+IMG = (REPO / 'assets/images/photos')
+PHOTOS = {
+    'pflege-benefits': ('pflege-team', ['pflege-pflegekraft', 'pflege-portrait', 'pflege-team', 'pflege-pflegekraft', 'pflege-portrait'], ['50% 35%', '50% 25%', '30% 40%', '70% 40%', '50% 15%']),
+    'pflege-angehoerige': ('pflege-pflegekraft', ['pflege-team', 'pflege-portrait', 'pflege-pflegekraft', 'pflege-team', 'pflege-portrait'], ['50% 35%', '50% 20%', '40% 45%', '70% 40%', '50% 10%']),
+    'handwerk-benefits': ('hw-elektriker', ['hw-werkstatt', 'hw-dachdecker', 'hw-elektriker', 'kunden-beratung', 'hw-werkstatt'], ['50% 40%', '50% 40%', '30% 40%', '50% 35%', '75% 40%']),
+    'handwerk-anfragen': ('kunden-beratung', ['kunden-paar', 'hw-elektriker', 'hw-dachdecker', 'hw-werkstatt', 'kunden-beratung'], ['50% 35%', '60% 40%', '50% 40%', '40% 40%', '30% 35%']),
+}
+def prep(name):
+    from PIL import Image, ImageEnhance
+    d = TMP / 'img'; d.mkdir(parents=True, exist_ok=True)
+    out = d / (name + '.jpg')
+    if not out.exists():
+        im = Image.open(IMG / (name + '.webp')).convert('RGB')
+        im.thumbnail((1500, 1500))
+        im = ImageEnhance.Color(im).enhance(.82); im = ImageEnhance.Contrast(im).enhance(1.06); im = ImageEnhance.Brightness(im).enhance(.9)
+        im.save(out, 'JPEG', quality=78, optimize=True)
+    return out
+
+def photo(name, pos, h):
+    return f'<div class="photo" style="height:{h}%;background-image:url({prep(name).as_uri()});background-position:{pos}"></div><div class="photofade" style="height:{h}%"></div>'
+
 PHONE, WA, CAL, WEB = '+49 711 34063951', 'https://wa.me/4971134063951', 'https://calendar.app.google/jZqwYfHqfjufkFmx5', 'https://digitalegewinner.de'
 MODS = ['content_pflege_mit', 'content_pflege_kun', 'content_hw_mit', 'content_hw_kun']
 e = html.escape
@@ -43,6 +64,10 @@ body{font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:var(--ink);font-s
 .cover .meta{margin-top:12mm;padding-top:6mm;border-top:.6pt solid rgba(241,206,132,.35);display:flex;justify-content:space-between;align-items:flex-end;font-size:8pt;color:#a99d8b;letter-spacing:.04em}
 .cover .meta strong{display:block;color:var(--cream);font-size:9.4pt;letter-spacing:0}
 .cover .badge{margin-top:8mm;align-self:flex-start;border:.8pt solid var(--gold);color:var(--gold2);border-radius:99px;padding:2mm 5mm;font-size:7.4pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+/* Fotos */
+.photo{position:absolute;left:0;right:0;top:0;background-size:cover;background-repeat:no-repeat}
+.photofade{position:absolute;left:0;right:0;top:0;background:linear-gradient(180deg,rgba(9,8,6,.55) 0,rgba(9,8,6,.05) 28%,rgba(9,8,6,.35) 62%,#090806 100%),linear-gradient(135deg,rgba(216,166,72,.20),transparent 55%)}
+.cover .in,.open .in{z-index:2}
 /* Intro */
 .intro h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:30pt;line-height:1.02;margin:5mm 0 7mm}
 .intro p{max-width:150mm;margin-bottom:4mm;font-size:10.2pt;color:#3a3228}
@@ -129,7 +154,8 @@ def render_html(doc):
     cats = doc['cats']
     # Cover
     t = doc['title']
-    pages.append(f'''<section class="page cover dark"><div class="glow"></div><div class="rules"></div><div class="in">{brand()}
+    ph = PHOTOS[doc['slug']]
+    pages.append(f'''<section class="page cover dark"><div class="glow"></div><div class="rules"></div>{photo(ph[0], '50% 35%', 56)}<div class="in">{brand()}
 <h1>{e(t[0])}<br>{e(t[1])}<br><em>{e(t[2])}</em></h1>
 <p class="sub">{e(doc['sub'])}</p><span class="badge">Kostenloser Leitfaden · Stand Oktober 2026</span>
 <div class="meta"><div><strong>Raphael Hermann</strong>Digitale Gewinner</div><div>{e(doc['audience'])}</div></div></div></section>''')
@@ -143,7 +169,7 @@ def render_html(doc):
     k = 0
     for ci, (cname, ctag, items) in enumerate(cats):
         lst = ''.join(f'<li><span>{k + j + 1:02d}</span>{e(it[0])}</li>' for j, it in enumerate(items))
-        pages.append(f'''<section class="page open dark"><div class="glow" style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 100% 0%,rgba(216,166,72,.22),transparent 60%)"></div><div class="in">{brand()}
+        pages.append(f'''<section class="page open dark">{photo(ph[1][ci], ph[2][ci], 46)}<div class="in">{brand()}
 <div class="no">{ci + 1:02d}</div><h2>{e(cname)}</h2><p class="tag">{e(ctag)}</p><ul>{lst}</ul></div>{foot(doc, pn)}</section>''')
         pn += 1
         blocks = ''
