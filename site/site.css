@@ -1311,3 +1311,21 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 .seo-links a{padding:11px 16px;min-height:44px;display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;font-size:.92rem;transition:border-color .25s,color .25s}
 .seo-links a:hover{border-color:var(--gold2);color:var(--gold2)}
 @media (max-width:900px){.seo-grid,.seo-two{grid-template-columns:1fr}.seo-hero{padding-top:120px}}
+
+/* Ablauf und Zufriedenheitsgarantie, Vertriebsbibliothek-Teaser */
+.gs{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(26px,5vw,70px);align-items:start}
+.gs-steps{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:0}
+.gs-steps li{display:grid;grid-template-columns:54px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--line)}
+.gs-steps li:last-child{border-bottom:1px solid var(--line)}
+.gs-n{font-family:var(--serif);font-size:2.4rem;line-height:1;color:var(--gold2)}
+.gs-steps h3{font-family:var(--serif);font-weight:400;font-size:1.45rem;margin-bottom:6px}
+.gs-steps p{color:var(--muted)}
+.gs-card{border:1px solid rgba(var(--ac-rgb),.4);border-radius:calc(var(--r) + 6px);background:linear-gradient(160deg,rgba(var(--ac2-rgb),.14),rgba(var(--panel-rgb),.9));padding:clamp(24px,3vw,38px);box-shadow:0 40px 110px rgba(0,0,0,var(--sh))}
+.gs-seal{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--ac2-rgb),.18);border:1px solid var(--gold);color:var(--gold2);margin-bottom:18px}
+.gs-seal svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.gs-card h3{font-size:.78rem;font-family:var(--sans);font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2);margin-bottom:10px}
+.gs-big{font-family:var(--serif);font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.12;margin-bottom:14px}
+.gs-card p{color:var(--muted)}
+.gs-card .micro{margin-top:14px}
+@media (max-width:900px){.gs{grid-template-columns:1fr}}
+.gs-card p.gs-big{color:var(--cream)}.gs-card .micro{color:var(--muted)}

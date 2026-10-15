@@ -839,7 +839,23 @@ def offer():
 <ul class="ticks">{t}</ul>
 <a class="btn btn-gold" href="#analyse" data-cta="angebot">Einführungspartnerschaft prüfen {ARROW}</a>
 <div class="offer-foot"><span>Nach Abschluss der zehn Einführungspartnerschaften beginnt der reguläre, erweiterte Systemaufbau bei 14.900 € netto.</span><span>Keine durchgestrichenen Fantasiepreise, kein künstlicher Countdown.</span></div></div>
-</div></section>'''
+</div></section>''' + ablauf_garantie()
+
+
+
+def ablauf_garantie():
+    steps = [('Kostenlose 15-Minuten-Analyse', 'Wir schauen gemeinsam, wo Sie heute Bewerber oder Kundenanfragen verlieren. Unverbindlich und ohne Verkaufsdruck.'),
+             ('Persönliches Angebot', 'Raphael sagt Ihnen konkret, was gebaut wird, was es kostet und was Sie dafür bekommen. Schriftlich und verständlich.'),
+             ('Aufbau und Start', 'Ihr Websystem wird gebaut und begleitet. Anfragen und Bewerbungen laufen im Cockpit zusammen, Sie führen die Gespräche.')]
+    li = ''.join(f'<li data-r><span class="gs-n">{i + 1}</span><div><h3>{e(a)}</h3><p>{e(b)}</p></div></li>' for i, (a, b) in enumerate(steps))
+    return f"""<section class="section" id="start" aria-labelledby="start-h"><div class="container gs">
+<div><span class="eyebrow" data-r>So starten wir</span><h2 class="h2" id="start-h" data-r>Drei Schritte. <span class="gold it">Ohne Risiko für Sie.</span></h2>
+<ol class="gs-steps">{li}</ol></div>
+<div class="gs-card" role="group" data-r aria-labelledby="gs-h"><span class="gs-seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.4 3 8.1 7.5 9.5 4.5-1.4 7.5-5.1 7.5-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+<h3 id="gs-h">Zufriedenheitsgarantie</h3>
+<p class="gs-big">Gefällt Ihnen unsere Arbeit nicht, bekommen Sie Ihr Honorar zurück.</p>
+<p>Wir wollen kein Geld für Arbeit, die Ihnen nicht gefällt. Die Konditionen besprechen wir offen im Angebot und halten sie schriftlich fest.</p>
+<p class="micro">Gemeint ist Ihre Zufriedenheit mit unserer Leistung. Ergebnisse wie Bewerbungen oder Anfragen hängen auch von Markt, Angebot und Ihrer Reaktionsgeschwindigkeit ab. Werbebudget ist nicht Teil des Honorars und geht direkt an die Werbeplattformen.</p></div></div></section>"""
 
 
 def about():
@@ -1184,7 +1200,7 @@ def seo_pages(out):
 <section class="section seo-sec"><div class="container"><h2 class="h2" data-r>Was hier <span class="gold it">anders gemacht wird.</span></h2><div class="seo-grid">{cards}</div></div></section>
 <section class="section seo-sec"><div class="container seo-two"><div><span class="eyebrow" data-r>Branchenlogik</span><h2 class="h2" data-r>Für {e(sector["audience"])} gebaut.</h2><p data-r>{e(sector["example"])}</p>
 <ul class="ticks" data-r><li>{e(sector["proof"])}</li><li>Mobile-first und ohne unnötige technische Last.</li><li>Klare Messpunkte für Suchsichtbarkeit, Klicks und Leads.</li></ul></div>
-<aside class="seo-box" data-r><h3>Das wirtschaftliche Ziel</h3><p>{e(sector["outcome"].capitalize())}.</p><p class="micro">Keine Ergebnisgarantie: SEO und Leadzahlen hängen unter anderem von Markt, Angebot, Wettbewerb, Reputation und Vertriebsprozess ab.</p></aside></div></section>
+<div class="seo-box" data-r><h3>Das wirtschaftliche Ziel</h3><p>{e(sector["outcome"].capitalize())}.</p><p class="micro">Keine Ergebnisgarantie: SEO und Leadzahlen hängen unter anderem von Markt, Angebot, Wettbewerb, Reputation und Vertriebsprozess ab.</p></div></div></section>
 {lm}
 <section class="section seo-sec"><div class="container seo-two"><div><span class="eyebrow" data-r>Schneller Rechner</span><h2 class="h2" data-r>Wie viel kann bessere Conversion wert sein?</h2>
 <p data-r>Einfach vorhandenen Website-Traffic und einen realistischen Leadwert einsetzen. Der Rechner ist eine Szenario-Schätzung, keine Prognose.</p></div>
