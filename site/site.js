@@ -113,10 +113,23 @@
     ev.removeAttribute('controls');
     eb.addEventListener('click', function () {
       eb.hidden = true; ev.setAttribute('controls', ''); ev.play().catch(function () { eb.hidden = false; ev.removeAttribute('controls'); });
-      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_play', video: 'websystem-erklaervideo' });
+      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_play', video: ev.getAttribute('data-video') || 'websystem-erklaervideo' });
     });
     ev.addEventListener('play', function () { eb.hidden = true; });
-    ev.addEventListener('ended', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_complete', video: 'websystem-erklaervideo' }); });
+    var chs = $$('.vid-chap button');
+    chs.forEach(function (c) {
+      c.addEventListener('click', function () {
+        var at = Number(c.getAttribute('data-t')) || 0;
+        var go = function () { ev.currentTime = at; eb.hidden = true; ev.setAttribute('controls', ''); ev.play().catch(function () { }); };
+        if (ev.readyState === 0) { ev.addEventListener('loadedmetadata', go, { once: true }); ev.load(); } else { go(); }
+        window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_chapter', video: ev.getAttribute('data-video'), chapter: c.textContent });
+      });
+    });
+    ev.addEventListener('timeupdate', function () {
+      var cur = -1; chs.forEach(function (c, i) { if (ev.currentTime >= Number(c.getAttribute('data-t'))) cur = i; });
+      chs.forEach(function (c, i) { c.classList.toggle('on', i === cur); if (i === cur) c.setAttribute('aria-current', 'true'); else c.removeAttribute('aria-current'); });
+    });
+    ev.addEventListener('ended', function () { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'video_complete', video: ev.getAttribute('data-video') || 'websystem-erklaervideo' }); });
   }
 
   /* ===== Hero-Loop: bei reduzierter Bewegung anhalten ===== */
@@ -443,15 +456,60 @@
       var link = $('.wa-link', form);
       var msg = 'Hallo Raphael, ich möchte die kostenlose 15-Minuten-Analyse.\n\nName: ' + name + '\nKontakt: ' + contact + '\nZiel: ' + goal;
       var wa = WA + '?text=' + encodeURIComponent(msg);
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() }).catch(function () { });
-      window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'lead_submit', goal: goal });
-      form.classList.add('sent');
-      link.href = wa;
-      $('.done-txt', form).textContent = 'Senden Sie die vorbereitete Nachricht in WhatsApp ab. Oder wählen Sie direkt einen freien Termin im Kalender.';
-      window.open(wa, '_blank', 'noopener');
-      form.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      var fail = $('.form-fail', form); fail.hidden = true;
+      window.dataLayer = window.dataLayer || [];
+      fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ page: location.pathname }, Object.fromEntries(data.entries()))) })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); })
+        .then(function () {
+          window.dataLayer.push({ event: 'lead_submit', goal: goal });
+          form.classList.add('sent');
+          link.href = wa;
+          $('.done-txt', form).textContent = 'Wir melden uns persönlich bei Ihnen. Wenn es schneller gehen soll, wählen Sie direkt einen freien Termin im Kalender oder schreiben Sie uns zusätzlich per WhatsApp.';
+          form.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        })
+        .catch(function () {
+          window.dataLayer.push({ event: 'lead_error', goal: goal });
+          btn.disabled = false;
+          fail.innerHTML = 'Das Senden hat nicht geklappt, Ihre Angaben sind noch nicht bei uns. Bitte schreiben Sie uns direkt: <a href="' + wa + '" target="_blank" rel="noopener">WhatsApp mit vorbereiteter Nachricht</a> oder rufen Sie an unter <a href="tel:+4971134063951">+49 711 34063951</a>.';
+          fail.hidden = false;
+        });
     });
   }
+
+
+  /* ===== Leitfäden (Leadmagneten): Kontakt erfassen, dann PDF freigeben ===== */
+  $$('form.lm-form').forEach(function (form) {
+    var key = form.getAttribute('data-lm'), err = $('.err', form), fail = $('.form-fail', form), done = $('.lm-done', form), btn = $('button[type=submit]', form);
+    var q = new URLSearchParams(location.search);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = new FormData(form);
+      if (data.get('bot-field')) return;
+      var name = String(data.get('name') || '').trim(), contact = String(data.get('contact') || '').trim();
+      var okContact = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) || contact.replace(/[^0-9]/g, '').length >= 7;
+      fail.hidden = true;
+      if (!name) { err.textContent = 'Bitte geben Sie Ihren Vornamen an.'; return; }
+      if (!okContact) { err.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse oder WhatsApp-Nummer an.'; return; }
+      if (!$('input[name="consent"]', form).checked) { err.textContent = 'Bitte bestätigen Sie die Einwilligung, damit wir Ihnen den Leitfaden zusenden dürfen.'; return; }
+      err.textContent = ''; btn.disabled = true;
+      var payload = { name: name, contact: contact, goal: 'Leitfaden: ' + key, page: location.pathname };
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'gclid', 'fbclid'].forEach(function (k) { if (q.get(k)) payload[k] = q.get(k); });
+      window.dataLayer = window.dataLayer || [];
+      fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); })
+        .then(function () {
+          window.dataLayer.push({ event: 'lead_submit', goal: 'leitfaden', leitfaden: key });
+          form.classList.add('sent'); done.hidden = false; btn.hidden = true;
+          done.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        })
+        .catch(function () {
+          window.dataLayer.push({ event: 'lead_error', goal: 'leitfaden', leitfaden: key });
+          btn.disabled = false;
+          fail.innerHTML = 'Das Senden hat nicht geklappt, Ihre Angaben sind noch nicht bei uns. Bitte schreiben Sie uns kurz per <a href="' + WA + '?text=' + encodeURIComponent('Hallo Raphael, ich möchte den Leitfaden: ' + key) + '" target="_blank" rel="noopener">WhatsApp</a> oder rufen Sie an unter <a href="tel:+4971134063951">+49 711 34063951</a>.';
+          fail.hidden = false;
+        });
+    });
+  });
 
   /* ===== Outbound-Landingpage: personalisierte Daten ===== */
   function initOutbound() {
@@ -731,7 +789,7 @@
       var lines = gaps.map(function (g) { return '- ' + g.q.st; }).join('\n');
       var msg = 'Hallo Raphael, ich habe den Recruiting-Check gemacht.\n\nScore: ' + sc + ' von 100 (' + rk.name + ')\nGrößte Hebel:\n' + (lines || '- keine') + '\n\nName: ' + (name || '-') + '\nKontakt: ' + contact;
       var body = new URLSearchParams({ 'form-name': 'recruiting-check', name: name, contact: contact, score: String(sc), rank: rk.name, kind: kind, answers: ans.join('') });
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() }).catch(function () { });
+      fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ page: location.pathname }, Object.fromEntries(data.entries()))) }).catch(function () { });
       push('check_lead', { score: sc, kind: kind });
       form.innerHTML = '<p class="rc-thx"><b>Danke.</b> WhatsApp öffnet sich mit Ihrem Ergebnis. Senden Sie die Nachricht dort einfach ab.</p><a class="btn btn-gold" href="' + WA + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">Nachricht in WhatsApp öffnen</a>';
       window.open(WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');

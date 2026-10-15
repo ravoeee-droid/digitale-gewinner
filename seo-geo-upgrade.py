@@ -187,7 +187,7 @@ def patch_case_metadata() -> None:
     if not path.exists():
         return
     source = path.read_text(encoding="utf-8")
-    source = re.sub(r"<title>.*?</title>", "Webdesign Case Studies | Digitale Gewinner", source, count=1, flags=re.S)
+    source = re.sub(r"<title>.*?</title>", "<title>Webdesign Case Studies | Digitale Gewinner</title>", source, count=1, flags=re.S)
     source = re.sub(r'<meta name="description" content="[^"]*">', '<meta name="description" content="Ausgewählte Webdesign- und Conversion-Projekte von Digitale Gewinner: Positionierung, Vertrauen, Nutzerführung und digitale Lead-Systeme.">', source, count=1)
     source = source.replace("https://digitale-gewinner.de", SITE)
     path.write_text(source, encoding="utf-8")
