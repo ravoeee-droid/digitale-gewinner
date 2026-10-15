@@ -1149,6 +1149,61 @@ def minify_assets():
         pass
 
 
+
+# ---------- Suchseiten (100 Seiten aus seo-geo-upgrade.py) im neuen Design ----------
+SEO_LEITFADEN = {'pflegedienst': 'pflege-angehoerige', 'handwerk': 'handwerk-anfragen', 'shk': 'handwerk-anfragen',
+                 'elektro': 'handwerk-anfragen', 'dachdecker': 'handwerk-anfragen'}
+SEO_CALC_JS = """<script>(function(){var els=["v","c","t","l"].map(function(i){return document.getElementById(i)}),out=document.getElementById("r");if(!out)return;
+function calc(){var a=els.map(function(e){return Math.max(0,parseFloat(e.value)||0)});var extra=a[0]*Math.max(0,a[2]-a[1])/100;var val=extra*a[3];
+out.textContent=extra.toLocaleString("de-DE",{maximumFractionDigits:1})+" zusätzliche Leads / Monat ≈ "+val.toLocaleString("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0})+" Szenario-Wert"}
+els.forEach(function(e){e.addEventListener("input",calc)});calc()})();</script>"""
+
+
+def seo_pages(out):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('seo_geo', HERE.parent / 'seo-geo-upgrade.py')
+    seo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(seo)
+    n = 0
+    for sector in seo.SECTORS:
+        for intent in seo.INTENTS:
+            slug = seo.slug_for(sector, intent)
+            title = intent['title'].format(sector=sector['name'])
+            h1 = intent['h1'].format(sector=sector['name'], audience=sector['audience'])
+            desc = f'{intent["label"]} für {sector["audience"]}: {intent["promise"]} Ziel: {sector["outcome"]}.'
+            faqs = seo.faq_items(sector, intent)
+            ld = json.dumps(seo.schema_for(sector, intent, slug, title, desc, faqs), ensure_ascii=False, separators=(',', ':'))
+            cards = ''.join(f'<article class="seo-card" data-r><h3>{e(a)}</h3><p>{e(b)}</p></article>' for a, b in intent['sections'])
+            peers = ''.join(f'<a href="/{e(seo.slug_for(sector, q))}/">{e(q["label"])}</a>' for q in seo.INTENTS if q['key'] != intent['key'])
+            faq = ''.join(f'<details><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in faqs)
+            lm = leitfaden(SEO_LEITFADEN[sector['key']]) if sector['key'] in SEO_LEITFADEN else ''
+            h = head(title, desc, f'/{slug}/', extra=f'<script type="application/ld+json">{ld}</script>')
+            body = f"""<main id="main"><section class="seo-hero"><div class="container"><span class="eyebrow">{e(intent["label"])} · {e(sector["name"])}</span>
+<h1>{e(h1)}</h1><p class="lead">{e(intent["promise"])} {e(sector["pain"])}</p>
+<div class="btns"><a class="btn btn-gold" href="#analyse" data-cta="seo-hero">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="/case-studies.html" data-cta="seo-cases">Case Studies</a></div></div></section>
+<section class="section seo-sec"><div class="container"><h2 class="h2" data-r>Was hier <span class="gold it">anders gemacht wird.</span></h2><div class="seo-grid">{cards}</div></div></section>
+<section class="section seo-sec"><div class="container seo-two"><div><span class="eyebrow" data-r>Branchenlogik</span><h2 class="h2" data-r>Für {e(sector["audience"])} gebaut.</h2><p data-r>{e(sector["example"])}</p>
+<ul class="ticks" data-r><li>{e(sector["proof"])}</li><li>Mobile-first und ohne unnötige technische Last.</li><li>Klare Messpunkte für Suchsichtbarkeit, Klicks und Leads.</li></ul></div>
+<aside class="seo-box" data-r><h3>Das wirtschaftliche Ziel</h3><p>{e(sector["outcome"].capitalize())}.</p><p class="micro">Keine Ergebnisgarantie: SEO und Leadzahlen hängen unter anderem von Markt, Angebot, Wettbewerb, Reputation und Vertriebsprozess ab.</p></aside></div></section>
+{lm}
+<section class="section seo-sec"><div class="container seo-two"><div><span class="eyebrow" data-r>Schneller Rechner</span><h2 class="h2" data-r>Wie viel kann bessere Conversion wert sein?</h2>
+<p data-r>Einfach vorhandenen Website-Traffic und einen realistischen Leadwert einsetzen. Der Rechner ist eine Szenario-Schätzung, keine Prognose.</p></div>
+<div class="seo-box seo-calc" data-r><div class="field"><label for="v">Besucher pro Monat</label><input id="v" type="number" min="0" value="500"></div>
+<div class="field"><label for="c">Aktuelle Leadrate in %</label><input id="c" type="number" min="0" step=".1" value="2"></div>
+<div class="field"><label for="t">Ziel-Leadrate in %</label><input id="t" type="number" min="0" step=".1" value="4"></div>
+<div class="field"><label for="l">Wert eines qualifizierten Leads in €</label><input id="l" type="number" min="0" value="250"></div>
+<p class="seo-result" id="r" aria-live="polite">–</p></div></div></section>
+<section class="section seo-sec"><div class="container seo-faq"><span class="eyebrow" data-r>FAQ</span><h2 class="h2" data-r>Häufige Fragen</h2>{faq}</div></section>
+<section class="section seo-sec"><div class="container"><span class="eyebrow" data-r>Weiter im Cluster</span><h2 class="h2" data-r>Passende Themen für {e(sector["name"])}</h2><div class="seo-links" data-r>{peers}</div></div></section>
+{final('Kunden')}{SEO_CALC_JS}"""
+            page = h + nav(False) + body + footer()
+            d = out / slug
+            d.mkdir(parents=True, exist_ok=True)
+            (d / 'index.html').write_text(page, encoding='utf-8')
+            n += 1
+    return n
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     pages = {'index.html': home(), 'analyse.html': outbound(), 'recruiting-check.html': check_page()}
@@ -1171,7 +1226,9 @@ def main():
         for f in data.glob('*.json'):
             if not f.name.startswith('_'):
                 shutil.copy2(f, dest / f.name)
+    nseo = seo_pages(OUT)
     minify_assets()
+    print(f'{nseo} Suchseiten im neuen Design')
     print(f'Site built: {", ".join(pages)}')
 
 
