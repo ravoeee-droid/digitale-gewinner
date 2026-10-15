@@ -23,3 +23,8 @@ Quelle der neuen Seiten: `build_site.py` (Copy + Markup), `site.css`, `site.js`,
 - **Referenz-Logos (`/pflege`, `/pflege-patienten`):** 14 Pflege-Logos unter `assets/images/referenzen/` (Quelle: von Raphael bereitgestelltes Paket `pflegepartner.zip`). Vor Veröffentlichung schriftliche Freigabe jedes Trägers sicherstellen (v. a. AWO, Caritas, Diakonie, DRK, ASB, Asklepios, Korian). Formulierung bewusst: „… mit denen Raphael Hermann zusammengearbeitet hat".
 - **Handwerk-Creatives (`/handwerk-mitarbeiter`):** 4 Motive von Betrieben (Neubeiger, TB, Bochtler, BHK) – Freigabe der Betriebe für Logos/Motive prüfen.
 - **TÜV SÜD ISO/IEC 27001:** Zeichen liegt unter `assets/partners/tuev-zertifikat.webp` (von Raphael bereitgestellt). Zertifikat (Gültigkeit, zertifizierte Organisation, Geltungsbereich) bitte gegen die Zertifikatsurkunde prüfen; nur als „Informationssicherheits-Managementsystem" darstellen, nicht als allgemeines TÜV-Gütesiegel.
+
+## Leitfäden (Leadmagneten)
+- Inhalte: `leadmagnets/content_*.py` (je 25 Punkte). PDFs neu erzeugen: `NODE_PATH=/opt/node-tools/node_modules python3 leadmagnets/build_pdfs.py` (Playwright), danach die Mockup-Bilder `assets/images/leadmagnets/*-p{1,4,14}.webp` aus den PDF-Seiten neu rendern.
+- Ausgespielt über `leitfaden()` / `leitfaeden_home()` in `site/build_site.py`, Erfassung per `/api/lead` (Ziel: `Leitfaden: <slug>`).
+- Offen / zu bestätigen: Einwilligungstext und Datenschutzerklärung (Kontakt per WhatsApp/E-Mail, Speicherung der Daten) rechtlich prüfen lassen; Inhalte sind redaktionell, keine Studien.

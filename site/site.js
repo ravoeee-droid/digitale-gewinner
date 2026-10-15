@@ -476,6 +476,41 @@
     });
   }
 
+
+  /* ===== Leitfäden (Leadmagneten): Kontakt erfassen, dann PDF freigeben ===== */
+  $$('form.lm-form').forEach(function (form) {
+    var key = form.getAttribute('data-lm'), err = $('.err', form), fail = $('.form-fail', form), done = $('.lm-done', form), btn = $('button[type=submit]', form);
+    var q = new URLSearchParams(location.search);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = new FormData(form);
+      if (data.get('bot-field')) return;
+      var name = String(data.get('name') || '').trim(), contact = String(data.get('contact') || '').trim();
+      var okContact = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) || contact.replace(/[^0-9]/g, '').length >= 7;
+      fail.hidden = true;
+      if (!name) { err.textContent = 'Bitte geben Sie Ihren Vornamen an.'; return; }
+      if (!okContact) { err.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse oder WhatsApp-Nummer an.'; return; }
+      if (!$('input[name="consent"]', form).checked) { err.textContent = 'Bitte bestätigen Sie die Einwilligung, damit wir Ihnen den Leitfaden zusenden dürfen.'; return; }
+      err.textContent = ''; btn.disabled = true;
+      var payload = { name: name, contact: contact, goal: 'Leitfaden: ' + key, page: location.pathname };
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'gclid', 'fbclid'].forEach(function (k) { if (q.get(k)) payload[k] = q.get(k); });
+      window.dataLayer = window.dataLayer || [];
+      fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); })
+        .then(function () {
+          window.dataLayer.push({ event: 'lead_submit', goal: 'leitfaden', leitfaden: key });
+          form.classList.add('sent'); done.hidden = false; btn.hidden = true;
+          done.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        })
+        .catch(function () {
+          window.dataLayer.push({ event: 'lead_error', goal: 'leitfaden', leitfaden: key });
+          btn.disabled = false;
+          fail.innerHTML = 'Das Senden hat nicht geklappt, Ihre Angaben sind noch nicht bei uns. Bitte schreiben Sie uns kurz per <a href="' + WA + '?text=' + encodeURIComponent('Hallo Raphael, ich möchte den Leitfaden: ' + key) + '" target="_blank" rel="noopener">WhatsApp</a> oder rufen Sie an unter <a href="tel:+4971134063951">+49 711 34063951</a>.';
+          fail.hidden = false;
+        });
+    });
+  });
+
   /* ===== Outbound-Landingpage: personalisierte Daten ===== */
   function initOutbound() {
     var o = $('#outbound'); if (!o) return;

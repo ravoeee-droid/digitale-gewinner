@@ -64,6 +64,10 @@ repo_video = root / 'assets/video'
 if repo_video.exists():
     shutil.copytree(repo_video, out / 'assets/video', dirs_exist_ok=True)
 
+repo_downloads = root / 'assets/downloads'
+if repo_downloads.exists():
+    shutil.copytree(repo_downloads, out / 'assets/downloads', dirs_exist_ok=True)
+
 image_data = {
     'Strong Relationship Website': ('/assets/images/case-studies/case-study-strong-relationship.webp', 1567, 723),
     'ASMR Time Onlineshop': ('/assets/images/case-studies/case-study-asmr-time.webp', 1571, 720),
@@ -213,6 +217,7 @@ for rel in expected_images:
 required = (
     'assets/video/websystem-erklaervideo.mp4',
     'assets/video/websysteme-erklaervideo.mp4',
+    'assets/downloads/pflege-benefits.pdf', 'assets/downloads/pflege-angehoerige.pdf', 'assets/downloads/handwerk-benefits.pdf', 'assets/downloads/handwerk-anfragen.pdf',
     'index.html', 'case-studies.html', 'danke.html',
     'trust-upgrade.css', 'case-worlds.css', 'local-assets.css',
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',

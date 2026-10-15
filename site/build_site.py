@@ -951,6 +951,72 @@ def footer(cta='#analyse'):
 <script src="/vendor/gsap.min.js"></script><script src="/vendor/ScrollTrigger.min.js"></script><script src="/vendor/lenis.min.js"></script><script src="/site.js"></script></body></html>'''
 
 
+
+# ---------- Leadmagneten (PDF-Leitfäden) ----------
+LEITFADEN = {
+    'pflege-benefits': dict(
+        page='pflege', eyebrow='Kostenloser Leitfaden · für Pflegebetriebe', short='Die 25 Benefits, die Pflegekräfte sich wünschen',
+        h2='Die 25 Benefits, die Pflegekräfte 2026/27 <span class="gold it">sich wünschen.</span>',
+        lead='Welche Vorteile Bewerber heute überzeugen und wie Sie sie so zeigen, dass sich passende Pflegekräfte aus Ihrer Region melden.',
+        ticks=['25 Benefits in 5 Bereichen: Dienstplan, Geld, Entlastung, Entwicklung, Extras', 'Zu jedem Punkt: warum er zieht, wie Sie ihn zeigen und wie hoch der Aufwand ist', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Benefits, die Pflegekräfte sich wünschen'),
+    'pflege-angehoerige': dict(
+        page='pflege-patienten', eyebrow='Kostenloser Leitfaden · für Pflegebetriebe', short='Die 25 Fragen, die Angehörige stellen',
+        h2='Die 25 Fragen, die Angehörige stellen, <span class="gold it">bevor sie anrufen.</span>',
+        lead='Worauf Familien bei der Wahl eines Pflegedienstes achten und wie Ihr Auftritt die Antworten gibt, bevor jemand fragen muss.',
+        ticks=['25 Fragen in 5 Bereichen: Vertrauen, Kosten, Erreichbarkeit, Ablauf, Qualität', 'Zu jeder Frage: was dahinter steckt und wie Sie online antworten', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Fragen, die Angehörige stellen, bevor sie anrufen'),
+    'handwerk-benefits': dict(
+        page='handwerk-mitarbeiter', eyebrow='Kostenloser Leitfaden · für Handwerksbetriebe', short='Die 25 Benefits für Elektriker und Handwerker',
+        h2='Die 25 Benefits, die Elektriker und Handwerker <span class="gold it">überzeugen.</span>',
+        lead='Was Gesellen, Meister und Fachkräfte 2026/27 bei der Wahl ihres Betriebs zählt, mit Schwerpunkt Elektro und angrenzenden Gewerken.',
+        ticks=['25 Benefits in 5 Bereichen: Geld, Arbeitszeit, Ausstattung, Aufstieg, Team', 'Zu jedem Punkt: warum er zieht, wie Sie ihn zeigen und wie hoch der Aufwand ist', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Benefits, die Elektriker und Handwerker überzeugen'),
+    'handwerk-anfragen': dict(
+        page='handwerk-kunden', eyebrow='Kostenloser Leitfaden · für Handwerksbetriebe', short='Die 25 Anfrage-Bremsen im Handwerk',
+        h2='Die 25 Gründe, warum Kunden <span class="gold it">nicht bei Ihnen anfragen.</span>',
+        lead='Welche kleinen Hürden auf Handwerker-Webseiten Anfragen kosten und wie Sie sie mit wenig Aufwand beseitigen.',
+        ticks=['25 Anfrage-Bremsen in 5 Bereichen: erster Eindruck, Vertrauen, Angebot, Kontakt, Reaktion', 'Zu jeder Bremse: warum sie Anfragen kostet und wie Sie sie lösen', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Gründe, warum Kunden nicht bei Ihnen anfragen'),
+}
+LEITFADEN_BY_PAGE = {v['page']: k for k, v in LEITFADEN.items()}
+
+
+def leitfaden(key):
+    c = LEITFADEN[key]
+    img = lambda n: f'/assets/images/leadmagnets/{key}-p{n}.webp'
+    return f"""<section class="section lm" id="leitfaden" aria-labelledby="lm-h-{key}"><div class="container lm-grid">
+<div class="lm-mock" data-r aria-hidden="false">
+<img class="lm-pg lm-a" src="{img(14)}" alt="" width="827" height="1170" loading="lazy" decoding="async">
+<img class="lm-pg lm-b" src="{img(4)}" alt="" width="827" height="1170" loading="lazy" decoding="async">
+<img class="lm-pg lm-c" src="{img(1)}" alt="{e(c['alt'])}" width="827" height="1170" loading="lazy" decoding="async">
+<span class="lm-badge"><b>PDF</b>16 Seiten</span></div>
+<div class="lm-copy"><span class="eyebrow" data-r>{c['eyebrow']}</span>
+<h2 class="h2" id="lm-h-{key}" data-r>{c['h2']}</h2>
+<p class="lead" data-r>{c['lead']}</p>
+<ul class="ticks" data-r>{''.join(f'<li>{e(t)}</li>' for t in c['ticks'])}</ul>
+<form class="lm-form" data-lm="{key}" data-r novalidate>
+<p class="hp" aria-hidden="true"><label>Nicht ausfüllen <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+<div class="lm-row"><div class="field"><label for="lm-n-{key}">Ihr Vorname</label><input id="lm-n-{key}" name="name" autocomplete="given-name" required></div>
+<div class="field"><label for="lm-c-{key}">WhatsApp-Nummer oder E-Mail</label><input id="lm-c-{key}" name="contact" autocomplete="email" inputmode="email" required></div></div>
+<label class="lm-consent"><input type="checkbox" name="consent" required><span>Ja, Raphael Hermann darf mich zu diesem Leitfaden und passenden Angeboten per WhatsApp oder E-Mail kontaktieren. Ich kann das jederzeit widerrufen. Details in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</span></label>
+<p class="err" role="alert"></p>
+<button class="btn btn-gold" type="submit" data-cta="leitfaden-{key}">Leitfaden kostenlos erhalten {ARROW}</button>
+<div class="form-fail" role="alert" hidden></div>
+<div class="lm-done" role="status" hidden><h3>Ihr Leitfaden ist bereit.</h3><p>Viel Erfolg beim Umsetzen. Wenn Sie Fragen haben, schreiben Sie uns jederzeit.</p>
+<div class="btns"><a class="btn btn-gold" href="/assets/downloads/{key}.pdf" download data-cta="leitfaden-download-{key}">PDF herunterladen {ARROW}</a><a class="btn" href="#analyse" data-cta="leitfaden-analyse-{key}">Kostenlose 15-Min-Analyse</a></div></div>
+<p class="micro lm-note">Kostenlos, ohne Verpflichtung. Redaktionelle Zusammenstellung, keine Rechts- oder Steuerberatung.</p>
+</form></div></div></section>"""
+
+
+def leitfaeden_home():
+    cards = ''.join(f"""<a class="lm-card" href="/{c['page']}#leitfaden" data-cta="home-leitfaden-{k}" data-r><img src="/assets/images/leadmagnets/{k}-p1.webp" alt="" width="827" height="1170" loading="lazy" decoding="async"><span class="lm-k">{c['eyebrow'].split(' · ')[1].capitalize() if ' · ' in c['eyebrow'] else ''}</span><b>{e(c['short'])}</b><span class="lm-go">Kostenlos als PDF {ARROW}</span></a>""" for k, c in LEITFADEN.items())
+    return f"""<section class="section lm-home" id="leitfaeden" aria-labelledby="lm-home-h"><div class="container">
+<div class="lm-head"><span class="eyebrow" data-r>Kostenlose Leitfäden</span><h2 class="h2" id="lm-home-h" data-r>Wissen zum Mitnehmen. <span class="gold it">Direkt umsetzbar.</span></h2>
+<p class="lead" data-r>Vier PDF-Leitfäden mit je 25 Punkten für Pflege- und Handwerksbetriebe, mit Umsetzungstipp und Checkliste.</p></div>
+<div class="lm-cards">{cards}</div></div></section>"""
+
+
 # ---------- Seiten ----------
 def home():
     h = head('Digitale Gewinner – Mehr Bewerbungen. Mehr Kundenanfragen. Weniger Arbeit.',
@@ -960,7 +1026,7 @@ def home():
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
                 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME, timeline=True), loop='werkstatt', after=f'<p class="hero-direct" data-r>Schon sicher? <a href="#analyse" data-cta="hero-analyse">Kostenlose 15-Min-Analyse buchen {ARROW}</a></p>')
-    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + check() + flow() + demo('home') + compare() + results() + offer() + about() + faq() + final()
+    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + leitfaeden_home() + check() + flow() + demo('home') + compare() + results() + offer() + about() + faq() + final()
     return h + nav(True) + body + footer()
 
 
@@ -1011,6 +1077,7 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Damit passende Menschen <span class="gold it">wirklich bei Ihnen ankommen.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
+    body += leitfaden(LEITFADEN_BY_PAGE[slug]) if slug in LEITFADEN_BY_PAGE else ''
     body += meta_manager(slug) if slug in META_DATA else google_search(slug)
     if slug == 'pflege':
         body += stages()
