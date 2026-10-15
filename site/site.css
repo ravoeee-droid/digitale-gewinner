@@ -1238,7 +1238,14 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 /* Direkt-CTA im Hero, Formular-Fehlerfall, Zeitachse im Cockpit */
 .hero-direct{margin-top:18px;font-size:1rem;color:var(--text2)}
 .hero-direct a{color:var(--cream);font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--gold);padding:10px 0;display:inline-block}
-.hv-tl{list-style:none;margin:0;padding:14px 18px;border-top:1px solid var(--line2);display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--text2)}
+.hv-night{display:flex;align-items:center;gap:10px;padding:14px 18px 0;border-top:1px solid var(--line2);font-size:.82rem}
+.hv-night em{margin-left:auto;font-style:normal;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hv-moon{width:14px;height:14px;border-radius:50%;box-shadow:inset -4px -2px 0 0 var(--gold);flex:none}
+.hv-tl{list-style:none;margin:0;padding:12px 18px 14px;display:flex;flex-direction:column;gap:8px;font-size:.88rem;color:var(--text2);position:relative}
+.hv-tl li{position:relative;padding-left:18px;animation:tlin .7s var(--ease) both;animation-delay:calc(2.2s + var(--i) * 1.5s)}
+.hv-tl li:before{content:'';position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(var(--ac2-rgb),.6);animation:pulse 2s 3 calc(2.2s + var(--i) * 1.5s)}
+@keyframes tlin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hv-tl li,.hv-tl li:before{animation:none}}
 .hv-tl time{font-variant-numeric:tabular-nums;color:var(--cream);font-weight:600;margin-right:10px}
 .form-fail{margin-top:14px;padding:14px 16px;border:1px solid rgba(255,138,128,.5);border-radius:12px;font-size:.95rem}
 .form-fail a{text-decoration:underline;text-underline-offset:3px}

@@ -445,7 +445,7 @@
       var wa = WA + '?text=' + encodeURIComponent(msg);
       var fail = $('.form-fail', form); fail.hidden = true;
       window.dataLayer = window.dataLayer || [];
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() })
+      fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ page: location.pathname }, Object.fromEntries(data.entries()))) })
         .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); })
         .then(function () {
           window.dataLayer.push({ event: 'lead_submit', goal: goal });
@@ -741,7 +741,7 @@
       var lines = gaps.map(function (g) { return '- ' + g.q.st; }).join('\n');
       var msg = 'Hallo Raphael, ich habe den Recruiting-Check gemacht.\n\nScore: ' + sc + ' von 100 (' + rk.name + ')\nGrößte Hebel:\n' + (lines || '- keine') + '\n\nName: ' + (name || '-') + '\nKontakt: ' + contact;
       var body = new URLSearchParams({ 'form-name': 'recruiting-check', name: name, contact: contact, score: String(sc), rank: rk.name, kind: kind, answers: ans.join('') });
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() }).catch(function () { });
+      fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ page: location.pathname }, Object.fromEntries(data.entries()))) }).catch(function () { });
       push('check_lead', { score: sc, kind: kind });
       form.innerHTML = '<p class="rc-thx"><b>Danke.</b> WhatsApp öffnet sich mit Ihrem Ergebnis. Senden Sie die Nachricht dort einfach ab.</p><a class="btn btn-gold" href="' + WA + '?text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">Nachricht in WhatsApp öffnen</a>';
       window.open(WA + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');

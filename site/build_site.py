@@ -265,7 +265,7 @@ def hero_visual(items, title='Ihr Kontakt-Cockpit', timeline=False):
                   f'<span class="hv-chip">{labels[lvl - 1]}</span></div>')
     return (f'<aside class="hv" aria-label="Beispielansicht: So landen Kontakte bei Ihnen"><div class="hv-bar"><span class="hv-live"></span>{e(title)}<em>Beispielansicht</em></div>'
             f'<div class="hv-list">{cards}</div>'
-            + ('<ul class="hv-tl"><li><time>03:12</time>Bewerbung geht ein, Angaben sind erfasst</li><li><time>03:12</time>Bestätigung ist raus</li><li><time>07:30</time>Terminvorschlag liegt im Cockpit bereit</li></ul>' if timeline else '')
+            + ('<div class="hv-night"><span class="hv-moon" aria-hidden="true"></span><b>Eine Nacht im Cockpit</b><em>Beispielablauf</em></div><ol class="hv-tl"><li style="--i:0"><time>03:12</time>Bewerbung geht ein, Angaben sind erfasst</li><li style="--i:1"><time>03:12</time>Bestätigung ist raus</li><li style="--i:2"><time>07:30</time>Terminvorschlag liegt im Cockpit bereit</li></ol>' if timeline else '')
             + f'<div class="hv-foot">Alles vorbereitet – <b>Sie führen nur noch das Gespräch.</b></div></aside>')
 
 
