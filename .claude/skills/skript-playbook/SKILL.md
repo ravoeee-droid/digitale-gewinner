@@ -7,6 +7,19 @@ description: Skripte für Kurzvideos (Reels/TikTok/Shorts) der Digitale Gewinner
 
 Zielgruppe: PV-Geschäftsführer in Deutschland. Ziel: Anfragen, nicht nur Reichweite. Sprecher: Raphael Hermann, Selfie, 9:16.
 
+
+## 0. Entscheidungen von Raphael (16.10.2026, bestätigt)
+- Anrede: Du. Ton vor der Kamera: frech-provokant, klare Gegenposition.
+- Angebot: Websystem/Anfragen UND Mitarbeiter-Recruiting für PV-Betriebe. Zielkunde: 6–20 Mitarbeiter, Geschäftsführer.
+- Häufigster Einwand: "Wir haben genug Aufträge." Skripte müssen darauf antworten (heute voll ≠ in 12 Monaten voll, Auftragsbuch ist die Spitze, Recruiting und Pipeline brauchen Vorlauf). Nicht mit Marktdaten allein, auch Chancen zeigen.
+- Säulen (wechselnd, mit Variationen): Reichweite, Autorität, Vertrauen, Conversion. Pro Video eine Säule.
+- Aufnahme im Batch: bis 10 Videos pro Tag aufgenommen, Veröffentlichung 4 pro Tag.
+- Exklusivität "ein Betrieb pro Landkreis": gilt immer, darf genannt werden.
+- "Dritter Solarbetrieb am Telefon": mehrfach erlebt, als echte Erfahrung nutzbar (ohne Kundennamen).
+- Preis: NICHT im Video nennen.
+- Garantie: darf vorkommen, aber nur mit klar definierten Bedingungen im Video und nach Rechtsprüfung. Bedingungen fehlen noch: vor erster Nutzung klären, bis dahin weglassen.
+- Belege: noch keine freigegebenen Fälle. Bis dahin Marktdaten, Rechenaufgaben, Erfahrung. Keine erfundenen Ergebnisse.
+
 ## 1. Stimme (Archetyp Sage + Rebel = Innovator)
 - Sage: Zahlen zuerst, Quelle nennen, nüchtern. Rebel: klare Gegenposition zu "Leads kaufen und warten".
 - PV-Betrieb ist der Held (Underdog im schrumpfenden Markt), Raphael ist der Guide.
