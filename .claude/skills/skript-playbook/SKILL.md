@@ -18,6 +18,9 @@ Zielgruppe: PV-Geschäftsführer in Deutschland. Ziel: Anfragen, nicht nur Reich
 - "Dritter Solarbetrieb am Telefon": mehrfach erlebt, als echte Erfahrung nutzbar (ohne Kundennamen).
 - Preis: NICHT im Video nennen.
 - Garantie: darf vorkommen, aber nur mit klar definierten Bedingungen im Video und nach Rechtsprüfung. Bedingungen fehlen noch: vor erster Nutzung klären, bis dahin weglassen.
+- Garantie-Kern: Rückerstattung nur bei Nichterreichen eines Ziels. Das Ziel (Kennzahl, Zeitraum, Messung) ist noch NICHT definiert und muss vor jeder Nennung schriftlich fixiert und rechtlich geprüft werden.
+- Recruiting-Themen: Monteure/Elektriker finden, Bewerber halten.
+- Stil: Hormozi/Gary-Vee-artig, direkt, hohe Energie, Klartext. Formate zusätzlich zu Talking Head: Screen-Recording, Kurz-Interview/Frage-Antwort, Text/Grafik-Reels.
 - Belege: noch keine freigegebenen Fälle. Bis dahin Marktdaten, Rechenaufgaben, Erfahrung. Keine erfundenen Ergebnisse.
 
 ## 1. Stimme (Archetyp Sage + Rebel = Innovator)
