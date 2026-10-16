@@ -7,8 +7,8 @@ Diesen Satz höre ich von PV-Chefs ständig. Und ich verstehe das. Das Buch ist 
 [B] Quelle einblenden: BSW, pv magazine 14.07.2026. „Entwurf, noch kein Gesetz" einblenden.
 
 ## 2 · 12:00 · Autorität · Verständnisvoll
-Du kennst deinen Leadpreis. Kennst du auch deinen Preis pro Auftrag?
-Ich weiß, im Alltag rechnet das keiner nach. Zwischen Baustelle und Angebot ist dafür keine Zeit. Aber nimm dir kurz einen Moment. Sagen wir, du zahlst 80 Euro für eine Anfrage. Wenn von zehn Anfragen einer unterschreibt, hast du für diesen einen Auftrag zehnmal bezahlt. Das sind 800 Euro. Das ist ein Beispiel, aber vielleicht liegen deine Zahlen gar nicht so weit weg. Und die Telefonate, die nirgends hinführen, kommen noch dazu. Ich habe dafür einen kleinen Rechner gebaut. Du trägst deine echten Zahlen ein, das dauert eine Minute. Schreib RECHNER, dann schicke ich dir den Link.
+Falls du Anfragen kaufst: Kennst du deinen Preis pro Auftrag?
+Falls du Anfragen über Portale kaufst, weiß ich: Im Alltag rechnet das keiner nach. Zwischen Baustelle und Angebot ist dafür keine Zeit. Aber nimm dir kurz einen Moment. Sagen wir, du zahlst 80 Euro für eine Anfrage. Wenn von zehn Anfragen einer unterschreibt, hast du für diesen einen Auftrag zehnmal bezahlt. Das sind 800 Euro. Das ist ein Beispiel, aber vielleicht liegen deine Zahlen gar nicht so weit weg. Und die Telefonate, die nirgends hinführen, kommen noch dazu. Ich habe dafür einen kleinen Rechner gebaut. Du trägst deine echten Zahlen ein, das dauert eine Minute. Schreib RECHNER, dann schicke ich dir den Link.
 [B] „Beispielrechnung" einblenden. Link: digitalegewinner.de/rechner (live).
 
 ## 3 · 17:30 · Vertrauen · Humorvoll
