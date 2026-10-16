@@ -248,6 +248,8 @@ case_html = (out / 'case-studies.html').read_text(encoding='utf-8')
 if case_html.count('class="case-world') != 10:
     raise SystemExit('Not all 10 case studies were rendered')
 
+shutil.copy2(root / 'social/rechner/kosten-pro-auftrag.html', out / 'rechner.html')
+
 shutil.rmtree(tmp, ignore_errors=True)
 print('Digitale Gewinner built with 10 individually presented case studies.')
 PY
