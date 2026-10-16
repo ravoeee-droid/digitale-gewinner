@@ -20,5 +20,5 @@ CTA: Schreib ANFRAGEN, ich zeige dir, wie ich das messe und was ich nicht verspr
 
 ## 4 (Conversion, Recruiting) Glaube: „Gute Monteure findet man eh nicht"
 HOOK: Du findest keinen Monteur, weil du am falschen Ort suchst.
-Gute Elektriker lesen keine Stellenanzeigen, sie googeln dich. Sie sehen deine Seite, deine Bewertungen, dein Team. Ist dort nichts, bewerben sie sich beim nächsten. Und jeder Monat ohne Monteur ist ein Auftrag, den du ablehnst. Bei einem Auftragswert von [Beispiel: 15.000 Euro] sind das über ein Jahr 180.000 Euro Umsatz. Das ist keine Stellenanzeige, das ist Geld.
+Gute Elektriker lesen keine Stellenanzeigen, sie googeln dich. Sie sehen deine Seite, deine Bewertungen, dein Team. Ist dort nichts, bewerben sie sich beim nächsten. Und jeder Monat ohne Monteur ist ein Auftrag, den du ablehnst. Bei 10.000 bis 15.000 Euro pro Auftrag sind das über ein Jahr 120.000 bis 180.000 Euro Umsatz, die du ablehnst. Das ist keine Stellenanzeige, das ist Geld.
 CTA: Kommentiere MONTEUR, ich zeige dir, was Bewerber sehen, wenn sie dich googeln.
