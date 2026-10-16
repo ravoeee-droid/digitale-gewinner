@@ -23,6 +23,11 @@ Zielgruppe: PV-Geschäftsführer in Deutschland. Ziel: Anfragen, nicht nur Reich
 - Stil: Hormozi/Gary-Vee-artig, direkt, hohe Energie, Klartext. Formate zusätzlich zu Talking Head: Screen-Recording, Kurz-Interview/Frage-Antwort, Text/Grafik-Reels.
 - Belege: noch keine freigegebenen Fälle. Bis dahin Marktdaten, Rechenaufgaben, Erfahrung. Keine erfundenen Ergebnisse.
 
+## Originalsätze von PV-Chefs (von Raphael aus Gesprächen, anekdotisch)
+- „Wir arbeiten nur über Empfehlungen."
+- „Wir haben genug Aufträge."
+Mehr Sätze von Raphael bitte hier ergänzen. Nur echte, keine erfundenen Zitate.
+
 ## 1. Stimme (Archetyp Sage + Rebel = Innovator)
 - Sage: Zahlen zuerst, Quelle nennen, nüchtern. Rebel: klare Gegenposition zu "Leads kaufen und warten".
 - PV-Betrieb ist der Held (Underdog im schrumpfenden Markt), Raphael ist der Guide.
