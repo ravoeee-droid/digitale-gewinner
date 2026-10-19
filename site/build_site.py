@@ -4,6 +4,7 @@
 Aufruf: python3 site/build_site.py <ausgabeordner>
 Copy-Quelle ist der vom Auftraggeber freigegebene Text – hier keine neuen Fakten ergänzen.
 """
+import os
 import html as H
 import json
 import shutil
@@ -86,7 +87,7 @@ def head(title, desc, path, noindex=False, extra=''):
     og = '' if noindex else (f'<meta property="og:type" content="website"><meta property="og:title" content="{e(title)}">'
                              f'<meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{SITE}{path}">'
                              f'<meta property="og:image" content="{SITE}/assets/images/raphael/raphael-hermann-hero.webp">')
-    return (f'<!doctype html><html lang="de" data-gtm=""><head><meta charset="utf-8">'
+    return (f'<!doctype html><html lang="de" data-gtm="{e(os.environ.get('DG_GTM_ID', ''))}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
             f'<title>{e(title)}</title><meta name="description" content="{e(desc)}">{robots}{canon}{og}'
             f'<meta name="theme-color" content="#090806">'
@@ -254,7 +255,7 @@ def triptych():
     return f'<section class="band"><div class="container"><div class="tps">{cards}</div><p class="micro" style="text-align:right">Symbolbilder</p></div></section>'
 
 
-def hero_visual(items, title='Ihr Kontakt-Cockpit'):
+def hero_visual(items, title='Ihr Kontakt-Cockpit', timeline=False):
     cards = ''
     labels = ['Angaben erfasst', 'Bestätigung gesendet', 'Erinnerung geplant', 'Termin vorbereitet']
     for i, (role, meta, lvl) in enumerate(items):
@@ -264,7 +265,8 @@ def hero_visual(items, title='Ihr Kontakt-Cockpit'):
                   f'<span class="hv-chip">{labels[lvl - 1]}</span></div>')
     return (f'<aside class="hv" aria-label="Beispielansicht: So landen Kontakte bei Ihnen"><div class="hv-bar"><span class="hv-live"></span>{e(title)}<em>Beispielansicht</em></div>'
             f'<div class="hv-list">{cards}</div>'
-            f'<div class="hv-foot">Alles vorbereitet – <b>Sie führen nur noch das Gespräch.</b></div></aside>')
+            + ('<div class="hv-night"><span class="hv-moon" aria-hidden="true"></span><b>Eine Nacht im Cockpit</b><em>Beispielablauf</em></div><ol class="hv-tl"><li style="--i:0"><time>03:12</time>Bewerbung geht ein, Angaben sind erfasst</li><li style="--i:1"><time>03:12</time>Bestätigung ist raus</li><li style="--i:2"><time>07:30</time>Terminvorschlag liegt im Cockpit bereit</li></ol>' if timeline else '')
+            + f'<div class="hv-foot">Alles vorbereitet – <b>Sie führen nur noch das Gespräch.</b></div></aside>')
 
 
 VIS_HOME = [('Pflegefachkraft (m/w/d)', '8 km entfernt', 4), ('Elektroniker (m/w/d)', '12 km entfernt', 3), ('Anfrage: Badumbau', '6 km entfernt', 2), ('Pflegehelfer (m/w/d)', '15 km entfernt', 1)]
@@ -328,6 +330,51 @@ Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websystem-erk
 </figure>
 <div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="video-mehr">Wie das System funktioniert</a></div>
 </div></section>'''
+
+
+VIDEO_HOME_TEXT = [
+    'Websites waren gestern. Die Zukunft sind intelligente Websysteme: ein Dashboard, das für Ihr Unternehmen arbeitet.',
+    'Heute jonglieren Sie mit Agenturen, Anzeigen, Telefon und Zetteln, und trotzdem geht immer etwas verloren.',
+    'Ein System, ein Dashboard. Hier läuft alles zusammen, kinderleicht bedienbar und ganz ohne Abhängigkeit von einer Agentur.',
+    'Stelle offen? Ein Klick, und sie erscheint auf Facebook und Instagram, bei allen Fachkräften in Ihrer Umgebung.',
+    'Wird ein Platz frei oder ist im Auftragsbuch Luft, findet das System neue Patienten und neue Aufträge bei Google.',
+    'Zufriedene Kunden werden zur Google-Bewertung eingeladen. Unzufriedene landen auf einer eigenen Seite, wo Sie zuhören, bevor es öffentlich wird.',
+    'Das System erinnert Sie rechtzeitig, erledigt Wiederkehrendes von allein und nimmt das Telefon ab, wenn es zu viel wird oder niemand mehr im Büro ist.',
+    'Und Ihre Website pflegen Sie selbst: ein paar Fotos, zwei Sätze, und die KI schreibt in zwei Minuten einen fertigen Beitrag.',
+    'Es wächst mit Ihrem Unternehmen. Fordern Sie jetzt Ihre kostenlose Demo an und sehen Sie, wie Ihr System bei Ihnen aussieht.',
+]
+
+
+VIDEO_CHAPTERS = [(0, 'Ein Dashboard'), (25, 'Mitarbeiter finden'), (32, 'Neue Kunden'), (40, 'Bewertungen'), (50, 'Telefon & Erinnerung'), (59, 'Website selbst pflegen')]
+
+
+def home_video():
+    text = ''.join(f'<p>{e(t)}</p>' for t in VIDEO_HOME_TEXT)
+    chaps = ''.join(f'<button type="button" data-t="{t}"><time>{t // 60}:{t % 60:02d}</time>{e(n)}</button>' for t, n in VIDEO_CHAPTERS)
+    return f'''<section class="section video-sec video-home" id="video" aria-labelledby="video-h"><div class="container">
+<div class="video-head"><span class="eyebrow" data-r>In 80 Sekunden erklärt</span>
+<h2 class="h2" id="video-h" data-r>Websites waren gestern. <span class="gold it">Ihr Websystem arbeitet mit.</span></h2>
+<p class="lead" data-r>Ein Dashboard für Mitarbeiter- und Kundengewinnung, Bewertungen, Telefon und Website: so sieht das System in der Praxis aus.</p></div>
+<figure class="vid" data-r><div class="vid-frame">
+<video id="expl" data-video="websysteme-erklaervideo" controls preload="none" playsinline poster="/assets/video/websysteme-erklaervideo-poster.webp" width="1920" height="1080" aria-describedby="vid-tr">
+<source src="/assets/video/websysteme-erklaervideo.mp4" type="video/mp4">
+Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websysteme-erklaervideo.mp4">Video herunterladen</a>.</video>
+<button class="vid-play" type="button" aria-label="Erklärvideo abspielen (79 Sekunden, mit Untertiteln)"><span class="vid-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="vid-lab">Video ansehen<small>79 Sek. · mit Untertiteln</small></span></button></div>
+</figure>
+<div class="vid-chap" role="group" aria-label="Kapitel des Videos">{chaps}</div>
+<p class="micro vid-note">Beispieldarstellung: Alle Namen und Zahlen im Video sind Beispieldaten.</p>
+<details class="vid-tr" id="vid-tr"><summary>Video als Text lesen</summary><div>{text}</div></details>
+<div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="home-video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="home-video-mehr">Wie das System funktioniert</a></div>
+</div></section>'''
+
+
+def video_schema():
+    v = {"@context": "https://schema.org", "@type": "VideoObject",
+         "name": "Websites waren gestern: Das Websystem für Mitarbeiter- und Kundengewinnung",
+         "description": "Erklärvideo: Ein Dashboard für Mitarbeiter- und Kundengewinnung, Bewertungen, Telefon und Website. Alle Namen und Zahlen im Video sind Beispieldaten.",
+         "thumbnailUrl": f"{SITE}/assets/video/websysteme-erklaervideo-poster.webp", "uploadDate": "2026-10-15", "duration": "PT1M19S",
+         "contentUrl": f"{SITE}/assets/video/websysteme-erklaervideo.mp4", "inLanguage": "de"}
+    return f'<script type="application/ld+json">{json.dumps(v, ensure_ascii=False)}</script>'
 
 
 def case_pflege():
@@ -665,7 +712,7 @@ def meta_manager(slug):
 {ad_visual}
 <div class="ad-f"><span><b>{e(d['head'])}</b><small>{e(d['sub'])}</small></span><i>Jetzt bewerben</i></div></div>
 </div>
-<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Bewerbungen</th><th>Kosten pro Bewerbung</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th><span class="sr" style="position:absolute;left:-9999px">Auswahl</span></th><th><span class="sr" style="position:absolute;left:-9999px">Status</span></th><th>Kampagne</th><th>Lieferung</th><th>Budget</th><th>Bewerbungen</th><th>Kosten pro Bewerbung</th><th>Ausgegeben</th><th class="hide-s">Reichweite</th><th class="hide-s">Impressionen</th></tr></thead><tbody>{rows}</tbody>{foot}</table></div>
 </div></div>
 </div>
 <ul class="tool-pts" data-r><li>Zielgruppe nach Region und Interessen</li><li>Anzeigen mit Bild oder Video</li><li>Einfacher Kontakt – auf Wunsch ohne Lebenslauf</li><li>Laufende Auswertung und Optimierung</li></ul>
@@ -693,7 +740,7 @@ def google_search(slug):
 <div class="mg-tabs"><b class="on">Übersicht</b><b>Kampagnen</b><b>Keywords</b><b>Ziele</b><span class="dtp">Letzte 30 Tage{ico('chev')}</span></div>
 <div class="kp-row">{kp}</div>
 <div class="mg-chart"><div class="mg-cl"><b>Anfragen im Zeitverlauf</b><small>Verlauf · Beispieldarstellung</small></div>{chart([14, 20, 18, 30, 28, 42, 38, 55, 52, 66, 72, 84], 'goog')}</div>
-<div class="tbl-wrap"><table class="mg-t"><thead><tr><th></th><th>Kampagne</th><th>Status</th><th>Budget</th><th>Klicks</th><th class="hide-s">Impressionen</th><th>Anfragen</th></tr></thead><tbody>{camps}</tbody></table></div>
+<div class="tbl-wrap"><table class="mg-t"><thead><tr><th><span class="sr" style="position:absolute;left:-9999px">Auswahl</span></th><th>Kampagne</th><th>Status</th><th>Budget</th><th>Klicks</th><th class="hide-s">Impressionen</th><th>Anfragen</th></tr></thead><tbody>{camps}</tbody></table></div>
 </div></div></div>
 <div class="serp-lbl" data-r><b>So erscheint Ihr Angebot bei der Suche</b></div>
 <div class="tool-grid one" data-r>
@@ -792,7 +839,30 @@ def offer():
 <ul class="ticks">{t}</ul>
 <a class="btn btn-gold" href="#analyse" data-cta="angebot">Einführungspartnerschaft prüfen {ARROW}</a>
 <div class="offer-foot"><span>Nach Abschluss der zehn Einführungspartnerschaften beginnt der reguläre, erweiterte Systemaufbau bei 14.900 € netto.</span><span>Keine durchgestrichenen Fantasiepreise, kein künstlicher Countdown.</span></div></div>
-</div></section>'''
+</div></section>''' + ablauf_garantie()
+
+
+
+def vertrieb_teaser():
+    return f"""<section class="section" id="vertriebsbibliothek" aria-labelledby="vb-h"><div class="container vb">
+<div><span class="eyebrow" data-r>30 Einblicke</span><h2 class="h2" id="vb-h" data-r>Von der ersten Bewerbung <span class="gold it">bis zum Gespräch.</span></h2>
+<p class="lead" data-r>Cockpit-Rundgang, 80-Sekunden-Video, Praxisbeispiele, Vergleich und 2-Minuten-Check: 30 kurze Einblicke, wie ein Websystem im Alltag arbeitet.</p></div>
+<div class="btns" data-r><a class="btn btn-gold" href="/vertriebswaffen.html" data-cta="home-vertriebsbibliothek">30 Einblicke entdecken {ARROW}</a><a class="btn" href="/vertriebsbibliothek.html" data-cta="home-7-einblicke">Die 7 wichtigsten zuerst</a></div></div></section>"""
+
+
+def ablauf_garantie():
+    steps = [('Kostenlose 15-Minuten-Analyse', 'Wir schauen gemeinsam, wo Sie heute Bewerber oder Kundenanfragen verlieren. Unverbindlich und ohne Verkaufsdruck.'),
+             ('Persönliches Angebot', 'Raphael sagt Ihnen konkret, was gebaut wird, was es kostet und was Sie dafür bekommen. Schriftlich und verständlich.'),
+             ('Aufbau und Start', 'Ihr Websystem wird gebaut und begleitet. Anfragen und Bewerbungen laufen im Cockpit zusammen, Sie führen die Gespräche.')]
+    li = ''.join(f'<li data-r><span class="gs-n">{i + 1}</span><div><h3>{e(a)}</h3><p>{e(b)}</p></div></li>' for i, (a, b) in enumerate(steps))
+    return f"""<section class="section" id="start" aria-labelledby="start-h"><div class="container gs">
+<div><span class="eyebrow" data-r>So starten wir</span><h2 class="h2" id="start-h" data-r>Drei Schritte. <span class="gold it">Ohne Risiko für Sie.</span></h2>
+<ol class="gs-steps">{li}</ol></div>
+<div class="gs-card" role="group" data-r aria-labelledby="gs-h"><span class="gs-seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.4 3 8.1 7.5 9.5 4.5-1.4 7.5-5.1 7.5-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg></span>
+<h3 id="gs-h">Zufriedenheitsgarantie</h3>
+<p class="gs-big">Gefällt Ihnen unsere Arbeit nicht, bekommen Sie Ihr Honorar zurück.</p>
+<p>Wir wollen kein Geld für Arbeit, die Ihnen nicht gefällt. Die Konditionen besprechen wir offen im Angebot und halten sie schriftlich fest.</p>
+<p class="micro">Gemeint ist Ihre Zufriedenheit mit unserer Leistung. Ergebnisse wie Bewerbungen oder Anfragen hängen auch von Markt, Angebot und Ihrer Reaktionsgeschwindigkeit ab. Werbebudget ist nicht Teil des Honorars und geht direkt an die Werbeplattformen.</p></div></div></section>"""
 
 
 def about():
@@ -883,14 +953,14 @@ def final(preset=''):
 <div class="s2" hidden><h3>Wohin dürfen wir uns melden?</h3>
 <div class="field"><label for="f-name">Ihr Name</label><input id="f-name" name="name" autocomplete="name" required></div>
 <div class="field"><label for="f-contact">Telefon oder E-Mail</label><input id="f-contact" name="contact" autocomplete="tel" inputmode="text" required></div>
-<p class="err err2" role="alert"></p>
+<p class="err err2" role="alert"></p><div class="form-fail" role="alert" hidden></div>
 <button class="btn btn-gold" type="submit" data-cta="form-senden">Kostenlose 15-Minuten-Analyse buchen {ARROW}</button>
 <button class="back-btn" type="button" style="background:none;border:0;color:var(--muted);margin:14px auto 0;display:block;cursor:pointer;min-height:44px">← Zurück</button></div>
 <p class="fine">Unverbindlich. Ihre Angaben nutzen wir nur für die Kontaktaufnahme – siehe <a href="/datenschutz.html">Datenschutz</a>.</p>
 <p class="alt">Lieber direkt? <a href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender-alt">Termin wählen</a> · <a href="tel:+4971134063951">Anrufen</a> · <a href="{WA}" target="_blank" rel="noopener">WhatsApp schreiben</a></p>
 </div>
-<div class="done" role="status"><h3>Danke – WhatsApp öffnet sich.</h3><p class="done-txt"></p>
-<a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">WhatsApp-Nachricht erneut öffnen {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
+<div class="done" role="status"><h3>Danke, Ihre Anfrage ist angekommen.</h3><p class="done-txt"></p>
+<a class="btn btn-gold wa-link" href="{WA}" target="_blank" rel="noopener">Zusätzlich per WhatsApp schreiben {ARROW}</a><a class="btn cal-link" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener" data-cta="kalender" style="margin-top:12px">Direkt Termin im Kalender wählen {ARROW}</a></div>
 </form></div></section>'''
 
 
@@ -904,16 +974,82 @@ def footer(cta='#analyse'):
 <script src="/vendor/gsap.min.js"></script><script src="/vendor/ScrollTrigger.min.js"></script><script src="/vendor/lenis.min.js"></script><script src="/site.js"></script></body></html>'''
 
 
+
+# ---------- Leadmagneten (PDF-Leitfäden) ----------
+LEITFADEN = {
+    'pflege-benefits': dict(
+        page='pflege', eyebrow='Kostenloser Leitfaden · für Pflegebetriebe', short='Die 25 Benefits, die Pflegekräfte sich wünschen',
+        h2='Die 25 Benefits, die Pflegekräfte 2026/27 <span class="gold it">sich wünschen.</span>',
+        lead='Welche Vorteile Bewerber heute überzeugen und wie Sie sie so zeigen, dass sich passende Pflegekräfte aus Ihrer Region melden.',
+        ticks=['25 Benefits in 5 Bereichen: Dienstplan, Geld, Entlastung, Entwicklung, Extras', 'Zu jedem Punkt: warum er zieht, wie Sie ihn zeigen und wie hoch der Aufwand ist', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Benefits, die Pflegekräfte sich wünschen'),
+    'pflege-angehoerige': dict(
+        page='pflege-patienten', eyebrow='Kostenloser Leitfaden · für Pflegebetriebe', short='Die 25 Fragen, die Angehörige stellen',
+        h2='Die 25 Fragen, die Angehörige stellen, <span class="gold it">bevor sie anrufen.</span>',
+        lead='Worauf Familien bei der Wahl eines Pflegedienstes achten und wie Ihr Auftritt die Antworten gibt, bevor jemand fragen muss.',
+        ticks=['25 Fragen in 5 Bereichen: Vertrauen, Kosten, Erreichbarkeit, Ablauf, Qualität', 'Zu jeder Frage: was dahinter steckt und wie Sie online antworten', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Fragen, die Angehörige stellen, bevor sie anrufen'),
+    'handwerk-benefits': dict(
+        page='handwerk-mitarbeiter', eyebrow='Kostenloser Leitfaden · für Handwerksbetriebe', short='Die 25 Benefits für Elektriker und Handwerker',
+        h2='Die 25 Benefits, die Elektriker und Handwerker <span class="gold it">überzeugen.</span>',
+        lead='Was Gesellen, Meister und Fachkräfte 2026/27 bei der Wahl ihres Betriebs zählt, mit Schwerpunkt Elektro und angrenzenden Gewerken.',
+        ticks=['25 Benefits in 5 Bereichen: Geld, Arbeitszeit, Ausstattung, Aufstieg, Team', 'Zu jedem Punkt: warum er zieht, wie Sie ihn zeigen und wie hoch der Aufwand ist', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Benefits, die Elektriker und Handwerker überzeugen'),
+    'handwerk-anfragen': dict(
+        page='handwerk-kunden', eyebrow='Kostenloser Leitfaden · für Handwerksbetriebe', short='Die 25 Anfrage-Bremsen im Handwerk',
+        h2='Die 25 Gründe, warum Kunden <span class="gold it">nicht bei Ihnen anfragen.</span>',
+        lead='Welche kleinen Hürden auf Handwerker-Webseiten Anfragen kosten und wie Sie sie mit wenig Aufwand beseitigen.',
+        ticks=['25 Anfrage-Bremsen in 5 Bereichen: erster Eindruck, Vertrauen, Angebot, Kontakt, Reaktion', 'Zu jeder Bremse: warum sie Anfragen kostet und wie Sie sie lösen', 'Schnellstarter für 30 Tage und Checkliste zum Ausfüllen'],
+        alt='Titelseite des Leitfadens: Die 25 Gründe, warum Kunden nicht bei Ihnen anfragen'),
+}
+LEITFADEN_BY_PAGE = {v['page']: k for k, v in LEITFADEN.items()}
+
+
+def leitfaden(key):
+    c = LEITFADEN[key]
+    img = lambda n: f'/assets/images/leadmagnets/{key}-p{n}.webp'
+    return f"""<section class="section lm" id="leitfaden" aria-labelledby="lm-h-{key}"><div class="container lm-grid">
+<div class="lm-mock" data-r aria-hidden="false">
+<img class="lm-pg lm-a" src="{img(14)}" alt="" width="827" height="1170" loading="lazy" decoding="async">
+<img class="lm-pg lm-b" src="{img(4)}" alt="" width="827" height="1170" loading="lazy" decoding="async">
+<img class="lm-pg lm-c" src="{img(1)}" alt="{e(c['alt'])}" width="827" height="1170" loading="lazy" decoding="async">
+<span class="lm-badge"><b>PDF</b>16 Seiten</span></div>
+<div class="lm-copy"><span class="eyebrow" data-r>{c['eyebrow']}</span>
+<h2 class="h2" id="lm-h-{key}" data-r>{c['h2']}</h2>
+<p class="lead" data-r>{c['lead']}</p>
+<ul class="ticks" data-r>{''.join(f'<li>{e(t)}</li>' for t in c['ticks'])}</ul>
+<form class="lm-form" data-lm="{key}" data-r novalidate>
+<p class="hp" aria-hidden="true"><label>Nicht ausfüllen <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+<div class="lm-row"><div class="field"><label for="lm-n-{key}">Ihr Vorname</label><input id="lm-n-{key}" name="name" autocomplete="given-name" required></div>
+<div class="field"><label for="lm-c-{key}">WhatsApp-Nummer oder E-Mail</label><input id="lm-c-{key}" name="contact" autocomplete="email" inputmode="email" required></div></div>
+<label class="lm-consent"><input type="checkbox" name="consent" required><span>Ja, Raphael Hermann darf mich zu diesem Leitfaden und passenden Angeboten per WhatsApp oder E-Mail kontaktieren. Ich kann das jederzeit widerrufen. Details in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</span></label>
+<p class="err" role="alert"></p>
+<button class="btn btn-gold" type="submit" data-cta="leitfaden-{key}">Leitfaden kostenlos erhalten {ARROW}</button>
+<div class="form-fail" role="alert" hidden></div>
+<div class="lm-done" role="status" hidden><h3>Ihr Leitfaden ist bereit.</h3><p>Viel Erfolg beim Umsetzen. Wenn Sie Fragen haben, schreiben Sie uns jederzeit.</p>
+<div class="btns"><a class="btn btn-gold" href="/assets/downloads/{key}.pdf" download data-cta="leitfaden-download-{key}">PDF herunterladen {ARROW}</a><a class="btn" href="#analyse" data-cta="leitfaden-analyse-{key}">Kostenlose 15-Min-Analyse</a></div></div>
+<p class="micro lm-note">Kostenlos, ohne Verpflichtung. Redaktionelle Zusammenstellung, keine Rechts- oder Steuerberatung.</p>
+</form></div></div></section>"""
+
+
+def leitfaeden_home():
+    cards = ''.join(f"""<a class="lm-card" href="/{c['page']}#leitfaden" data-cta="home-leitfaden-{k}" data-r><img src="/assets/images/leadmagnets/{k}-p1.webp" alt="" width="827" height="1170" loading="lazy" decoding="async"><span class="lm-k">{c['eyebrow'].split(' · ')[1].capitalize() if ' · ' in c['eyebrow'] else ''}</span><b>{e(c['short'])}</b><span class="lm-go">Kostenlos als PDF {ARROW}</span></a>""" for k, c in LEITFADEN.items())
+    return f"""<section class="section lm-home" id="leitfaeden" aria-labelledby="lm-home-h"><div class="container">
+<div class="lm-head"><span class="eyebrow" data-r>Kostenlose Leitfäden</span><h2 class="h2" id="lm-home-h" data-r>Wissen zum Mitnehmen. <span class="gold it">Direkt umsetzbar.</span></h2>
+<p class="lead" data-r>Vier PDF-Leitfäden mit je 25 Punkten für Pflege- und Handwerksbetriebe, mit Umsetzungstipp und Checkliste.</p></div>
+<div class="lm-cards">{cards}</div></div></section>"""
+
+
 # ---------- Seiten ----------
 def home():
     h = head('Digitale Gewinner – Mehr Bewerbungen. Mehr Kundenanfragen. Weniger Arbeit.',
              'Intelligente Websysteme für Pflege- und Handwerksbetriebe: passende Menschen aus Ihrer Region erreichen, Angaben erfassen und bis zum persönlichen Gespräch begleiten. Persönlich durch Raphael Hermann.',
-             '/', extra=schema(True) + '<link rel="preload" as="image" href="/assets/images/loops/werkstatt.webp" fetchpriority="high">')
+             '/', extra=schema(True) + video_schema() + '<link rel="preload" as="image" href="/assets/images/loops/werkstatt.webp" fetchpriority="high">')
     body = hero('Für Pflege- und Handwerksbetriebe',
                 ['Mehr passende Bewerbungen.', 'Mehr Kundenanfragen.', '<span class="gold it">Weniger Arbeit.</span>'],
                 'Wir bauen intelligente Websysteme, die passende Menschen aus Ihrer Region erreichen, ihre wichtigsten Angaben erfassen und sie bis zum persönlichen Gespräch begleiten.',
-                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME), loop='werkstatt')
-    body += partner_strip() + problem() + triptych() + usp() + live() + choose() + flow() + demo('home') + auto() + compare() + results() + offer() + check() + about() + faq() + final()
+                'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', HERO_BTNS, visual=hero_visual(VIS_HOME, timeline=True), loop='werkstatt', after=f'<p class="hero-direct" data-r>Schon sicher? <a href="#analyse" data-cta="hero-analyse">Kostenlose 15-Min-Analyse buchen {ARROW}</a></p>')
+    body += partner_strip() + home_video() + problem() + triptych() + usp() + live() + choose() + leitfaeden_home() + check() + flow() + demo('home') + compare() + results() + offer() + about() + faq() + vertrieb_teaser() + final()
     return h + nav(True) + body + footer()
 
 
@@ -964,6 +1100,7 @@ def branch(slug, c):
     body += f'''<section class="section" id="ziel"><div class="container auto">
 <div><span class="eyebrow" data-r>{c['head']}</span><h2 class="h2" data-r>Damit passende Menschen <span class="gold it">wirklich bei Ihnen ankommen.</span></h2></div>
 <div data-r><ul class="ticks" style="margin-top:0">{t}</ul><div class="btns"><a class="btn btn-gold" href="#analyse" data-goal="{c['goal']}" data-cta="branche-mitte">{c['btn']} {ARROW}</a></div>{other}</div></div></section>'''
+    body += leitfaden(LEITFADEN_BY_PAGE[slug]) if slug in LEITFADEN_BY_PAGE else ''
     body += meta_manager(slug) if slug in META_DATA else google_search(slug)
     if slug == 'pflege':
         body += stages()
@@ -1035,6 +1172,61 @@ def minify_assets():
         pass
 
 
+
+# ---------- Suchseiten (100 Seiten aus seo-geo-upgrade.py) im neuen Design ----------
+SEO_LEITFADEN = {'pflegedienst': 'pflege-angehoerige', 'handwerk': 'handwerk-anfragen', 'shk': 'handwerk-anfragen',
+                 'elektro': 'handwerk-anfragen', 'dachdecker': 'handwerk-anfragen'}
+SEO_CALC_JS = """<script>(function(){var els=["v","c","t","l"].map(function(i){return document.getElementById(i)}),out=document.getElementById("r");if(!out)return;
+function calc(){var a=els.map(function(e){return Math.max(0,parseFloat(e.value)||0)});var extra=a[0]*Math.max(0,a[2]-a[1])/100;var val=extra*a[3];
+out.textContent=extra.toLocaleString("de-DE",{maximumFractionDigits:1})+" zusätzliche Leads / Monat ≈ "+val.toLocaleString("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0})+" Szenario-Wert"}
+els.forEach(function(e){e.addEventListener("input",calc)});calc()})();</script>"""
+
+
+def seo_pages(out):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('seo_geo', HERE.parent / 'seo-geo-upgrade.py')
+    seo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(seo)
+    n = 0
+    for sector in seo.SECTORS:
+        for intent in seo.INTENTS:
+            slug = seo.slug_for(sector, intent)
+            title = intent['title'].format(sector=sector['name'])
+            h1 = intent['h1'].format(sector=sector['name'], audience=sector['audience'])
+            desc = f'{intent["label"]} für {sector["audience"]}: {intent["promise"]} Ziel: {sector["outcome"]}.'
+            faqs = seo.faq_items(sector, intent)
+            ld = json.dumps(seo.schema_for(sector, intent, slug, title, desc, faqs), ensure_ascii=False, separators=(',', ':'))
+            cards = ''.join(f'<article class="seo-card" data-r><h3>{e(a)}</h3><p>{e(b)}</p></article>' for a, b in intent['sections'])
+            peers = ''.join(f'<a href="/{e(seo.slug_for(sector, q))}/">{e(q["label"])}</a>' for q in seo.INTENTS if q['key'] != intent['key'])
+            faq = ''.join(f'<details><summary>{e(q)}</summary><p>{e(a)}</p></details>' for q, a in faqs)
+            lm = leitfaden(SEO_LEITFADEN[sector['key']]) if sector['key'] in SEO_LEITFADEN else ''
+            h = head(title, desc, f'/{slug}/', extra=f'<script type="application/ld+json">{ld}</script>')
+            body = f"""<main id="main"><section class="seo-hero"><div class="container"><span class="eyebrow">{e(intent["label"])} · {e(sector["name"])}</span>
+<h1>{e(h1)}</h1><p class="lead">{e(intent["promise"])} {e(sector["pain"])}</p>
+<div class="btns"><a class="btn btn-gold" href="#analyse" data-cta="seo-hero">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="/case-studies.html" data-cta="seo-cases">Case Studies</a></div></div></section>
+<section class="section seo-sec"><div class="container"><h2 class="h2" data-r>Was hier <span class="gold it">anders gemacht wird.</span></h2><div class="seo-grid">{cards}</div></div></section>
+<section class="section seo-sec"><div class="container seo-two"><div><span class="eyebrow" data-r>Branchenlogik</span><h2 class="h2" data-r>Für {e(sector["audience"])} gebaut.</h2><p data-r>{e(sector["example"])}</p>
+<ul class="ticks" data-r><li>{e(sector["proof"])}</li><li>Mobile-first und ohne unnötige technische Last.</li><li>Klare Messpunkte für Suchsichtbarkeit, Klicks und Leads.</li></ul></div>
+<div class="seo-box" data-r><h3>Das wirtschaftliche Ziel</h3><p>{e(sector["outcome"].capitalize())}.</p><p class="micro">Keine Ergebnisgarantie: SEO und Leadzahlen hängen unter anderem von Markt, Angebot, Wettbewerb, Reputation und Vertriebsprozess ab.</p></div></div></section>
+{lm}
+<section class="section seo-sec"><div class="container seo-two"><div><span class="eyebrow" data-r>Schneller Rechner</span><h2 class="h2" data-r>Wie viel kann bessere Conversion wert sein?</h2>
+<p data-r>Einfach vorhandenen Website-Traffic und einen realistischen Leadwert einsetzen. Der Rechner ist eine Szenario-Schätzung, keine Prognose.</p></div>
+<div class="seo-box seo-calc" data-r><div class="field"><label for="v">Besucher pro Monat</label><input id="v" type="number" min="0" value="500"></div>
+<div class="field"><label for="c">Aktuelle Leadrate in %</label><input id="c" type="number" min="0" step=".1" value="2"></div>
+<div class="field"><label for="t">Ziel-Leadrate in %</label><input id="t" type="number" min="0" step=".1" value="4"></div>
+<div class="field"><label for="l">Wert eines qualifizierten Leads in €</label><input id="l" type="number" min="0" value="250"></div>
+<p class="seo-result" id="r" aria-live="polite">–</p></div></div></section>
+<section class="section seo-sec"><div class="container seo-faq"><span class="eyebrow" data-r>FAQ</span><h2 class="h2" data-r>Häufige Fragen</h2>{faq}</div></section>
+<section class="section seo-sec"><div class="container"><span class="eyebrow" data-r>Weiter im Cluster</span><h2 class="h2" data-r>Passende Themen für {e(sector["name"])}</h2><div class="seo-links" data-r>{peers}</div></div></section>
+{final('Kunden')}{SEO_CALC_JS}"""
+            page = h + nav(False) + body + footer()
+            d = out / slug
+            d.mkdir(parents=True, exist_ok=True)
+            (d / 'index.html').write_text(page, encoding='utf-8')
+            n += 1
+    return n
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     pages = {'index.html': home(), 'analyse.html': outbound(), 'recruiting-check.html': check_page()}
@@ -1057,7 +1249,9 @@ def main():
         for f in data.glob('*.json'):
             if not f.name.startswith('_'):
                 shutil.copy2(f, dest / f.name)
+    nseo = seo_pages(OUT)
     minify_assets()
+    print(f'{nseo} Suchseiten im neuen Design')
     print(f'Site built: {", ".join(pages)}')
 
 

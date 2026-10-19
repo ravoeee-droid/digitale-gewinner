@@ -4,6 +4,7 @@ Quelle der neuen Seiten: `build_site.py` (Copy + Markup), `site.css`, `site.js`,
 `bash build.sh` erzeugt daraus `dist/`: `index.html`, `pflege.html`, `handwerk-mitarbeiter.html`, `handwerk-kunden.html`, `analyse.html`.
 
 ## Offen / zu bestätigen
+- **Startseiten-Erklärvideo (`home_video()`, `assets/video/websysteme-erklaervideo.mp4`):** Aussagen im Video noch zu bestätigen: Telefon-Assistent, Bewertungsschleuse (zufriedene zu Google, unzufriedene auf eigene Seite), „KI schreibt in zwei Minuten einen Beitrag", „ohne Abhängigkeit von einer Agentur". Das Video endet mit „kostenlose Demo anfordern", der Button darunter lautet „Kostenlose 15-Min-Analyse": Angebot vereinheitlichen. Alle Namen und Zahlen im Video sind Beispieldaten (auf der Seite gekennzeichnet). Video ohne Firmenlogo und Kontakt am Ende.
 - Kalender: Google-Terminlink ist als Button eingebunden (kein Embed möglich). Formular öffnet direkt WhatsApp.
 - Aktuelle Anzahl der Google-Rezensionen (aktuell 9 laut bisherigem Schema), Belegbarkeit „200.000 €+“.
 - Echte Kundenfälle/-zitate (Case-Template erst einbauen, wenn belegt). Die 90-%-Aussage ist bewusst NICHT verwendet.
@@ -22,3 +23,8 @@ Quelle der neuen Seiten: `build_site.py` (Copy + Markup), `site.css`, `site.js`,
 - **Referenz-Logos (`/pflege`, `/pflege-patienten`):** 14 Pflege-Logos unter `assets/images/referenzen/` (Quelle: von Raphael bereitgestelltes Paket `pflegepartner.zip`). Vor Veröffentlichung schriftliche Freigabe jedes Trägers sicherstellen (v. a. AWO, Caritas, Diakonie, DRK, ASB, Asklepios, Korian). Formulierung bewusst: „… mit denen Raphael Hermann zusammengearbeitet hat".
 - **Handwerk-Creatives (`/handwerk-mitarbeiter`):** 4 Motive von Betrieben (Neubeiger, TB, Bochtler, BHK) – Freigabe der Betriebe für Logos/Motive prüfen.
 - **TÜV SÜD ISO/IEC 27001:** Zeichen liegt unter `assets/partners/tuev-zertifikat.webp` (von Raphael bereitgestellt). Zertifikat (Gültigkeit, zertifizierte Organisation, Geltungsbereich) bitte gegen die Zertifikatsurkunde prüfen; nur als „Informationssicherheits-Managementsystem" darstellen, nicht als allgemeines TÜV-Gütesiegel.
+
+## Leitfäden (Leadmagneten)
+- Inhalte: `leadmagnets/content_*.py` (je 25 Punkte). PDFs neu erzeugen: `NODE_PATH=/opt/node-tools/node_modules python3 leadmagnets/build_pdfs.py` (Playwright), danach die Mockup-Bilder `assets/images/leadmagnets/*-p{1,4,14}.webp` aus den PDF-Seiten neu rendern.
+- Ausgespielt über `leitfaden()` / `leitfaeden_home()` in `site/build_site.py`, Erfassung per `/api/lead` (Ziel: `Leitfaden: <slug>`).
+- Offen / zu bestätigen: Einwilligungstext und Datenschutzerklärung (Kontakt per WhatsApp/E-Mail, Speicherung der Daten) rechtlich prüfen lassen; Inhalte sind redaktionell, keine Studien.
