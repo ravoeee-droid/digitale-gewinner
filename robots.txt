@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://digitale-gewinner.de/sitemap.xml
+Sitemap: https://digitalegewinner.de/sitemap.xml

@@ -1,0 +1,11 @@
+{
+  "company": "Name des Betriebs",
+  "region": "Region/Stadt",
+  "target": "pflege | fach | kunden",
+  "video": "https://… (https-Embed-URL des persönlichen Videos, optional)",
+  "observations": [
+    { "title": "Beobachtung 1", "text": "Was ist aufgefallen?", "proof": "Beleg (Quelle/Datum)", "image": "assets/images/analyse/firma-beleg-1.webp" },
+    { "title": "Beobachtung 2", "text": "Was ist aufgefallen?", "proof": "Beleg (Quelle/Datum)", "image": "assets/images/analyse/firma-beleg-2.webp" }
+  ],
+  "next": "Möglicher nächster Schritt in 1–2 Sätzen"
+}
