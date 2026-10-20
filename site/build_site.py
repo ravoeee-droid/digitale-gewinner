@@ -773,7 +773,8 @@ PFLEGE_REFS = [('pflegehaus-koegler', 'Pflegehaus Kögler'), ('asklepios-parchim
 
 def refs_pflege():
     def tile(n, a, hidden=False):
-        return f'<li{" aria-hidden=\"true\"" if hidden else ""}><img src="/assets/images/referenzen/{n}.webp" alt="{"" if hidden else e(a)}" loading="lazy" decoding="async" height="64"></li>'
+        hidden_attr = ' aria-hidden="true"' if hidden else ''
+        return f'<li{hidden_attr}><img src="/assets/images/referenzen/{n}.webp" alt="{"" if hidden else e(a)}" loading="lazy" decoding="async" height="64"></li>'
     one = ''.join(tile(n, a) for n, a in PFLEGE_REFS)
     two = ''.join(tile(n, a, True) for n, a in PFLEGE_REFS)
     return f'''<section class="refs" aria-label="Pflegeeinrichtungen und Träger"><div class="container"><p class="refs-l" data-r>Pflegeeinrichtungen und Träger, mit denen Raphael Hermann zusammengearbeitet hat</p></div>
@@ -1040,6 +1041,11 @@ def main():
     pages = {'index.html': home(), 'analyse.html': outbound(), 'recruiting-check.html': check_page()}
     for slug, c in BRANCH.items():
         pages[f'{slug}.html'] = branch(slug, c)
+    # index.html und pflege.html werden eigenständig auf Repo-Root gepflegt
+    # (aktuelle Markensprache: Du-Ansprache, "Digitale Entlastung") und von
+    # build.sh bereits nach dist/ kopiert - hier nicht überschreiben.
+    for owned in ('index.html', 'pflege.html'):
+        pages.pop(owned, None)
     for name, content in pages.items():
         (OUT / name).write_text(content, encoding='utf-8')
     for name in ('impressum', 'datenschutz'):  # neue Optik; beide URL-Varianten bedienen (/impressum.html und /impressum/)

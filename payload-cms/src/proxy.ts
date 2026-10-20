@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-const payloadPrefixes = ['/admin', '/api', '/graphql', '/_next']
+const payloadPrefixes = ['/admin', '/api', '/graphql', '/_next', '/blog']
 
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname

@@ -32,7 +32,7 @@ for item in source.iterdir():
     else:
         shutil.copy2(item, target)
 
-for name in ('index.html', 'case-studies.html', 'danke.html', 'robots.txt', 'sitemap.xml'):
+for name in ('index.html', 'case-studies.html', 'pflege.html', 'handwerk.html', 'ki-websites.html', 'pv-trust.html', 'danke.html', 'robots.txt', 'sitemap.xml'):
     shutil.copy2(root / name, out / name)
 
 publish_assets = (
@@ -47,6 +47,10 @@ publish_assets = (
     'cro-upgrade.js',
     'case-overview.css',
     'case-overview.js',
+    'fx.css',
+    'fx.js',
+    'chat-widget.css',
+    'chat-widget.js',
 )
 for name in publish_assets:
     shutil.copy2(root / name, out / name)
@@ -77,9 +81,10 @@ image_data = {
     'Beratung und Führungskräfteentwicklung': ('/assets/images/case-studies/case-study-fuehrungskraefte.webp', 1573, 721),
     'NeuroMind Website': ('/assets/images/case-studies/case-study-neuromind-breathwork.webp', 1573, 723),
     'NeuroMind Breathwork Website': ('/assets/images/case-studies/case-study-neuromind-breathwork.webp', 1573, 723),
-    'Raphael Hermann von Digitale Gewinner': ('/assets/images/raphael/raphael-hermann-hero.webp', 1122, 1402),
-    'Raphael Hermann in einer Beratungssituation': ('/assets/images/raphael/raphael-hermann-portrait.webp', 1122, 1402),
-    'Strategie und Umsetzung bei Digitale Gewinner': ('/assets/images/raphael/raphael-hermann-strategiearbeit.webp', 1400, 933),
+    # Raphael Hermann hero/about/process images intentionally excluded here:
+    # index.html now hardcodes the current Bruno photos directly with correct
+    # width/height, and this alt-text-keyed replacement used to silently
+    # revert them back to the old portrait Raphael-solo images on every build.
 }
 
 def replace_image_tag(html: str, alt: str, src: str, width: int, height: int) -> str:
@@ -97,25 +102,11 @@ html = home.read_text(encoding='utf-8')
 for alt, (src, width, height) in image_data.items():
     html = replace_image_tag(html, alt, src, width, height)
 
-html = html.replace(
-    ".p-google{--image:url('https://digitale-gewinner.de/assets/consulting.webp')}",
-    ".p-google{--image:url('/assets/images/raphael/raphael-hermann-kundengespraech.webp')}"
-)
-html = html.replace(
-    ".p-site{--image:url('https://digitale-gewinner.de/assets/raphael-office.webp')}",
-    ".p-site{--image:url('/assets/images/raphael/raphael-hermann-strategiearbeit.webp')}"
-)
-html = html.replace(
-    ".p-social{--image:url('https://digitale-gewinner.de/assets/process.webp')}",
-    ".p-social{--image:url('/assets/images/raphael/raphael-hermann-praesentation.webp')}"
-)
-
 base_links = (
-    '<link rel="stylesheet" href="trust-upgrade.css">'
     '<link rel="stylesheet" href="case-worlds.css">'
     '<link rel="stylesheet" href="local-assets.css">'
 )
-if 'trust-upgrade.css' not in html:
+if 'case-worlds.css' not in html:
     html = html.replace('</head>', base_links + '</head>')
 elif 'local-assets.css' not in html:
     html = html.replace('</head>', '<link rel="stylesheet" href="local-assets.css"></head>')
@@ -151,31 +142,28 @@ goal_marker = '<div class="field full"><label for="goal">Was soll online stärke
 if 'name="priority"' not in html:
     html = html.replace(goal_marker, priority_field + goal_marker)
 
-if 'home-case-style.css' not in html:
-    html = html.replace(
-        '</head>',
-        '<link rel="stylesheet" href="home-case-style.css">'
-        '<link rel="stylesheet" href="home-case-polish.css">'
-        '<link rel="stylesheet" href="cro-upgrade.css"></head>'
-    )
-elif 'cro-upgrade.css' not in html:
-    html = html.replace('</head>', '<link rel="stylesheet" href="cro-upgrade.css"></head>')
-
-for script in ('trust-upgrade.js', 'home-case-style.js', 'cro-upgrade.js'):
-    if script not in html:
-        html = html.replace('</body>', f'<script src="{script}" defer></script></body>')
+# trust-upgrade.js, cro-upgrade.js, home-case-style.js/.css and
+# home-case-polish.css are all intentionally excluded from index.html now:
+# - trust-upgrade.js / cro-upgrade.js DOM-inject pre-rebrand agency copy
+#   (hero offer chips, "Website der Woche" giveaway campaign, old
+#   Vertrauensanalyse form text) and cro-upgrade.js additionally hijacks
+#   #trustForm's submit event in the capture phase with
+#   stopImmediatePropagation, silently overriding the rewritten handler
+#   already inlined in index.html.
+# - home-case-style.js/.css apply a per-section "scene" background system
+#   (cs-cream/cs-wine/cs-blue/...) built around the OLD 3-pillar
+#   Google/Website/Social-Media content. It rewrites #system's headline
+#   back to "3 Orte. 1 Eindruck." and forces an old asymmetric grid layout.
+# - home-case-polish.css additionally @imports
+#   /assets/images/ui/home-brand-lock.css, which re-locks #system's pillar
+#   colors/grid and sets `.pillar>*{position:relative}` with #id-level
+#   specificity, breaking .pillar-label's `position:absolute` and making
+#   the label badge overlap the link text instead of sitting top-left.
+# None of this loads on pflege.html/handwerk.html, which is also why the
+# homepage looked visually inconsistent with the other two pages.
+# cro-upgrade.js stays loaded on danke.html (its own <script> tag there),
+# where it only prefills the thank-you page and is harmless.
 home.write_text(html, encoding='utf-8')
-
-upgrade_js = out / 'trust-upgrade.js'
-js = upgrade_js.read_text(encoding='utf-8')
-for old, new in {
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://strongrelationship.de': '/assets/images/case-studies/case-study-strong-relationship.webp',
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://libielektronik.de': '/assets/images/case-studies/case-study-libi-elektronik.webp',
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://neuromind-breathwork.de': '/assets/images/case-studies/case-study-neuromind-breathwork.webp',
-    'https://image.thum.io/get/width/1400/crop/760/noanimate/https://koerperkult-shop.de': '/assets/images/case-studies/case-study-koerperkult.webp',
-}.items():
-    js = js.replace(old, new)
-upgrade_js.write_text(js, encoding='utf-8')
 
 subprocess.run(['python3', 'render-cases.py'], check=True)
 
@@ -232,12 +220,13 @@ for rel in expected_images:
 
 required = (
     'assets/video/websystem-erklaervideo.mp4',
-    'index.html', 'case-studies.html', 'danke.html',
+    'index.html', 'case-studies.html', 'pflege.html', 'handwerk.html', 'ki-websites.html', 'pv-trust.html', 'danke.html',
     'trust-upgrade.css', 'case-worlds.css', 'local-assets.css',
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
     'home-case-style.js', 'cro-upgrade.css', 'cro-upgrade.js',
     'case-overview.css', 'case-overview.js',
-    'vertriebsbibliothek.html', 'vertriebswaffen.html', 'site.css', 'site.js', 'pflege.html', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html', 'recruiting-check.html',
+    'fx.css', 'fx.js', 'chat-widget.css', 'chat-widget.js',
+    'vertriebsbibliothek.html', 'vertriebswaffen.html', 'site.css', 'site.js', 'pflege-patienten.html', 'handwerk-mitarbeiter.html', 'handwerk-kunden.html', 'analyse.html', 'recruiting-check.html',
     'vendor/gsap.min.js', 'vendor/ScrollTrigger.min.js', 'vendor/lenis.min.js',
 )
 for name in required:

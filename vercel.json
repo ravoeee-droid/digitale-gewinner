@@ -2,5 +2,11 @@
   "framework": "nextjs",
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
-  "outputDirectory": "payload-cms/.next"
+  "outputDirectory": "payload-cms/.next",
+  "crons": [
+    {
+      "path": "/api/generate-blog-post",
+      "schedule": "0 6 * * *"
+    }
+  ]
 }
