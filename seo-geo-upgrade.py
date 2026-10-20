@@ -13,6 +13,7 @@ PHONE = "4971134063951"
 SECTORS = [
     {"key":"pflegedienst","name":"Pflegedienst","prefix":"pflegedienst","audience":"ambulante Pflegedienste, Pflegeanbieter und Pflegeunternehmen","pain":"Pflegedienste müssen gleichzeitig Vertrauen bei Angehörigen aufbauen und Fachkräfte überzeugen. Veraltete Seiten bremsen beide Ziele.","proof":"Menschliche Teamdarstellung, klare Pflegeleistungen, lokale Vertrauenssignale, Bewerberstrecke, Google-Bewertungen und direkte Kontaktwege.","outcome":"mehr passende Bewerbungen, mehr qualifizierte Kundenanfragen und stärkere lokale Wahrnehmung","example":"Eine Pflege-Website muss Angehörigen Sicherheit geben und Bewerbern zeigen, wie Team, Führung, Dienstplanung und Arbeitsalltag wirklich aussehen."},
     {"key":"handwerk","name":"Handwerk","prefix":"handwerk","audience":"Handwerksbetriebe und regionale Fachbetriebe","pain":"Viele Handwerksbetriebe leben von Empfehlungen, verlieren aber digitale Interessenten an Wettbewerber mit klareren Leistungen, Referenzen und Kontaktwegen.","proof":"Leistungsseiten, Projektbeispiele, Einsatzgebiet, Bewertungen, schnelle Anfrageformulare und klare Qualifizierung nach Projektart.","outcome":"mehr passende Projekte statt unqualifizierter Preis-Anfragen","example":"Gute Handwerkerseiten zeigen Leistungen, echte Baustellen, Region, Ablauf und einen einfachen Weg zur qualifizierten Anfrage."},
+    {"key":"photovoltaik","name":"Photovoltaik","prefix":"photovoltaik","audience":"Photovoltaik- und Solarfachbetriebe","pain":"Viele PV-Betriebe hängen stark an gekauften oder geteilten Leads aus Leadportalen und an Empfehlungen - beides lässt sich kaum planen und oft sinkt die Anfragequalität, sobald dieselben Leads an mehrere Betriebe gleichzeitig verkauft werden.","proof":"Eigene, exklusive Anfragewege über die eigene Website statt geteilter Portal-Leads, klare Leistungsdarstellung, Referenzprojekte, Bewertungen und ein System, das laufend an der eigenen Sichtbarkeit arbeitet.","outcome":"mehr eigene, exklusive Anfragen statt geteilter Portal-Leads und weniger Abhängigkeit von Empfehlungen oder einer externen Agentur","example":"Eine PV-Website muss Vertrauen in Qualität und Erfahrung schaffen und Interessenten einen direkten, einfachen Weg zur unverbindlichen Anfrage bieten - ohne Umweg über ein Leadportal, das denselben Lead auch an die Konkurrenz verkauft."},
 ]
 
 INTENTS = [
@@ -194,7 +195,7 @@ def inject_homepage_hub() -> None:
     priority = [
         ("Website erstellen lassen","website-erstellen-lassen"),("Webdesign","webdesign"),("Website Kosten","website-kosten"),
         ("Photovoltaik Webdesign","webdesign-photovoltaik"),("Photovoltaik SEO","seo-photovoltaik"),("PV Leads","leads-gewinnen-photovoltaik"),
-        ("Pflegedienst Webdesign","webdesign-pflegedienst"),("Pflegedienst SEO","seo-pflegedienst"),("Handwerk Webdesign","webdesign-handwerk"),("Steuerberater Webdesign","webdesign-steuerberater")
+        ("Pflegedienst Webdesign","webdesign-pflegedienst"),("Pflegedienst SEO","seo-pflegedienst"),("Handwerk Webdesign","webdesign-handwerk")
     ]
     links = "".join(f'<a href="/{slug}/" style="padding:9px 12px;border:1px solid rgba(241,206,132,.18);border-radius:999px">{esc(label)} →</a>' for label,slug in priority)
     hub = f'<section id="seo-leistungen" class="section"><div class="container"><span class="eyebrow">Spezialisierte Lösungen</span><h2 class="serif">Direkt zum passenden Wachstumsthema.</h2><div style="display:flex;flex-wrap:wrap;gap:10px">{links}</div></div></section>'
@@ -221,6 +222,7 @@ def write_discovery(slugs: list[str]) -> None:
         (SITE+"/pflege","0.9","weekly"),
         (SITE+"/handwerk","0.9","weekly"),
         (SITE+"/ki-websites","0.9","weekly"),
+        (SITE+"/pv-trust","0.9","weekly"),
         (SITE+"/case-studies.html","0.8","monthly"),
         (SITE+"/impressum.html","0.1","yearly"),
         (SITE+"/datenschutz.html","0.1","yearly"),
