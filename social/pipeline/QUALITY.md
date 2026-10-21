@@ -62,3 +62,14 @@ Die ersten 3 Sekunden bestehen immer aus drei Teilen plus Klang:
 3. **Gegenzeile:** kleinere Zeile in Gold-Kursiv, die den Hook zuspitzt und Kontroverse erzeugt (z. B. „Dann bist du abhängig vom Zufall."). Sie muss belegbar oder klar als Meinung erkennbar sein.
 4. **Sound:** `sting.wav` (aufsteigender Dur-Akkord mit weichem Tiefton) bei 0,05 s. Positiv und neugierig machend, nicht warnend. Lautstärke 0,22, deutlich unter der Stimme.
 Im Code: `hook: {tag, lines, sub, until}` in `Configs.jsx`, Darstellung in `Reel3.jsx`.
+
+## 12. Skript-Standard (Raphael: "viel besser", 21.10.2026)
+Aufbau jedes Skripts, in dieser Reihenfolge:
+1. **Label** (Zielgruppe, z. B. PV-Unternehmer), **Hook**, **Gegenzeile** (siehe Abschnitt 11).
+2. **Schmerz zuerst:** Der Zuschauer muss sich brutal verstanden fühlen, bevor er etwas lernt. Gefühl vor Zahl. Konkrete Situation aus seinem Alltag (Kunden absagen, abends im Büro, der dritte Betrieb am Telefon).
+3. **Anerkennen, dann brechen:** Erst würdigen, was er richtig macht ("du bist zu Recht stolz"), dann den Glaubenssatz radikal brechen ("das ist keine Strategie, das ist Hoffnung").
+4. **Autorität:** ein belegter Fakt mit Quelle, Hinweis wenn "Handwerk allgemein". Keine erfundenen Zahlen. Meinung und Erfahrung nie als Studie sprechen.
+5. **CTA mit EINEM Stichwort** (z. B. EMPFEHLUNG, MONTEUR, DRITTER, GOOGLE), sofort danach ein Versprechen, was er bekommt. Nie eine Frage, die er in den Kommentaren beantworten soll (niemand tippt Zahlen oder Aufsätze, das sind Menschen).
+6. Länge 25 bis 30 s, 70 bis 80 Wörter, gesprochen wie im Gespräch, Du-Form, ruhig statt schreiend.
+7. Kein Ergebnisversprechen, keine Garantie, kein Preis. Unklare Aussagen mit [B] markieren und vor dem Dreh klären.
+Referenz: social/skripte/tag02_neu.md
