@@ -54,3 +54,11 @@ Reihenfolge ist fest. Kein Schritt wird übersprungen. Erst wenn `qa_video.py` "
 - Messung nach jedem Post: Sehdauer, Aussteiger-Sekunde, Vergleich mit dem Video davor. Ziel: Sehdauer steigt von Video zu Video.
 
 Stand 21.10.2026: Videos 1 bis 4 hatten 19 bis 83 Aufrufe, Ø Sehdauer 5 bis 7 s, keine Interaktion. Daraus abgeleitet: kürzer, schärferer Hook, besserer Dreh.
+
+## 11. Hook-Standard (Raphael, 21.10.2026)
+Die ersten 3 Sekunden bestehen immer aus drei Teilen plus Klang:
+1. **Zielgruppe sofort:** Goldlabel oben, z. B. „PV-Unternehmer" oder „Photovoltaik-Betrieb". Wer nicht gemeint ist, scrollt weiter. Wer gemeint ist, bleibt.
+2. **Hook:** größte Zeile, die schärfste Aussage oder Frage.
+3. **Gegenzeile:** kleinere Zeile in Gold-Kursiv, die den Hook zuspitzt und Kontroverse erzeugt (z. B. „Dann bist du abhängig vom Zufall."). Sie muss belegbar oder klar als Meinung erkennbar sein.
+4. **Sound:** `sting.wav` (aufsteigender Dur-Akkord mit weichem Tiefton) bei 0,05 s. Positiv und neugierig machend, nicht warnend. Lautstärke 0,22, deutlich unter der Stimme.
+Im Code: `hook: {tag, lines, sub, until}` in `Configs.jsx`, Darstellung in `Reel3.jsx`.
