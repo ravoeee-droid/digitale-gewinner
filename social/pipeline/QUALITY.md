@@ -28,7 +28,7 @@ Reihenfolge ist fest. Kein Schritt wird übersprungen. Erst wenn `qa_video.py` "
 - Zahlen und Quellen nur aus dem Facts Ledger. Alles Unbelegte raus.
 
 ## 6. Automatische Prüfung
-`python3 qa_video.py video.mp4` prüft: 1080x1920, 30 fps, Länge, Gesichtshelligkeit, Schärfe, Lautheit, Dateigröße. Bei Fehlern: nicht ausliefern, Ursache beheben, neu rendern.
+`python3 qa_video.py video.mp4 --hook --words src/v40xx.json` prüft: 1080x1920, 30 fps, Länge (8 bis 60 s, Ziel 20 bis 35), Hauthelligkeit (nur Hautpixel, nicht die Wand), Schärfe, Lautheit, Zielgruppen-Label und Hook in den ersten 3 s, Untertitel-Timing gegen das Audio (Median-Versatz unter 0,25 s). Bei Fehlern: nicht ausliefern, Ursache beheben, neu rendern. Getestet mit Positiv- und Negativfall (Videos 1 bis 4 fallen beim Label-Test erwartungsgemäß durch, sie sind vor dem Hook-Standard entstanden).
 
 ## 7. Sichtprüfung (immer)
 - 6 Standbilder gleichmäßig verteilt ansehen: Helligkeit, Schärfe, Untertitel nicht abgeschnitten, nichts über dem Gesicht.
