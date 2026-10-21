@@ -68,7 +68,7 @@ Wortzahl (gerechnet, ca. 3 Wörter/s, per Sprechprobe prüfen): 15 s = 35–45, 
 UTM je Reel, Frage "Wie haben Sie von uns erfahren?", Kommentar-Keywords zählen. Kennzahlen: Reichweite, Sends/Saves, Profilbesuche, DMs, Anfragen. Kommentar-zu-DM: eine Private Reply je Kommentar (7 Tage), weitere Nachrichten erst nach Antwort.
 
 ## 7. Editing (Remotion, Startwerte, nicht belegt)
-Schnitt alle 3–5 s, Zoom 105–120 %, Untertitel 60–90 px, 1–4 Wörter pro Einblendung, goldene Highlights, Safe Zone Meta Ads: oben 14 %, unten 35 %, seitlich 6 %, Lautheit −14 LUFS, H.264/AAC, BT.709, faststart. Marke: #090806, #d8a648, #f1ce84.
+Bildwechsel alle 1,5–3 s (B-Roll, Einblendung oder Wechsel Sprecher/B-Roll), kein Gesichtszoom, Untertitel 56–84 px, 1–3 Wörter (Wort-Modus) bzw. höchstens 4 Wörter, goldene Highlights (Schlüsselwörter in Serifen-Kursiv), Safe Zone Meta Ads: oben 14 %, unten 35 %, seitlich 6 %, Lautheit −14 LUFS, H.264/AAC, BT.709, faststart. Marke: #090806, #d8a648, #f1ce84 (Quelle: social/pipeline/toolkit/brand.json).
 
 ## 8. Checkliste vor Freigabe
 Hook in 2 Sek.? 1 Gedanke? Max. 3 Zahlen, alle belegt? Kein verbotenes Wort? 1 CTA? Wortzahl passt zur Länge? Quelle im Bild? [B]-Punkte geklärt?

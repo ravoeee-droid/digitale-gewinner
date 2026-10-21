@@ -1,14 +1,20 @@
 import json,re,subprocess,sys
 KEEPP=0.28
-for n in sys.argv[1:]:
+# Optional: --end-after <wort> schneidet nach diesem Wort ab (z. B. wenn das Ende des Takes unbrauchbar ist)
+args=sys.argv[1:]; END_AFTER=None
+if '--end-after' in args:
+    i=args.index('--end-after'); END_AFTER=args[i+1].lower(); del args[i:i+2]
+for n in args:
     words=json.load(open(f'words{n}.json'))
     out=subprocess.run(['ffmpeg','-nostats','-i',f'v{n}.mp4','-af','silencedetect=noise=-38dB:d=0.18','-f','null','-'],capture_output=True,text=True).stderr
     st=[float(x) for x in re.findall(r'silence_start: ([\d.]+)',out)]; en=[(float(a),float(b)) for a,b in re.findall(r'silence_end: ([\d.]+) \| silence_duration: ([\d.]+)',out)]
     sil=[(e-d,e,d) for e,d in en]
     dur=float(subprocess.run(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',f'v{n}.mp4'],capture_output=True,text=True).stdout)
     end=dur
-    if n=='4020':
-        w=[x for x in words if x[0].startswith('verglichen')][0]; end=min(dur,w[2]+0.25)
+    if END_AFTER:
+        w=[x for x in words if x[0].lower().strip('.,?!').startswith(END_AFTER)]
+        if w: end=min(dur,w[-1][2]+0.25)
+        else: print('Wort nicht gefunden:',END_AFTER)
     # Anfang: erste Silbe minus 0.15
     start=max(0,words[0][1]-0.2)
     removed=[(0,start)] if start>0.05 else []

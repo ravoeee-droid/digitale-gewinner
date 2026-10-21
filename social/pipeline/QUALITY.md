@@ -24,7 +24,8 @@ Reihenfolge ist fest. Kein Schritt wird übersprungen. Erst wenn `qa_video.py` "
 - Soundeffekte deutlich leiser als die Stimme.
 
 ## 5. Gestaltung
-- Untertitel max. 4 Wörter, Schlüsselwort Gold, kein Zoom.
+- Untertitel: Wort-Modus 1 bis 3 Wörter, sonst höchstens 4 Wörter pro Einblendung (im Code `makePages`, 3 bzw. 4). Schlüsselwörter in Marken-Gold, im Wort-Modus in Serifen-Kursiv.
+- Kein Zoom auf das Gesicht (macht unscharf). Bewegung kommt von B-Roll (sanfter Push bis 6 %), Einblendungen und dem Wechsel Sprecher/B-Roll.
 - Zahlen und Quellen nur aus dem Facts Ledger. Alles Unbelegte raus.
 
 ## 6. Automatische Prüfung
@@ -50,12 +51,13 @@ Reihenfolge ist fest. Kein Schritt wird übersprungen. Erst wenn `qa_video.py` "
 ## 10. Retention-Standard (ab Tag 2)
 - Schärfste Aussage im ersten Satz, keine Einleitung. Hook-Text in den ersten 3 s.
 - Länge 20 bis 30 s (Wortzahl laut Playbook halbieren), länger nur mit Grund.
-- Bildwechsel (Zoom, Einblendung, Zahl) etwa alle 0,5 bis 1 s.
+- Bildwechsel alle 1,5 bis 3 s: B-Roll-Szene, Einblendung (Zahl, Suche, Uhr) oder Wechsel Sprecher/B-Roll. Kein Gesichtszoom. Sprecher im Bild bei Hook und CTA, dazwischen B-Roll.
 - Messung nach jedem Post: Sehdauer, Aussteiger-Sekunde, Vergleich mit dem Video davor. Ziel: Sehdauer steigt von Video zu Video.
 
 Stand 21.10.2026: Videos 1 bis 4 hatten 19 bis 83 Aufrufe, Ø Sehdauer 5 bis 7 s, keine Interaktion. Daraus abgeleitet: kürzer, schärferer Hook, besserer Dreh.
 
 ## 11. Hook-Standard (Raphael, 21.10.2026)
+Markenfarben stehen nur in `social/pipeline/toolkit/brand.json` (Gold `#d8a648`, Gold2 `#f1ce84`, Ink `#090806`). Video-Code und QA lesen daraus. Website, Rechner und Playbook nutzen dieselben Werte.
 Die ersten 3 Sekunden bestehen immer aus drei Teilen plus Klang:
 1. **Zielgruppe sofort:** Goldlabel oben, z. B. „PV-Unternehmer" oder „Photovoltaik-Betrieb". Wer nicht gemeint ist, scrollt weiter. Wer gemeint ist, bleibt.
 2. **Hook:** größte Zeile, die schärfste Aussage oder Frage.

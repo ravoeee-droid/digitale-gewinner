@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {AbsoluteFill, Sequence, OffthreadVideo, Audio, staticFile, interpolate, useCurrentFrame, useVideoConfig, Easing, delayRender, continueRender} from 'remotion';
+import brand from '../brand.json';
 
-// Design-System "Atelier": Cormorant Garamond (Display) + Inter (Label/Text), Champagner-Gold, dünne Linien, ruhige Bewegung.
-export const GOLD = '#c9a45c', GOLD2 = '#e8d3a4', INK = '#0a0907', MUTE = 'rgba(244,238,225,0.62)', PAPER = '#f4eee1';
+// Design-System "Atelier": Cormorant Garamond (Display) + Inter (Label/Text), Markenfarben aus brand.json, dünne Linien, ruhige Bewegung.
+export const GOLD = brand.gold, GOLD2 = brand.gold2, INK = brand.ink, PAPER = brand.paper, MUTE = 'rgba(244,238,225,0.62)';
 const SANS = '"InterX", Inter, Arial, sans-serif', SERIF = '"CormorantX", "Cormorant Garamond", Georgia, serif';
 
 const FONTS = [
@@ -38,7 +39,8 @@ const Num = ({children, size = 96, color = PAPER, style}) => <div style={{fontFa
 // ---------- Grafiken ----------
 const Equation = ({g, frame, fps}) => {
   const t = (k) => interpolate(frame, [g.times[k] * fps, g.times[k] * fps + 12], [0, 1], {...clamp, easing: ease});
-  const count = Math.round(interpolate(frame, [g.times[2] * fps, g.times[2] * fps + 24], [0, 800], {...clamp, easing: ease}));
+  const P = g.params || {a: 80, b: 10, unitA: 'pro Anfrage', unitB: 'Anfragen', unitC: 'für 1 Auftrag', suffix: ' €'}; const total = P.a * P.b;
+  const count = Math.round(interpolate(frame, [g.times[2] * fps, g.times[2] * fps + 24], [0, total], {...clamp, easing: ease}));
   const Tok = ({big, small, p, color}) => <div style={{opacity: p, transform: `translateY(${(1 - p) * 10}px)`, textAlign: 'center'}}>
     <Num size={84} color={color}>{big}</Num>
     <div style={{fontFamily: SANS, fontWeight: 500, fontSize: 17, letterSpacing: '0.24em', color: MUTE, textTransform: 'uppercase', marginTop: 14}}>{small}</div></div>;
@@ -46,8 +48,8 @@ const Equation = ({g, frame, fps}) => {
   return <Panel a={g.a} b={g.b} fps={fps} frame={frame}>
     <Kicker>Beispielrechnung</Kicker>
     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-      <Tok big="80 €" small="pro Anfrage" p={t(0)} /><Op c="×" p={t(1)} /><Tok big="10" small="Anfragen" p={t(1)} /><Op c="=" p={t(2)} />
-      <Tok big={`${count} €`} small="für 1 Auftrag" p={t(2)} color={GOLD2} /></div>
+      <Tok big={`${P.a}${P.suffix}`} small={P.unitA} p={t(0)} /><Op c="×" p={t(1)} /><Tok big={`${P.b}`} small={P.unitB} p={t(1)} /><Op c="=" p={t(2)} />
+      <Tok big={`${count}${P.suffix}`} small={P.unitC} p={t(2)} color={GOLD2} /></div>
   </Panel>;
 };
 const Clock = ({g, frame, fps}) => {
@@ -73,7 +75,7 @@ const Donut = ({g, frame, fps}) => {
   </Panel>;
 };
 const Stat = ({g, frame, fps}) => {
-  const v = Math.round(interpolate(frame, [g.a * fps + 6, g.a * fps + 30], [0, g.value], {...clamp, easing: ease}));
+  const dec = g.decimals || 0; const v = (+interpolate(frame, [g.a * fps + 6, g.a * fps + 30], [0, g.value], {...clamp, easing: ease}).toFixed(dec)).toFixed(dec).replace('.', ',');
   return <Panel a={g.a} b={g.b} fps={fps} frame={frame}>
     <div style={{display: 'flex', alignItems: 'center', gap: 36}}>
       <Num size={140} color={GOLD2}>{v} %</Num>
@@ -81,7 +83,7 @@ const Stat = ({g, frame, fps}) => {
   </Panel>;
 };
 const Search = ({g, frame, fps}) => {
-  const txt = 'Dein Firmenname'; const n = Math.floor(interpolate(frame, [g.a * fps + 10, g.a * fps + 10 + txt.length * 2.4], [0, txt.length], clamp));
+  const txt = g.text || 'Dein Firmenname'; const n = Math.floor(interpolate(frame, [g.a * fps + 10, g.a * fps + 10 + txt.length * 2.4], [0, txt.length], clamp));
   const caret = Math.floor(frame / 15) % 2 === 0;
   return <Panel a={g.a} b={g.b} fps={fps} frame={frame} pad="30px 36px">
     <div style={{display: 'flex', alignItems: 'center', gap: 20, background: 'rgba(244,238,225,0.96)', borderRadius: 40, padding: '16px 30px'}}>
@@ -99,20 +101,31 @@ const GR = {equation: Equation, clock: Clock, donut: Donut, stat: Stat, search: 
 
 // ---------- Untertitel ----------
 const clean = (t) => t.replace(/[.,?!]$/, '');
-const makePages = (words) => { const pages = []; let cur = []; let chars = 0;
+const makePages = (words, maxW = 4) => { const pages = []; let cur = []; let chars = 0;
   words.forEach((w, i) => { const prev = words[i - 1]; const len = clean(w.text).length;
-    const brk = cur.length >= 5 || chars + len > 30 || (prev && /[.?!]$/.test(prev.text)) || (prev && w.start - prev.end > 0.4);
+    const brk = cur.length >= maxW || chars + len > 30 || (prev && /[.?!]$/.test(prev.text)) || (prev && w.start - prev.end > 0.4);
     if (brk && cur.length) { pages.push(cur); cur = []; chars = 0; } cur.push(w); chars += len + 1; });
   if (cur.length) pages.push(cur); return pages; };
-const Captions = ({pages, hl, frame, fps}) => {
+const Captions = ({pages, hl, frame, fps, mode}) => {
   const s = frame / fps; let pi = -1; pages.forEach((pg, i) => { if (s >= pg[0].start - 0.02) pi = i; }); if (pi < 0) return null;
   const pg = pages[pi]; const nxt = pages[pi + 1] ? pages[pi + 1][0].start : Infinity; if (s > Math.min(pg[pg.length - 1].end + 0.3, nxt)) return null;
   const inP = interpolate(frame, [pg[0].start * fps, pg[0].start * fps + 6], [0, 1], {...clamp, easing: ease});
-  return <div style={{position: 'absolute', left: 90, right: 90, top: 1300, height: 150, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', flexWrap: 'wrap', gap: '0 16px', opacity: inP, transform: `translateY(${(1 - inP) * 8}px)`}}>
+  const wordMode = mode === 'word';
+  return <div style={{position: 'absolute', left: 90, right: 90, top: wordMode ? 1230 : 1300, height: 190, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', flexWrap: 'wrap', gap: '0 18px', opacity: inP, transform: `translateY(${(1 - inP) * 8}px)`}}>
     {pg.map((w, i) => { const done = s >= w.start; const key = hl.includes(clean(w.text).toLowerCase());
-      return <span key={i} style={{fontFamily: SANS, fontWeight: 600, fontSize: 56, lineHeight: 1.2, letterSpacing: '-0.005em', color: key && done ? GOLD2 : done ? PAPER : 'rgba(244,238,225,0.5)', textShadow: '0 2px 14px rgba(0,0,0,0.6), 0 0 2px rgba(0,0,0,0.5)'}}>{clean(w.text)}</span>; })}
+      if (wordMode && key) return <span key={i} style={{fontFamily: SERIF, fontStyle: 'italic', fontWeight: 600, fontSize: 84, lineHeight: 1.05, color: done ? GOLD2 : 'rgba(241,206,132,0.5)', textShadow: '0 2px 18px rgba(0,0,0,0.65)'}}>{clean(w.text)}</span>;
+      return <span key={i} style={{fontFamily: SANS, fontWeight: wordMode ? 700 : 600, fontSize: wordMode ? 60 : 56, lineHeight: 1.2, letterSpacing: '-0.005em', color: key && done ? GOLD2 : done ? PAPER : 'rgba(244,238,225,0.5)', textShadow: '0 2px 14px rgba(0,0,0,0.6), 0 0 2px rgba(0,0,0,0.5)'}}>{clean(w.text)}</span>; })}
   </div>;
 };
+
+// ---------- B-Roll-Ebene: stumm über dem Sprecher, weicher Push, kurze Überblendung ----------
+const BRoll = ({segs, frame, fps}) => (<>{(segs || []).map((g, i) => {
+  const f0 = Math.round(g.a * fps), len = Math.max(4, Math.round((g.b - g.a) * fps));
+  if (frame < f0 || frame > f0 + len) return null;
+  const l = frame - f0; const inO = interpolate(l, [0, 4], [0, 1], clamp); const sc = 1 + 0.06 * (l / len);
+  return <AbsoluteFill key={i} style={{opacity: inO}}><AbsoluteFill style={{transform: `scale(${sc})`}}><OffthreadVideo muted src={staticFile(`broll/${g.src}`)} startFrom={Math.round((g.from || 0) * fps)} style={{width: '100%', height: '100%', objectFit: 'cover'}} /></AbsoluteFill>
+    <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(9,8,6,0.35) 0%, rgba(9,8,6,0) 28%, rgba(9,8,6,0) 55%, rgba(9,8,6,0.55) 100%)'}} /></AbsoluteFill>;
+})}</>);
 
 // ---------- Hook: Zielgruppe · Hook · Gegenzeile ----------
 const Hook = ({hook, frame, fps}) => {
@@ -123,9 +136,9 @@ const Hook = ({hook, frame, fps}) => {
   const p0 = st(0), p1 = st(5, 22), p2 = st(18, 20), line = st(2, 26);
   return <div style={{position: 'absolute', left: 70, right: 70, top: 200, display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: o}}>
     {hook.tag && <div style={{display: 'flex', alignItems: 'center', gap: 22, opacity: p0, marginBottom: 34}}>
-      <div style={{height: 1, width: 70 * line, background: GOLD}} />
+      <div style={{height: 2, width: 90 * line, background: GOLD}} />
       <div style={{fontFamily: SANS, fontWeight: 500, fontSize: 24, letterSpacing: '0.38em', color: GOLD2, textTransform: 'uppercase', paddingLeft: '0.38em'}}>{hook.tag}</div>
-      <div style={{height: 1, width: 70 * line, background: GOLD}} /></div>}
+      <div style={{height: 2, width: 90 * line, background: GOLD}} /></div>}
     <div style={{opacity: p1, transform: `translateY(${(1 - p1) * 18}px)`, filter: `blur(${(1 - p1) * 7}px)`, fontFamily: SERIF, fontWeight: 600, fontSize: 92, lineHeight: 1.0, letterSpacing: '-0.012em', textAlign: 'center', color: PAPER, textShadow: '0 3px 30px rgba(0,0,0,0.55)'}}>
       {hook.lines.map((l, i) => <div key={i} style={l.gold ? {color: GOLD2, fontStyle: 'italic', fontWeight: 500} : undefined}>{l.t}</div>)}</div>
     {hook.sub && <div style={{opacity: p2, transform: `translateY(${(1 - p2) * 10}px)`, marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -149,7 +162,7 @@ export const END_LEN = 2.4, END_PAD = 0.3;
 export const Reel3 = ({cfg}) => {
   useFonts();
   const frame = useCurrentFrame(); const {fps, durationInFrames} = useVideoConfig();
-  const words = cfg.data.words; const pages = React.useMemo(() => makePages(words), [words]);
+  const words = cfg.data.words; const wordMode = cfg.capMode === 'word'; const pages = React.useMemo(() => makePages(words, wordMode ? 3 : 4), [words, wordMode]);
   const endF = Math.round((cfg.data.duration + END_PAD) * fps);
   const fadeIn = interpolate(frame, [0, 5], [0, 1], {extrapolateRight: 'clamp'});
   return (<AbsoluteFill style={{background: INK}}>
@@ -157,14 +170,15 @@ export const Reel3 = ({cfg}) => {
       <AbsoluteFill><OffthreadVideo src={staticFile(cfg.src)} style={{width: '100%', height: '100%', objectFit: 'cover'}} /></AbsoluteFill>
       <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 44%, rgba(0,0,0,0) 56%, rgba(0,0,0,0.34) 100%)'}} />
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(10,9,7,0.42) 0%, rgba(10,9,7,0) 24%, rgba(10,9,7,0) 62%, rgba(10,9,7,0.5) 100%)'}} />
-      {cfg.graphics.map((g, i) => { const C = GR[g.type]; return <C key={i} g={g} frame={frame} fps={fps} />; })}
+      <BRoll segs={(cfg.broll || []).filter((g) => Number.isFinite(g.a) && Number.isFinite(g.b))} frame={frame} fps={fps} />
+      {cfg.graphics.filter((g) => Number.isFinite(g.a) && Number.isFinite(g.b)).map((g, i) => { const C = GR[g.type]; return C ? <C key={i} g={g} frame={frame} fps={fps} /> : null; })}
       <Hook hook={cfg.hook} frame={frame} fps={fps} />
-      <Captions pages={pages} hl={cfg.hl} frame={frame} fps={fps} />
+      <Captions pages={pages} hl={cfg.hl} frame={frame} fps={fps} mode={cfg.capMode} />
       <AbsoluteFill style={{background: INK, opacity: 1 - fadeIn}} />
       <div style={{position: 'absolute', left: 0, bottom: 0, height: 2, width: `${Math.min(1, frame / endF) * 100}%`, background: GOLD, opacity: 0.85}} />
     </Sequence>
     <Sequence from={endF} durationInFrames={durationInFrames - endF}><End end={cfg.end} frame={frame - endF} fps={fps} /></Sequence>
-    {cfg.sfx.map((e, i) => <Sequence key={i} from={Math.max(0, Math.round(e.t * fps))}><Audio src={staticFile(`sfx/${e.f}.wav`)} volume={e.v} /></Sequence>)}
+    {cfg.sfx.filter((e) => Number.isFinite(e.t)).map((e, i) => <Sequence key={i} from={Math.max(0, Math.round(e.t * fps))}><Audio src={staticFile(`sfx/${e.f}.wav`)} volume={e.v} /></Sequence>)}
     <Sequence from={endF}><Audio src={staticFile('sfx/ding.wav')} volume={0.1} /></Sequence>
   </AbsoluteFill>);
 };

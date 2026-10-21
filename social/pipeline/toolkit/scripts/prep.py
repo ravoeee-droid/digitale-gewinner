@@ -18,7 +18,8 @@ for a, b in keep: offs.append((a, b, t)); t += b - a
 out = []
 for text, s, e in words:
     pos = next((s - a + o for a, b, o in offs if a - 0.03 <= s < b), None)
-    if pos is None: continue  # Wort lag in einem entfernten Bereich
+    if pos is None:  # Wort liegt knapp in einer entfernten Pause (Whisper-Zeiten sind ±0,3 s ungenau): an die nächste Schnittstelle setzen, nie weglassen
+        nxt = [o for a, b, o in offs if a > s]; pos = nxt[0] if nxt else t
     pe = next((e - a + o for a, b, o in offs if a <= e <= b + 0.03), pos + 0.2)
     if pe < pos + 0.08: pe = pos + 0.2
     out.append({'text': text.strip(), 'start': round(pos, 3), 'end': round(pe, 3)})

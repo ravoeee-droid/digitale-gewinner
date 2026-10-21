@@ -28,9 +28,9 @@ Zweck dieser Datei: Ein lokaler Claude-Chat (auf Raphaels Rechner, mit Originald
 ## Standards (Details in QUALITY.md)
 - Skript: Label (Zielgruppe), Hook, Gegenzeile, Schmerz zuerst, Glaubenssatz brechen, belegter Fakt, EIN Stichwort als CTA. 25 bis 30 s, 70 bis 80 Wörter.
 - Hook-Look: Label zwischen Linien, Hook in Cormorant Garamond, Gegenzeile in Inter, Sting-Sound bei 0,05 s.
-- Look "Atelier": Cormorant Garamond (Display) plus Inter, Champagner-Gold, dünne Linien, ruhige Bewegung. Referenz-Look von Raphael: Wort-für-Wort-Untertitel (1 bis 3 Wörter), fette Grotesk, emotionale Wörter in Serifen-Kursiv, viel B-Roll unter der Stimme, einheitlich dunkel-warm eingefärbt.
+- Look "Atelier": Cormorant Garamond (Display) plus Inter, Markenfarben aus brand.json, dünne Linien, ruhige Bewegung. Referenz-Look von Raphael: Wort-für-Wort-Untertitel (1 bis 3 Wörter), fette Grotesk, emotionale Wörter in Serifen-Kursiv, viel B-Roll unter der Stimme, einheitlich dunkel-warm eingefärbt.
 - B-Roll-Plan: Sprecher nur bei Hook und CTA im Bild, dazwischen alle 1,5 bis 3 s passende Szenen. Mixkit-Clips ohne Schlüssel ladbar (`https://assets.mixkit.co/videos/<id>/<id>-1080.mp4`), Beispiele: 46623 Solarfeld Sonnenuntergang, 23694 und 23491 Solarmontage, 23785 Arbeiter zwischen Modulen, 24217 und 39839 Büro nachts, 39854 erschöpft Überstunden, 22977 und 24047 Handschlag, 23962 Suche im Internet. Vorsicht bei Clips mit fremden Markenoberflächen (z. B. Amazon). Einfärben mit `toolkit/scripts/broll_grade.sh`.
-- Noch zu bauen: B-Roll-Ebene in `Reel3.jsx` (`cfg.broll = [{a, b, src}]`, stumm über dem Sprecher, 4 Frames Überblendung, leichter Zoom) und Wort-für-Wort-Untertitel mit Serifen-Kursiv für `cfg.hl`-Wörter.
+- Gebaut (22.10.): B-Roll-Ebene in `Reel3.jsx` (`cfg.broll = [{a, b, src}]`, stumm über dem Sprecher, 4 Frames Überblendung, sanfter Push), Wort-Modus der Untertitel (`cfg.capMode = 'word'`, Schlüsselwörter in Serifen-Kursiv), tolerante Wortsuche in `Configs.jsx` (`f.at`, `f.sentence(n)`), Konfigurationen R4019 bis R4022. Für 4019 sind B-Roll-Szenen eingetragen (Pilot), für 4020 bis 4022 noch keine. Die QA prüft das Label über zwei Goldlinien (brand.json), nicht über Pixelfarben.
 
 ## Lokal einrichten
 1. Voraussetzungen: Node 20 oder neuer, ffmpeg, Python 3 mit `faster-whisper` und `numpy`.

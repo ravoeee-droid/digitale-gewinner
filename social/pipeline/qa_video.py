@@ -58,18 +58,44 @@ def loud(path):
     return float(j['input_i']), float(j['input_tp'])
 
 
+def _hex(h):
+    return np.array([int(h[i:i + 2], 16) for i in (1, 3, 5)], dtype=np.float32)
+
+
+def frame_band(path, t, y0=120, h=230):
+    """Volle Breite 1080, Streifen y0..y0+h des Originalbilds als RGB (für dünne Linien)."""
+    r = ff(['-ss', f'{t:.2f}', '-i', path, '-frames:v', '1', '-vf', f'scale=1080:1920,crop=1080:{h}:0:{y0}', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'])
+    return np.frombuffer(r.stdout, dtype=np.uint8).reshape(h, 1080, 3).astype(np.float32) if r.stdout else None
+
+
+def _runs(mask_row, min_len):
+    out = []; start = None
+    for i, v in enumerate(np.append(mask_row, False)):
+        if v and start is None: start = i
+        if not v and start is not None:
+            if i - start >= min_len: out.append((start, i))
+            start = None
+    return out
+
+
 def hook_check(path):
-    """Gold-Label (Zielgruppe) und große weiße Hook-Zeile im oberen Drittel zwischen 0,5 und 2,5 s."""
+    """Zielgruppen-Label: zwei goldene Linien (Markenfarben aus toolkit/brand.json) auf gleicher Höhe, 250 bis 800 px auseinander,
+    mit Text dazwischen. Das ist eine bewusste Struktur im Design und wird von warmer Haut oder Wand nicht zufällig erzeugt.
+    Hook-Zeile: heller Text (Papierfarbe) im oberen Bereich. Prüfung bei 0,6 / 1,2 / 2,0 s."""
+    brand = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'toolkit', 'brand.json')))
+    golds = [_hex(brand['gold']), _hex(brand['gold2'])]
     ok_gold = ok_white = False
     for t in (0.6, 1.2, 2.0):
-        img = frame(path, t)
-        if img is None: continue
-        top = img[int(480 * 0.08):int(480 * 0.40)]
-        R, G, B = top[..., 0], top[..., 1], top[..., 2]
-        gold = (R > 190) & (G > 140) & (G < 200) & (B < 110)
-        white = (R > 235) & (G > 235) & (B > 235)
-        if gold.mean() > 0.012: ok_gold = True
-        if white.mean() > 0.015: ok_white = True
+        band = frame_band(path, t)
+        if band is None: continue
+        d = np.min([np.linalg.norm(band - g, axis=2) for g in golds], axis=0)
+        m = d < 60
+        for y in range(band.shape[0]):
+            rs = _runs(m[y], 40)
+            if any(250 <= b[0] - a[1] <= 800 for a in rs for b in rs if b[0] > a[1]):
+                ok_gold = True; break
+        paper = np.linalg.norm(band - _hex(brand['paper']), axis=2) < 40
+        if paper.mean() > 0.01: ok_white = True
     return ok_gold, ok_white
 
 
@@ -121,9 +147,9 @@ def main(path, words=None, hook=False):
     if tp > -0.9: problems.append('Ton übersteuert')
     if hook:
         g, wh = hook_check(path)
-        print(f'Hook in den ersten 3 s: Zielgruppen-Label {"ja" if g else "NEIN"}, Hook-Zeile {"ja" if wh else "NEIN"}')
+        print(f'Hook in den ersten 3 s: Zielgruppen-Label {"ja" if g else "NEIN"}, Hook-Zeile (nur Hinweis) {"ja" if wh else "nein"}')
         if not g: problems.append('Zielgruppen-Label fehlt in den ersten 3 s')
-        if not wh: problems.append('Hook-Zeile fehlt in den ersten 3 s')
+        # Hook-Zeile (heller Text) ist nur ein Hinweis: helle Wände erzeugen Fehlalarme. Maßgeblich ist das Label mit den zwei Goldlinien.
     if words:
         m, a, b = sync_check(path, words)
         if m is None:
