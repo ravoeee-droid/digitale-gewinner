@@ -38,3 +38,19 @@ Reihenfolge ist fest. Kein Schritt wird übersprungen. Erst wenn `qa_video.py` "
 ## 8. Freigabe
 - Raphael sieht das Video und gibt es frei. Erst dann Posting (Cover, Caption, Zeitslot).
 - Nach 40 Videos: Auswertung mit Instagram-Insights.
+
+## 9. Dreh-Standard (Raphael)
+- Kamera auf Augenhöhe oder minimal darüber, Handy gerade, Kopf neutral. Nie von oben herab, nicht zurückgelehnt.
+- Licht: weich von vorne schräg auf Gesichtshöhe (Fenster seitlich vor ihm oder große Lichtfläche). Nicht von hinten oder oben.
+- Hintergrund: ruhig mit Tiefe, 1,5 bis 2 m Abstand zur Wand, warme Lichtquelle weit hinten, nichts Weißes direkt hinter dem Kopf.
+- Ton: Ansteckmikro, Fenster zu, Geräte aus.
+- Sitzen, aufrecht, Blick in die Linse, kurze Sätze, jeden Satz zweimal sprechen.
+- Datei: Original 4K, 30 fps, HDR aus, per AirDrop oder Dateien-App (nicht Messenger).
+
+## 10. Retention-Standard (ab Tag 2)
+- Schärfste Aussage im ersten Satz, keine Einleitung. Hook-Text in den ersten 3 s.
+- Länge 20 bis 30 s (Wortzahl laut Playbook halbieren), länger nur mit Grund.
+- Bildwechsel (Zoom, Einblendung, Zahl) etwa alle 0,5 bis 1 s.
+- Messung nach jedem Post: Sehdauer, Aussteiger-Sekunde, Vergleich mit dem Video davor. Ziel: Sehdauer steigt von Video zu Video.
+
+Stand 21.10.2026: Videos 1 bis 4 hatten 19 bis 83 Aufrufe, Ø Sehdauer 5 bis 7 s, keine Interaktion. Daraus abgeleitet: kürzer, schärferer Hook, besserer Dreh.
