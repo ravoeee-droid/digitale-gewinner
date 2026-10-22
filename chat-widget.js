@@ -91,3 +91,45 @@
       });
   });
 })();
+
+// Besuchsmessung nach E-Mail-Kontakt: nur wenn der Link aus unserer E-Mail eine Kennung (?lt=…) enthält. Keine Cookies, kein Speicher im Browser.
+(function(){
+  var lt = '';
+  try { lt = new URLSearchParams(location.search).get('lt') || ''; } catch (e) {}
+  if (!lt) return;
+  var API = 'https://app.digitalegewinner.de/api/t/video';
+  function send(type, value, label){
+    try {
+      var body = JSON.stringify({ t: lt, e: type, v: value || 0, p: label || location.pathname });
+      if (navigator.sendBeacon) navigator.sendBeacon(API, new Blob([body], { type: 'text/plain' }));
+      else fetch(API, { method: 'POST', body: body, keepalive: true, headers: { 'Content-Type': 'text/plain' } }).catch(function(){});
+    } catch (err) {}
+  }
+  send('site_view');
+  var visible = 0, sentScroll = 0;
+  setInterval(function(){ if (document.visibilityState === 'visible') { visible += 1; if (visible === 30 || visible === 120) send('site_dwell', visible); } }, 1000);
+  window.addEventListener('scroll', function(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    var pct = (window.scrollY / max) * 100;
+    [50, 90].forEach(function(step){ if (pct >= step && sentScroll < step) { sentScroll = step; send('site_scroll', step); } });
+  }, { passive: true });
+  function flush(){ send('site_dwell', visible); }
+  window.addEventListener('pagehide', flush);
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden') flush(); });
+  document.addEventListener('click', function(ev){
+    var node = ev.target && ev.target.closest ? ev.target : null;
+    if (!node) return;
+    if (node.closest('.chat-fab')) send('site_click', 0, 'chat');
+    var a = node.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var label = /wa\.me/.test(href) ? 'whatsapp' : /^tel:/.test(href) ? 'telefon' : /^mailto:/.test(href) ? 'mail' : /calendar|termin|buchen/i.test(href + ' ' + a.textContent) ? 'termin' : '';
+    if (label) send('site_click', 0, label);
+    // Die Kennung wird an interne Links gehängt, damit der Besuch auf Folgeseiten zugeordnet werden kann.
+    try {
+      var u = new URL(a.href, location.href);
+      if (u.origin === location.origin && !u.searchParams.has('lt') && !/^(tel|mailto):/.test(href)) { u.searchParams.set('lt', lt); a.href = u.toString(); }
+    } catch (e) {}
+  }, true);
+})();
