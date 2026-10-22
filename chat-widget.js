@@ -12,7 +12,7 @@
   panel.innerHTML =
     '<div class="chat-head">' +
       '<img src="/assets/images/brand/raphael-bruno-schreibtisch.webp" alt="">' +
-      '<div><b>Frag kurz</b><span>Antwort in ein paar Sekunden</span></div>' +
+      '<div><b>KI-Assistent von Raphael</b><span>Antwort in wenigen Sekunden</span></div>' +
       '<button class="chat-close" aria-label="Schließen">✕</button>' +
     '</div>' +
     '<div class="chat-messages"></div>' +
@@ -20,7 +20,7 @@
       '<input type="text" placeholder="Deine Frage ..." maxlength="500" required>' +
       '<button type="submit">→</button>' +
     '</form>' +
-    '<div class="chat-footer"><a href="https://wa.me/' + waNumber + '?text=' + encodeURIComponent(waText) + '" target="_blank" rel="noopener">Lieber direkt mit Raphael auf WhatsApp schreiben →</a></div>';
+    '<div class="chat-footer"><small style="display:block;opacity:.7;margin-bottom:6px">Dieser Chat nutzt KI; deine Nachrichten werden dafür verarbeitet.</small><a href="https://wa.me/' + waNumber + '?text=' + encodeURIComponent(waText) + '" target="_blank" rel="noopener">Lieber direkt mit Raphael auf WhatsApp schreiben →</a></div>';
 
   document.body.appendChild(fab);
   document.body.appendChild(panel);
@@ -53,7 +53,7 @@
     panel.classList.toggle('open');
     if (!opened) {
       opened = true;
-      addBubble('bot', 'Hi, ich bin der Assistent von Digitale Gewinner. Frag mich kurz, was dich beschäftigt – oder schreib gleich direkt mit Raphael über WhatsApp.');
+      addBubble('bot', 'Hallo, ich bin der KI-Assistent von Raphael. Frag mich kurz, was dich beschäftigt – oder schreib gleich direkt mit Raphael über WhatsApp.');
     }
   });
   closeEl.addEventListener('click', function(){ panel.classList.remove('open'); });
