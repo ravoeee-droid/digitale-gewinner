@@ -209,6 +209,7 @@ expected_images = [
     'assets/images/case-studies/case-study-fuehrungskraefte.webp',
     'assets/images/case-studies/case-study-neuromind-breathwork.webp',
     'assets/video/websystem-erklaervideo-poster.webp',
+    'assets/video/pv-trust-erklaervideo-poster.webp',
 ]
 for rel in expected_images:
     path = out / rel
@@ -220,6 +221,7 @@ for rel in expected_images:
 
 required = (
     'assets/video/websystem-erklaervideo.mp4',
+    'assets/video/pv-trust-erklaervideo.mp4',
     'index.html', 'case-studies.html', 'pflege.html', 'handwerk.html', 'ki-websites.html', 'pv-trust.html', 'danke.html',
     'trust-upgrade.css', 'case-worlds.css', 'local-assets.css',
     'trust-upgrade.js', 'home-case-style.css', 'home-case-polish.css',
