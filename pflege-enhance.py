@@ -25,6 +25,7 @@ s = s.replace('In 15 Minuten finden wir gemeinsam heraus, welcher Engpass Sie ak
               'In 15 Minuten analysieren wir Ihren Bewerberweg. Sie nehmen drei konkrete Verbesserungen, einen individuell formulierten Stellenanzeigen-Einstieg und einen 7-Tage-Aktionsplan mit. Auch wenn wir danach nicht zusammenarbeiten.', 1)
 s = s.replace('Unverbindlich · persönlich mit Raphael · klare Einschätzung',
               'Ihr Ergebnis: 3 sofort umsetzbare Maßnahmen · 1 Stellenanzeigen-Hook · 7-Tage-Plan · keine Kaufpflicht', 1)
+s = s.replace('Ihr Ergebnis: 3 sofort umsetzbare Maßnahmen · 1 Stellenanzeigen-Hook · 7-Tage-Plan · keine Kaufpflicht</p>', 'Ihr Ergebnis: 3 sofort umsetzbare Maßnahmen · 1 Stellenanzeigen-Hook · 7-Tage-Plan · keine Kaufpflicht</p><div class="btns"><a class="btn btn-gold" data-cta="pflege-direktbuchung" href="https://calendar.app.google/jZqwYfHqfjufkFmx5" target="_blank" rel="noopener">Jetzt kostenfreien Analyse-Termin auswählen →</a></div>', 1)
 s = s.replace('Kostenlose 15-Minuten-Analyse buchen',
               'Kostenlose Recruiting-Potenzialanalyse sichern', 1)
 # Sichtbarer Nutzen auch oberhalb der Falz.
