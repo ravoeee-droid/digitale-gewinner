@@ -1214,3 +1214,17 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 .vid-loom .vid-open:after{background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.18))}
 .cs2-extra{margin:0;color:var(--muted);font-size:.98rem}
 .cs-sec .case-src{max-width:820px;margin:20px auto 0;text-align:center;font-size:.8rem;color:var(--muted)}
+
+/* Pflege: helle Premium-Landingpage mit gut lesbarer Hero-Case-Leiste */
+.theme-pflege .hero-case>a{background:rgba(255,255,255,.86);border:1px solid rgba(20,105,95,.22);color:#1e2b26;box-shadow:0 18px 48px rgba(30,43,38,.08)}
+.theme-pflege .hero-case>a:hover{border-color:#1f8f80}
+.theme-pflege .hero-case .hc-n{color:#43514a}
+.theme-pflege .hero-case .hc-n b{color:#14695f}
+.theme-pflege .hero-case i,.theme-pflege .hero-case em{color:#14695f}
+.theme-pflege .hero-case .hc-who{color:#43514a}
+.theme-pflege .hero-case .hc-who strong{color:#1e2b26}
+.theme-pflege .hero-case .hc-who img{border-color:rgba(20,105,95,.2)}
+.theme-pflege .hero .b-short{display:none}
+.theme-pflege .hero .btn-gold{box-shadow:0 14px 38px rgba(20,105,95,.18)}
+.theme-pflege .adstack .chip{box-shadow:0 14px 35px rgba(24,58,50,.18)}
+@media(max-width:680px){.theme-pflege .hero .b-long{display:none}.theme-pflege .hero .b-short{display:inline}.theme-pflege .hero-case>a{padding:13px 15px;gap:6px 10px}}
