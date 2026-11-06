@@ -6,6 +6,13 @@ import sys
 
 dist = Path(sys.argv[1] if len(sys.argv)>1 else 'dist')
 p = dist / 'pflege.html'
+# Auch wenn der allgemeine Builder die alte Root-Seite schont: hier ausdrücklich
+# die neue Pflege-Version generieren. Alle anderen Routen unverändert lassen.
+import importlib.util
+spec = importlib.util.spec_from_file_location('dg_site_builder', 'site/build_site.py')
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+p.write_text(module.branch('pflege', module.BRANCH['pflege']), encoding='utf-8')
 s = p.read_text(encoding='utf-8')
 # Die hochwertige Fassung kommt aus site/build_site.py.
 if 'id="expl"' not in s or 'id="fallstudien"' not in s:
