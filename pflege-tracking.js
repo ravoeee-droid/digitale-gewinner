@@ -24,6 +24,13 @@
   document.addEventListener('click',function(e){
     var choice=e.target.closest('[data-consent]');
     if(choice){try{localStorage.setItem('dg-consent',choice.dataset.consent)}catch(_){};if(banner)banner.hidden=true; if(choice.dataset.consent==='yes')emit('page_view',{type:'consented'});return}
+    var privacy=e.target.closest('[data-dg-privacy]');
+    if(privacy){
+      e.preventDefault();
+      try{localStorage.removeItem('dg-consent')}catch(_){}
+      if(banner){banner.hidden=false;banner.scrollIntoView({behavior:'smooth',block:'end'})}
+      return;
+    }
     if(!allowed())return;
     var a=e.target.closest('a,button');
     if(a){var label=a.getAttribute('data-cta')||a.textContent.trim().slice(0,70);if(a.matches('a[href*="calendar.app.google"]'))emit('booking_click',{label:label});else if(a.matches('a[href*="wa.me"]'))emit('whatsapp_click',{label:label});else if(a.dataset.cta)emit('cta_click',{label:label})}
