@@ -33,6 +33,9 @@ needle='Wir machen Ihr Haus als Arbeitgeber sichtbar – und führen passende Pf
 s=s.replace(needle, needle + ' <strong>Bonus: Im kostenlosen Gespräch erhalten Sie drei konkrete Recruiting-Hebel und einen individuellen 7-Tage-Plan – ohne Kaufpflicht.</strong>', 1)
 # Kalendereinstieg kurz und persönlich.
 s=s.replace('>Termin wählen</a>', '>Kostenlosen Analyse-Termin wählen</a>',1)
+# Datenschutz-Schalter zum jederzeitigen Widerruf. Er verändert nur die Opt-in-Einstellung.
+s=s.replace('href="/datenschutz.html">Datenschutz</a></nav>', 'href="/datenschutz.html">Datenschutz</a><button type="button" data-dg-privacy style="border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;padding:8px 0;text-decoration:underline">Tracking-Einstellungen</button></nav>', 1)
+
 # Bestehendes Consent-Banner auch ohne GTM verfügbar; separate Einwilligung für Website-Analyse.
 s=s.replace('Mit Ihrer Einwilligung messen wir anonym, welche Inhalte helfen, um die Seite zu verbessern.',
             'Nur mit Ihrer Einwilligung erfassen wir Video-Watchtime, Klicks, Funnel-Schritte und Kampagnenquelle zur Verbesserung unserer Website; ausgewählte Ereignisse können eine interne Telegram-Benachrichtigung auslösen.')
