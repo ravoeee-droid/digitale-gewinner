@@ -952,7 +952,7 @@ def branch(slug, c):
         body = hero('Für Pflegebetriebe', ['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
                     'Wir machen Ihr Haus als Arbeitgeber sichtbar – und führen passende Pflegekräfte Schritt für Schritt bis zum Gespräch.', '',
                     f'<a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="branche-pflege"><span class="b-long">Mitarbeitergewinnung prüfen lassen</span><span class="b-short">Analyse anfragen</span> {ARROW}</a>',
-                    proof=False, wide=True, visual=adstack(), loop=c['loop'], pro=True, after=hero_case())
+                    proof=False, wide=True, visual=adstack(), loop=c['loop'], pro=False, after=hero_case())
     body += partner_strip()
     if slug.startswith('pflege'):
         body += refs_pflege()
@@ -973,7 +973,7 @@ def branch(slug, c):
     if c.get('cases'):
         body += cases_section(c['cases'], note='Quelle: Kampagnen, die Raphael Hermann bei Fachkraftmarketing verantwortet hat; Veröffentlichung mit schriftlicher Freigabe. Es sind Einzelergebnisse und keine Garantie – Bewerbungen und Einstellungen hängen auch von Region, Angebot und Ihrer Reaktionsgeschwindigkeit ab. Das Werbebudget ist nicht Teil unseres Honorars.')
     body += (recruiting_videos(c['video']) if c.get('video') else '') + loom_section() + results(list_=False) + offer() + (recruiting_check('handwerk' if slug == 'handwerk-mitarbeiter' else 'pflege') if slug in ('pflege', 'handwerk-mitarbeiter') else check()) + faq() + raphael_kurz('handwerk' if slug.startswith('handwerk') else 'pflege') + (partner_matthias() if slug in ('pflege', 'handwerk-mitarbeiter') else '') + final(c['goal'])
-    return h + nav(False, c['theme'] + (' hero-dark' if slug == 'pflege' else ''), slug=slug) + body + footer()
+    return h + nav(False, c['theme'], slug=slug) + body + footer()
 
 
 def outbound():
@@ -1041,11 +1041,10 @@ def main():
     pages = {'index.html': home(), 'analyse.html': outbound(), 'recruiting-check.html': check_page()}
     for slug, c in BRANCH.items():
         pages[f'{slug}.html'] = branch(slug, c)
-    # index.html und pflege.html werden eigenständig auf Repo-Root gepflegt
-    # (aktuelle Markensprache: Du-Ansprache, "Digitale Entlastung") und von
-    # build.sh bereits nach dist/ kopiert - hier nicht überschreiben.
-    for owned in ('index.html', 'pflege.html'):
-        pages.pop(owned, None)
+    # Die Startseite bleibt im Repo-Root gepflegt. Die Pflege-Landingpage
+    # wird dagegen hier generiert, damit Video, Referenzen, Fallstudien und
+    # Recruiting-Check nicht durch die alte Root-Datei ersetzt werden.
+    pages.pop('index.html', None)
     for name, content in pages.items():
         (OUT / name).write_text(content, encoding='utf-8')
     for name in ('impressum', 'datenschutz'):  # neue Optik; beide URL-Varianten bedienen (/impressum.html und /impressum/)
