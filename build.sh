@@ -49,6 +49,7 @@ publish_assets = (
     'case-overview.js',
     'fx.css',
     'fx.js',
+    'pflege-tracking.js',
     'chat-widget.css',
     'chat-widget.js',
 )
@@ -169,6 +170,7 @@ subprocess.run(['python3', 'render-cases.py'], check=True)
 
 # Relaunch: neue Startseite, Branchenseiten und Outbound-Template überschreiben die alte Startseite.
 subprocess.run(['python3', 'site/build_site.py', str(out)], check=True)
+subprocess.run(['python3', 'pflege-enhance.py', str(out)], check=True)
 
 # Sieben öffentlich erklärende Verkaufs-Inhalte, inklusive klar gekennzeichneter Muster-Demo.
 shutil.copy2(root / 'vertriebsbibliothek.html', out / 'vertriebsbibliothek.html')
