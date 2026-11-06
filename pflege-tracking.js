@@ -6,7 +6,7 @@
   var banner=document.getElementById('consent');
   if(banner && consent!=='yes' && consent!=='no')banner.hidden=false;
   var sid=null,seen={},watch=0,last=0,active=false;
-  function id(){if(!sid)sid=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));return sid}
+  function id(){if(sid)return sid;try{sid=sessionStorage.getItem('dg-pflege-session')}catch(_){};if(!sid){sid=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));try{sessionStorage.setItem('dg-pflege-session',sid)}catch(_){}}return sid}
   function allowed(){try{return localStorage.getItem('dg-consent')==='yes'}catch(_){return false}}
   function emit(kind,details){
     if(!allowed())return;
@@ -14,9 +14,12 @@
     ['utm_source','utm_medium','utm_campaign','utm_content','gclid','fbclid','d'].forEach(function(k){if(q.has(k))campaign[k]=q.get(k).slice(0,100)});
     var payload={event:kind,session:id(),path:location.pathname,watch_seconds:Math.round(watch),campaign:campaign,details:details||{}};
     window.dataLayer=window.dataLayer||[];window.dataLayer.push(Object.assign({event:'dg_'+kind},payload));
-    fetch('/api/dg-track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})
-      .then(function(r){if(r.status===404) return fetch('/.netlify/functions/dg-track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})})
-      .catch(function(){});
+    // Der bestehende DG-Outbound-Server speichert die Events und versendet Telegram-Alerts.
+    // Keine persönlichen Formulardaten, keine Bot-Tokens und keine IP-Adresse werden im Payload übertragen.
+    fetch('https://app.digitalegewinner.de/api/site-track',{
+      method:'POST',mode:'cors',credentials:'omit',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),keepalive:true
+    }).catch(function(){});
   }
   document.addEventListener('click',function(e){
     var choice=e.target.closest('[data-consent]');
