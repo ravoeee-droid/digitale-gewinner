@@ -12,20 +12,21 @@
 6. Continue section by section through niche selection, proof, founder, process, CTA. Every section must meet visual, technical, mobile, and conversion quality criteria.
 
 ## Homepage market positioning
-Umbrella brand for small and midsize businesses; **one product category: intelligent Websystems**. Not a generic full-service marketing agency and not disconnected Pflege/PV product ads. Keep clear differentiation between what the system AUTOMATES (capture/qualify/follow up) and what remains contingent (traffic, ad budget, actual sales or hires).
+Umbrella brand for small and midsize businesses; **one integrated offering: intelligent acquisition Websystems INCLUDING managed paid acquisition via Google Ads and Meta Ads**. Not a generic full-service marketing agency and not disconnected Pflege/PV product ads. It is an **active customer AND employee acquisition engine**: campaigns bring in prospects, conversion-focused funnels turn traffic into inquiries or applications, AI-supported workflows qualify and follow up, dashboard and tracking make results transparent. Carefully distinguish the system's controllable services (campaign creation/optimization, lead routing, qualification, follow-up, booking) from outcomes that are never guaranteed (lead volumes, customers, hires).
 
 ### Message and narrative
 Headline direction:
-**"Deine Website sollte für dich arbeiten. Nicht nur gut aussehen."**
+**"Deine Website sollte Kunden und Mitarbeiter gewinnen. Nicht nur gut aussehen."**
+Alternative bold hook: **"Webseiten waren gestern. Heute gewinnen intelligente Systeme Kunden und Mitarbeiter."**
 Subline direction:
-"Intelligente Websysteme, die Kundenanfragen erfassen, Bewerber qualifizieren, Termine organisieren und Prozesse automatisieren – alles übersichtlich steuerbar."
-Headline and subline are draft copy, not yet locked. Test for brevity on mobile.
+"Wir verbinden Google- und Meta-Werbung mit einem intelligenten Websystem, das neue Interessenten gewinnt, Anfragen und Bewerbungen in Kontakte verwandelt und die nächsten Schritte automatisch organisiert. Alles messbar in deinem Dashboard."
+Headline and subline are draft copy, not yet locked. Test for brevity, credibility and clarity on mobile. The first fold must explicitly show PAID ADS → LANDING PAGE → QUALIFICATION → FOLLOW-UP / APPOINTMENTS → DASHBOARD.
 
 ### Primary conversion
 1. **Primary CTA:** "Live-Demo ansehen" — anchors to an interactive demo, accessible at all screen sizes.
 2. **Secondary CTA:** "Potenzial prüfen" — leads to current working form / 15-minute consultation, preserving existing lead processing and consent.
 3. Pre-qualify B2B visitors with real outcome messaging, not just futuristic visuals.
-4. The hero must show proof of product usefulness; make animation support a clear narrative, not replace conversion.
+4. The hero must show proof of product usefulness and that Google/Meta Ads are part of the managed system; make animation support a clear narrative, not replace conversion.
 
 ### What stays intact
 - All existing subpages and their URLs, nav routes, SEO/canonicals, existing campaigns and customer proof.
@@ -35,7 +36,7 @@ Headline and subline are draft copy, not yet locked. Test for brevity on mobile.
 
 ### Price and substantiation
 A possible 3,500 EUR entry offer was discussed. The current Pflege page contains another price (4,900 EUR net). **Do not change or advertise pricing on homepage until exact scope, exclusions, and display are approved**; no fabricated old 30,000 EUR comparison or lead/hiring guarantees.
-- Claims like "KI gewinnt automatisch Kunden" require precise explanation. AI may automate answering, qualifying and follow-up; actual incoming traffic needs acquisition.
+- Do not describe the offer as a passive website that ONLY captures or qualifies leads. Active lead/application generation from planned, managed Google Ads + Meta Ads is central, together with conversion funnel, AI-support, CRM and follow-up. Ad spend is extra unless the approved offer explicitly includes it. Avoid guaranteed leads, hires or sales. AI assists the workflow; campaign results depend on market, budget, offer, creative and optimization.
 
 ### What counts as a successful first deliverable
 A fully implemented and reviewable hero, distinct typography and a subtle cinematic visual language with *background filaments drifting down as the user scrolls*, plus a polished transition to the next section, with screenshots/demo showing the real interaction.
