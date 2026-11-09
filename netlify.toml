@@ -3,6 +3,11 @@
   publish = "dist"
 
 [[redirects]]
+  from = "/websysteme"
+  to = "/websysteme.html"
+  status = 200
+
+[[redirects]]
   from = "/pflege"
   to = "/pflege.html"
   status = 200
