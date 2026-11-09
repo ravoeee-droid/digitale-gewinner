@@ -13,6 +13,16 @@
 - On mobile, simplify drastically: reduce the number of threads and blur; turn off or staticize if performance is insufficient; honor reduced-motion.
 - Pilot in the homepage hero and immediately following section only. Adjust direction, speed, amplitude, trail count and contrast after visual review. No production rollout before approval.
 
+## OFFER CLARIFICATION — Active acquisition is core, not optional (2026-11-09)
+**User correction:** Digitale Gewinner does NOT merely capture and qualify existing visitors. The offering includes **active generation of prospects and applicants through managed Google Ads and Meta Ads** feeding a conversion-optimized intelligent website/funnel. The website system then handles capture, AI-assisted qualification, CRM, follow-up and appointments, with clear tracking in a mobile-friendly dashboard.
+
+Creative narrative must depict the full chain: **Google / Meta Ads → interested visitor → intelligent web funnel → qualified inquiry or application → automated follow-up → consultation / recruiting interview → reporting dashboard**. Design the initial homepage hero positioning accordingly; avoid reducing the promise to passive form processing.
+
+Preferred messaging to develop and validate:
+- "Webseiten waren gestern. Heute gewinnen intelligente Systeme Kunden und Mitarbeiter."
+- "Google- und Meta-Werbung bringt die richtigen Interessenten. Unser intelligentes Websystem macht daraus Anfragen, Bewerbungen und Termine — messbar und weitgehend automatisiert."
+Do not overclaim: ad spend is separate unless agreed; results depend on campaign setup and market; no promise of fully automatic sales/hiring or guaranteed inquiries.
+
 ### The principle
 Create a premium, restrained, editorial cinematic experience; NOT a gaming-neon site. The animation should feel like a fine champagne-gold thread catching light in an almost black space: barely perceptible at rest, graceful as the user scrolls, purposeful at key narrative moments.
 
