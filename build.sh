@@ -172,6 +172,10 @@ subprocess.run(['python3', 'render-cases.py'], check=True)
 subprocess.run(['python3', 'site/build_site.py', str(out)], check=True)
 subprocess.run(['python3', 'pflege-enhance.py', str(out)], check=True)
 
+# New homepage design is staged separately. Never replace the live homepage.
+for name in ('websysteme.html', 'websysteme.css', 'websysteme.js'):
+    shutil.copy2(root / name, out / name)
+
 # Sieben öffentlich erklärende Verkaufs-Inhalte, inklusive klar gekennzeichneter Muster-Demo.
 shutil.copy2(root / 'vertriebsbibliothek.html', out / 'vertriebsbibliothek.html')
 shutil.copy2(root / 'vertriebswaffen.html', out / 'vertriebswaffen.html')
