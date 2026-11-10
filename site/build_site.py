@@ -90,9 +90,9 @@ def head(title, desc, path, noindex=False, extra=''):
             f'<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
             f'<title>{e(title)}</title><meta name="description" content="{e(desc)}">{robots}{canon}{og}'
             f'<meta name="theme-color" content="#090806">'
-            f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2314171a%22/%3E%3Cg transform=%22translate%2814 14%29 scale%28.72%29%22%3E%3Cg fill=%22none%22 stroke=%22%23f08a24%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M10 44V10h40c24 0 40 17 40 40S74 90 50 90H10V70%22 stroke-width=%2212%22/%3E%3Cpath d=%22M24 70 42 48 56 60 76 37%22 stroke-width=%226.5%22 stroke-linecap=%22round%22/%3E%3C/g%3E%3Cg fill=%22%23f08a24%22%3E%3Ccircle cx=%2224%22 cy=%2270%22 r=%226.5%22/%3E%3Ccircle cx=%2242%22 cy=%2248%22 r=%226%22/%3E%3Ccircle cx=%2256%22 cy=%2260%22 r=%226%22/%3E%3Cpath d=%22M86 26 83 42 71 31.5z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E">'
+            f'<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230B0B0D%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2256%22 font-weight=%22800%22 font-style=%22italic%22 text-anchor=%22middle%22 fill=%22%23D8A64B%22 font-family=%22Arial%22%3EDG%3C/text%3E%3C/svg%3E">'
             f'<script>document.documentElement.classList.add("js")</script>'
-            f'<link rel="stylesheet" href="/site.css">{extra}</head>')
+            f'<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Caveat:wght@600&display=swap"><link rel="stylesheet" href="/site.css">{extra}</head>')
 
 
 def schema(faq=True):
@@ -129,7 +129,7 @@ def nav(home, theme='', cta='#analyse', slug=None):
                  f'<a href="{p}#ergebnisse">Ergebnisse</a><a href="{p}#raphael">Über Raphael</a>')
     return f'''<body class="{theme}"><a class="skip" href="#main">Zum Inhalt springen</a>
 <header class="nav"><div class="container nav-in">
-<a class="brand" href="{'#top' if home else '/'}" aria-label="Digitale Gewinner – Startseite"><span class="brand-mark">{LOGO}</span><span class="brand-word"><b>DIGITALE</b><b class="o">GEWINNER</b></span></a>
+<a class="brand" href="{'#top' if home else '/'}" aria-label="Digitale Gewinner – Startseite"><span class="dg">DG</span><span class="brand-text">Digitale<br>Gewinner<sup>®</sup></span></a>
 <nav class="nav-links" id="menu" aria-label="Hauptnavigation">
 {links}
 <a class="btn btn-gold" href="{cta}" data-cta="nav">Kostenlose Analyse</a>
@@ -897,7 +897,7 @@ def final(preset=''):
 
 def footer(cta='#analyse'):
     return f'''</main><footer class="site"><div class="container foot">
-<div><a class="brand" href="/"><span class="brand-mark">{LOGO}</span><span class="brand-word"><b>DIGITALE</b><b class="o">GEWINNER</b></span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p><p class="micro" style="margin-top:6px">Google Partner · Meta Business Partner</p></div>
+<div><a class="brand" href="/"><span class="dg">DG</span><span class="brand-text">Digitale<br>Gewinner<sup>®</sup></span></a><p style="margin:14px 0 0">© 2026 Digitale Gewinner · Raphael Hermann</p><p class="micro" style="margin-top:6px">Google Partner · Meta Business Partner</p></div>
 <nav aria-label="Fußzeile"><a href="/pflege">Pflege · Mitarbeiter</a><a href="/pflege-patienten">Pflege · Patienten</a><a href="/handwerk-mitarbeiter">Handwerk · Mitarbeiter</a><a href="/handwerk-kunden">Handwerk · Kunden</a><a href="/case-studies.html">Case Studies</a><a href="tel:+4971134063951">+49 711 34063951</a><a href="{WA}">WhatsApp</a><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a></nav>
 </div></footer>
 <div class="mcta"><a class="btn btn-gold" href="{cta}" data-cta="mobile-bar">Kostenlose 15-Min-Analyse {ARROW}</a></div>
@@ -920,9 +920,9 @@ def home():
 
 BRANCH = {
     'pflege': dict(title='Mehr Bewerbungen von Pflegekräften aus Ihrer Region – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
-                   h1=['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
+                   h1=['Werden Sie der', '<span class="lime">attraktivste Arbeitgeber</span>', 'in Ihrer Region.'],
                    lead='Wir zeigen, warum sich passende Pflegekräfte für Ihr Unternehmen entscheiden sollten, vereinfachen die Kontaktaufnahme und begleiten Interessenten bis zum Gespräch.',
-                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.'),
+                   btn='Mitarbeitergewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-dg', tc='#f7f2e8', vis=VIS_PFLEGE, loop='pflege', demo='pflege', band=('pflege-team', 'Drei Pflegekräfte lachen gemeinsam im Flur einer Pflegeeinrichtung', 'Menschen, die gern bei Ihnen arbeiten würden.'),
                    video=dict(eyebrow='Recruiting-Videos', h2='So können Videos <span class="gold it">für Ihren Betrieb</span> aussehen.', note='Videobeispiele · Beim Abspielen wird der Videoanbieter Wistia geladen.',
                               videos=[dict(id='48cu4owxsl', poster='recruiting-pflege', title='Recruiting-Video: Alltag im Stationszimmer', alt='Zwei Pflegekräfte schauen gemeinsam in einen Ordner im Stationszimmer'),
                                       dict(id='3he2cmekbh', poster='recruiting-pflege-2', title='Recruiting-Video: Team der Caritas-Kreisstelle', alt='Zwei lächelnde Pflegekräfte in roten Jacken vor dem Schild einer Caritas-Kreisstelle'),
@@ -931,7 +931,7 @@ BRANCH = {
     'pflege-patienten': dict(title='Mehr Anfragen von Patienten und Angehörigen für Pflegebetriebe – Digitale Gewinner', eyebrow='Für Pflegebetriebe',
                              h1=['Mehr Anfragen von', 'Patienten und Angehörigen', '<span class="gold it">aus Ihrer Region.</span>'],
                              lead='Wir machen Ihre Pflegeleistungen verständlich, erreichen Pflegebedürftige und Angehörige aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
-                             btn='Patientengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-pflege', tc='#f7f2e8', vis=VIS_PF_KUN, loop='pflege', demo='pf-kun',
+                             btn='Patientengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-dg', tc='#f7f2e8', vis=VIS_PF_KUN, loop='pflege', demo='pf-kun',
                              band=('pflege-pflegekraft', 'Pflegekraft hält die Hand einer älteren Dame', 'Menschen, die Sie als Pflegebetrieb finden und anfragen.')),
     'handwerk-mitarbeiter': dict(title='Mehr Bewerbungen von Fachkräften für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                                  h1=['Mehr Bewerbungen von', 'Fachkräften', '<span class="gold it">aus Ihrer Region.</span>'],
@@ -949,7 +949,7 @@ def branch(slug, c):
     btns = f'<a class="btn btn-gold" href="#analyse" data-goal="{c["goal"]}" data-cta="branche-{slug}">{c["btn"]} {ARROW}</a>'
     body = hero(c['eyebrow'], c['h1'], c['lead'], 'Sie führen die Gespräche. Das System übernimmt die wiederkehrende Arbeit davor.', btns, wide=True, visual=hero_visual(c['vis']), loop=c['loop'], kunden=c['goal'] == 'Kunden')
     if slug == 'pflege':
-        body = hero('Für Pflegebetriebe', ['Mehr Bewerbungen von', 'Pflegekräften', '<span class="gold it">aus Ihrer Region.</span>'],
+        body = hero('Für Pflegebetriebe', ['Werden Sie der', '<span class="lime">attraktivste Arbeitgeber</span>', 'in Ihrer Region.'],
                     'Wir machen Ihr Haus als Arbeitgeber sichtbar – und führen passende Pflegekräfte Schritt für Schritt bis zum Gespräch.', '',
                     f'<a class="btn btn-gold" href="#analyse" data-goal="Mitarbeiter" data-cta="branche-pflege"><span class="b-long">Mitarbeitergewinnung prüfen lassen</span><span class="b-short">Analyse anfragen</span> {ARROW}</a>',
                     proof=False, wide=True, visual=adstack(), loop=c['loop'], pro=False, after=hero_case())
@@ -1003,7 +1003,7 @@ def outbound():
 def check_page():
     h = head('Recruiting-Check für Pflegebetriebe – Digitale Gewinner', 'In 2 Minuten sehen, wo Sie heute Bewerber verlieren: 8 Stationen, Recruiting-Score und die drei größten Hebel.', '/recruiting-check')
     body = '<main id="main" class="theme-pflege-host"><div style="padding-top:90px">' + recruiting_check('pflege') + '</div>' + final('Mitarbeiter')
-    return h + nav(False, 'theme-pflege') + body + footer()
+    return h + nav(False, 'theme-dg') + body + footer()
 
 
 def legal_page(key):
