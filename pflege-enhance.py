@@ -40,5 +40,11 @@ s=s.replace('href="/datenschutz.html">Datenschutz</a></nav>', 'href="/datenschut
 s=s.replace('Mit Ihrer Einwilligung messen wir anonym, welche Inhalte helfen, um die Seite zu verbessern.',
             'Nur mit Ihrer Einwilligung erfassen wir Video-Watchtime, Klicks, Funnel-Schritte und Kampagnenquelle zur Verbesserung unserer Website; ausgewählte Ereignisse können eine interne Telegram-Benachrichtigung auslösen.')
 s=s.replace('src="/site.js"></script>', 'src="/site.js"></script><script src="/pflege-tracking.js" defer></script>', 1)
+# Allgemeines Websystem-Erklärvideo (YouTube, lädt erst nach Klick) vor dem Angebot.
+_yt=Path('site/yt-video.html').read_text(encoding='utf-8').strip().replace('__H2__','h2')
+_m='<section class="section offer" id="paket">'
+if 'id="websystem-video"' not in s:
+    if _m not in s: raise SystemExit('Pflege: Position für Websystem-Video nicht gefunden')
+    s=s.replace(_m,_yt+_m,1)
 p.write_text(s,encoding='utf-8')
 print('Pflege: Video, Fälle, Mehrwert-Angebot und Tracking installiert.')
