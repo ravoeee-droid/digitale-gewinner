@@ -322,7 +322,7 @@ def video_section():
 <p class="lead" data-r>Sehen Sie, wie aus einer Seite zum Anschauen ein System wird, das Ihnen wiederkehrende Arbeit abnimmt – und Sie behalten die Gespräche.</p></div>
 <figure class="vid" data-r><div class="vid-frame yt-frame" id="pflegeYoutube" data-video-id="S1Yc5U5_0YY">
 <button class="yt-preview-trigger" type="button" aria-label="Pflege-Erklärvideo auf YouTube abspielen">
-<img src="https://i.ytimg.com/vi/S1Yc5U5_0YY/hqdefault.jpg" alt="Pflege-Recruiting Erklärvideo – Digitale Gewinner" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/assets/video/websystem-erklaervideo-poster.webp'">
+<img src="https://i.ytimg.com/vi/S1Yc5U5_0YY/maxresdefault.jpg" alt="Pflege-Recruiting Erklärvideo – Digitale Gewinner" width="1280" height="720" loading="lazy" decoding="async" onerror="if(this.src.includes('/maxresdefault.jpg')){this.src=this.src.replace('/maxresdefault.jpg','/sddefault.jpg')}else if(this.src.includes('/sddefault.jpg')){this.src=this.src.replace('/sddefault.jpg','/hqdefault.jpg')}else{this.onerror=null;this.src='/assets/video/websystem-erklaervideo-poster.webp'}">
 <span class="yt-play-icon" aria-hidden="true"></span><span class="yt-preview-caption">Erklärvideo ansehen</span></button>
 </div></figure>
 <div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="video-mehr">Wie das System funktioniert</a></div>
