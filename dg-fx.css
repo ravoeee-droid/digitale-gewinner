@@ -1,7 +1,7 @@
 /* DG FX – Startseite */
 @property --dg-ra{syntax:"<angle>";inherits:false;initial-value:210deg}
 .hero{isolation:isolate}
-.dg-flow{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.9;mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.dg-aurora{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;filter:blur(18px);mask-image:linear-gradient(180deg,#000 60%,transparent)}
 .hero>.container{position:relative;z-index:1}
 .ring:before{background:conic-gradient(from var(--dg-ra),transparent 0 18%,#F0C97A 36%,#FFF2C8 44%,#A8E4FF 50%,#D8A64B 58%,transparent 74%) border-box!important;animation:dgRing 11s linear infinite}
 @keyframes dgRing{to{--dg-ra:570deg}}
@@ -37,4 +37,20 @@
 .world{transform:perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .sys-list>div>div{display:block;border:0;padding:0;background:none;border-radius:0}
 @media(max-width:640px){.dg-toast{right:8px;bottom:-16px}}
-@media(prefers-reduced-motion:reduce){.dg-flow,.dg-toast{display:none}.ring:before{animation:none}.statement p{opacity:1;transform:none}.chart .dg-line{stroke-dashoffset:0}.chart .dg-area{opacity:1}.chart circle{transform:none}.dg-strike:after{transition:none}.laptop,.world,.hero-photo{transform:none}}
+@media(prefers-reduced-motion:reduce){.dg-aurora,.dg-toast,.dg-grain{display:none}.dg-beam:before{animation:none;display:none}.ring:before{animation:none}.statement p{opacity:1;transform:none}.chart .dg-line{stroke-dashoffset:0}.chart .dg-area{opacity:1}.chart circle{transform:none}.dg-strike:after{transition:none}.laptop,.world,.hero-photo{transform:none}}
+
+@property --dg-ba{syntax:"<angle>";inherits:false;initial-value:0deg}
+.dg-beam{position:relative}
+.dg-beam:before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--dg-ba),transparent 0 78%,rgba(240,201,122,.9) 90%,#A8E4FF 96%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:dgBeam 7s linear infinite;pointer-events:none;z-index:2}
+@keyframes dgBeam{to{--dg-ba:360deg}}
+.dg-h .dg-w{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(.25em);transition:opacity .7s,filter .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
+.dg-h.dg-h-in .dg-w{opacity:1;filter:none;transform:none}
+.dg-mq{display:grid;gap:14px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.dg-mq-t{display:flex;gap:14px;width:max-content;animation:dgMq 55s linear infinite}
+.dg-mq-t.rev{animation-direction:reverse}
+.dg-mq:hover .dg-mq-t{animation-play-state:paused}
+.dg-mq .review{flex:0 0 min(84vw,370px);min-height:0}
+@keyframes dgMq{to{transform:translateX(calc(-50% - 7px))}}
+.dg-grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.nav .dg{background-size:240% 100%;animation:dgShine 7s ease-in-out infinite}
+@keyframes dgShine{0%,100%{background-position:0 0}50%{background-position:100% 0}}

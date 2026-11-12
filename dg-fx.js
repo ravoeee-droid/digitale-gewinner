@@ -6,46 +6,51 @@
   function $(s,c){return (c||d).querySelector(s)}
   function $$(s,c){return Array.prototype.slice.call((c||d).querySelectorAll(s))}
 
-  /* 1. Lichtstrom im Hero (Flow-Field, reagiert auf die Maus) */
+  /* 1. Aurora im Hero: WebGL-Shader, weiche Lichtbahn in Gold und Eisblau */
   var hero=$('.hero');
   if(hero&&!reduce){
-    var cv=d.createElement('canvas');cv.className='dg-flow';cv.setAttribute('aria-hidden','true');
+    var cv=d.createElement('canvas');cv.className='dg-aurora';cv.setAttribute('aria-hidden','true');
     hero.insertBefore(cv,hero.firstChild);
-    var ctx=cv.getContext('2d'),W=0,H=0,dpr=Math.min(w.devicePixelRatio||1,1.5),P=[],mx=-9999,my=-9999,run=false,t=0,raf=0;
-    var N=w.innerWidth<700?55:150;
-    function size(){W=hero.clientWidth;H=hero.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
-    function spawn(p){p.x=Math.random()*W;p.y=Math.random()*H;p.l=0;p.m=120+Math.random()*260;p.s=.5+Math.random()*1.1;p.c=Math.random()<.22?'168,228,255':(Math.random()<.5?'240,201,122':'216,166,75');return p}
-    function init(){size();P=[];for(var i=0;i<N;i++)P.push(spawn({}))}
-    function frame(){
-      if(!run)return;t+=.0022;
-      ctx.globalCompositeOperation='destination-out';ctx.fillStyle='rgba(0,0,0,.032)';ctx.fillRect(0,0,W,H);
-      ctx.globalCompositeOperation='lighter';ctx.lineWidth=1.3;ctx.lineCap='round';
-      for(var i=0;i<P.length;i++){var p=P[i];
-        var a=(Math.sin(p.x*.0017+t*2.1)+Math.cos(p.y*.0023-t*1.6)+Math.sin((p.x+p.y)*.0009+t))*1.35;
-        var vx=Math.cos(a)*p.s+.35,vy=Math.sin(a)*p.s-.12;
-        var dx=mx-p.x,dy=my-p.y,dd=dx*dx+dy*dy;
-        if(dd<48000){var f=(1-dd/48000)*.9,ds=Math.sqrt(dd)||1;vx+=(-dy/ds)*f*1.6+dx/ds*f*.35;vy+=(dx/ds)*f*1.6+dy/ds*f*.35}
-        var nx=p.x+vx,ny=p.y+vy,al=Math.sin(Math.PI*p.l/p.m)*.5;
-        ctx.strokeStyle='rgba('+p.c+','+al.toFixed(3)+')';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(nx,ny);ctx.stroke();
-        p.x=nx;p.y=ny;p.l++;
-        if(p.l>p.m||nx<-20||nx>W+20||ny<-20||ny>H+20)spawn(p);
+    var gl=cv.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:false});
+    if(gl){
+      var VS='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+      var FS='precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;'+
+      'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'+
+      'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}'+
+      'float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<4;i++){s+=a*n(p);p=p*2.03+7.1;a*=.5;}return s;}'+
+      'void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv;p.x*=r.x/r.y;'+
+      'float a1=fbm(p*1.3+vec2(t*.045,-t*.03));float a2=fbm(p*2.1-vec2(t*.035,t*.05)+a1);'+
+      'float y=uv.y-.5-(a1-.5)*.75+(uv.x-.6)*.3+(m.y-.5)*.08;'+
+      'float rib=exp(-y*y*9.)+.55*exp(-pow(y+.28+(a2-.5)*.3,2.)*26.);'+
+      'vec3 gold=vec3(.86,.66,.3),ice=vec3(.62,.87,1.);vec3 c=mix(gold,ice,smoothstep(.38,.74,a2));'+
+      'float al=rib*(.2+.8*a2)*.5;vec2 dm=uv-m;al+=.12*exp(-dot(dm,dm)*14.);'+
+      'al*=mix(.1,1.,smoothstep(.2,.8,uv.x));al*=smoothstep(0.,.25,uv.y);gl_FragColor=vec4(c*al,al);}';
+      function sh(type,src){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s}
+      var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);
+      if(gl.getProgramParameter(pr,gl.LINK_STATUS)){
+        gl.useProgram(pr);
+        var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+        var loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+        var uR=gl.getUniformLocation(pr,'r'),uT=gl.getUniformLocation(pr,'t'),uM=gl.getUniformLocation(pr,'m');
+        var mx=.75,my=.5,tx=.75,ty=.5,run=false,raf=0,t0=performance.now();
+        function size(){var s=.5;cv.width=Math.max(2,hero.clientWidth*s);cv.height=Math.max(2,hero.clientHeight*s);gl.viewport(0,0,cv.width,cv.height)}
+        function frame(now){if(!run)return;mx+=(tx-mx)*.04;my+=(ty-my)*.04;
+          gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,(now-t0)/1000);gl.uniform2f(uM,mx,my);
+          gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);raf=requestAnimationFrame(frame)}
+        function start(){if(!run){run=true;raf=requestAnimationFrame(frame)}}
+        function stop(){run=false;cancelAnimationFrame(raf)}
+        size();var rz;w.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(size,200)});
+        hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();tx=(e.clientX-r.left)/r.width;ty=1-(e.clientY-r.top)/r.height},{passive:true});
+        if('IntersectionObserver' in w){new IntersectionObserver(function(es){es[0].isIntersecting&&!d.hidden?start():stop()}).observe(hero)}else start();
+        d.addEventListener('visibilitychange',function(){d.hidden?stop():(hero.getBoundingClientRect().bottom>0&&start())});
       }
-      raf=requestAnimationFrame(frame);
     }
-    function start(){if(!run){run=true;raf=requestAnimationFrame(frame)}}
-    function stop(){run=false;cancelAnimationFrame(raf)}
-    init();
-    var rz;w.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(init,200)});
-    hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top},{passive:true});
-    hero.addEventListener('pointerleave',function(){mx=my=-9999});
-    if('IntersectionObserver' in w){new IntersectionObserver(function(es){es[0].isIntersecting&&!d.hidden?start():stop()}).observe(hero)}else start();
-    d.addEventListener('visibilitychange',function(){d.hidden?stop():(hero.getBoundingClientRect().bottom>0&&start())});
   }
 
   /* 2. 3D-Tiefe: Porträt kippt, Karten schweben, Lichtreflex folgt dem Cursor */
   var hv=$('.hero-visual'),photo=$('.hero-photo');
   if(hv&&photo&&fine&&!reduce){
-    var gl=d.createElement('div');gl.className='dg-glare';photo.appendChild(gl);
+    var glare=d.createElement('div');glare.className='dg-glare';photo.appendChild(glare);
     hv.addEventListener('pointermove',function(e){
       var r=hv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
       hv.classList.add('dg-live');
@@ -91,5 +96,48 @@
     var tick=false;
     function upd(){tick=false;var r=lp.getBoundingClientRect(),vh=w.innerHeight;var p=Math.max(0,Math.min(1,(vh-r.top)/(vh*.75)));lp.style.setProperty('--lx',((1-p)*26).toFixed(2)+'deg');lp.style.setProperty('--ls',(.9+p*.1).toFixed(3))}
     w.addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});upd();
+  }
+  /* 6. Lichtstrahl, der am Rand entlangläuft (Border Beam) */
+  $$('.statement,.audit,.laptop,.library').forEach(function(el){el.classList.add('dg-beam')});
+
+  /* 7. Überschriften: Wörter blenden nacheinander scharf ein */
+  if(!reduce&&'IntersectionObserver' in w){
+    var hio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('dg-h-in');hio.unobserve(e.target)}})},{threshold:.3});
+    $$('main h2').forEach(function(h){
+      if(h.closest('.statement')||h.closest('.screen'))return;
+      var i=0,tw=d.createTreeWalker(h,NodeFilter.SHOW_TEXT,null),nodes=[],nd;
+      while(nd=tw.nextNode())nodes.push(nd);
+      nodes.forEach(function(tn){var fr=d.createDocumentFragment();tn.nodeValue.split(/(\s+)/).forEach(function(part){
+        if(!part)return;if(/^\s+$/.test(part)){fr.appendChild(d.createTextNode(' '));return}
+        var s=d.createElement('span');s.className='dg-w';s.style.transitionDelay=(i++*55)+'ms';s.textContent=part;fr.appendChild(s)});
+        tn.parentNode.replaceChild(fr,tn)});
+      h.classList.add('dg-h');hio.observe(h);
+    });
+  }
+
+  /* 8. Bewertungen als endloses Laufband in zwei Reihen */
+  var rg=$('.review-grid');
+  if(rg&&!reduce){
+    var items=$$('.review',rg),half=Math.ceil(items.length/2),mq=d.createElement('div');mq.className='dg-mq';
+    [items.slice(0,half),items.slice(half)].forEach(function(row,ri){
+      var tr=d.createElement('div');tr.className='dg-mq-t'+(ri?' rev':'');
+      row.forEach(function(el){el.classList.add('visible');tr.appendChild(el)});
+      row.forEach(function(el){var c=el.cloneNode(true);c.setAttribute('aria-hidden','true');tr.appendChild(c)});
+      mq.appendChild(tr)});
+    rg.parentNode.replaceChild(mq,rg);
+  }
+
+  /* 9. Filmkorn für Tiefe */
+  if(!reduce){var gr=d.createElement('div');gr.className='dg-grain';gr.setAttribute('aria-hidden','true');d.body.appendChild(gr)}
+
+  /* 10. Weiches Scrollen mit Nachlauf (Lenis) */
+  if(w.Lenis&&!reduce&&fine){
+    try{
+      d.documentElement.style.scrollBehavior='auto';
+      var lenis=new w.Lenis({lerp:.09});
+      if(w.ScrollTrigger&&lenis.on)lenis.on('scroll',w.ScrollTrigger.update);
+      (function loop(ts){lenis.raf(ts);requestAnimationFrame(loop)})(performance.now());
+      d.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var id=a.getAttribute('href');if(id.length<2)return;var tg=$(id);if(!tg)return;e.preventDefault();lenis.scrollTo(tg,{offset:-90})});
+    }catch(err){}
   }
 })();
