@@ -15,7 +15,7 @@ spec.loader.exec_module(module)
 p.write_text(module.branch('pflege', module.BRANCH['pflege']), encoding='utf-8')
 s = p.read_text(encoding='utf-8')
 # Die hochwertige Fassung kommt aus site/build_site.py.
-if 'id="expl"' not in s or 'id="fallstudien"' not in s:
+if 'id="pflegeYoutube"' not in s or 'id="fallstudien"' not in s:
     raise SystemExit('Pflege-Build fehlt Video oder Fallstudien; Veröffentlichung abgebrochen')
 s = s.replace('<div><span class="eyebrow" data-r>Schlussbereich</span>',
               '<div><span class="eyebrow" data-r>Kostenloser Praxis-Mehrwert – auch ohne Auftrag</span>', 1)
