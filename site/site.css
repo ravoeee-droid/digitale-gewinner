@@ -1236,3 +1236,22 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 .brand-text{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;line-height:1.05;font-weight:800}.brand-text sup{font-size:.5em;vertical-align:top;color:var(--gold2)}
 .ticks li:before{background-color:rgba(168,228,255,.16)!important}
 .btn-gold{box-shadow:0 18px 50px rgba(216,166,75,.28)}
+
+/* Typo-Skala für Sora (breiter als die frühere Serifenschrift) */
+.h2{font-size:clamp(1.85rem,3.5vw,3.1rem)}
+.hero h1,.hero h1.wide,.hero-grid.with-vis h1{font-size:clamp(2.3rem,4.4vw,4rem)}
+.statement .big{font-size:clamp(2rem,4.2vw,3.6rem)}
+.strike{font-size:clamp(1.8rem,3.4vw,3rem)}
+.price{font-size:clamp(3rem,6.5vw,5.2rem)}
+.final h2{font-size:clamp(1.9rem,3.8vw,3.3rem)}
+.case-head .h2,.live-head .h2,.tool-head .h2{font-size:clamp(1.75rem,3.2vw,2.8rem)}
+.legal-hero h1{font-size:clamp(2rem,4vw,3.2rem)}
+.cs2-big b{font-size:clamp(3.6rem,6.5vw,5.6rem)}
+.cf-n,.stats b{font-size:clamp(2.1rem,4vw,3.2rem);font-weight:800}
+.step .n{font-size:clamp(2.8rem,5vw,4.2rem);font-weight:800}
+.quote{font-size:clamp(1.4rem,2.6vw,2.2rem);font-weight:600}
+.result-line{font-size:clamp(1.2rem,2vw,1.7rem);font-weight:600}
+.faq summary{font-size:clamp(1.02rem,1.4vw,1.2rem);font-weight:600;letter-spacing:-.01em}
+.res-list li{font-size:clamp(1.05rem,1.5vw,1.3rem);font-weight:600}
+.panel h3{font-size:clamp(1.4rem,2.2vw,1.9rem)}
+@media (max-width:1020px){.nav-links a:not(.btn){font-size:clamp(1.4rem,5vw,1.9rem);font-weight:600}}

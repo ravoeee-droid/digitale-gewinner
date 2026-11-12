@@ -166,7 +166,7 @@ def recruiting_videos(v):
     more = f'<div class="vid-more">{rest}</div>' if rest else ''
     return (f'<section class="band vid-sec" id="recruiting-videos"><div class="container"><div class="vid-head" data-r><span class="eyebrow">{e(v["eyebrow"])}</span>'
             f'<h2 class="h2">{v["h2"]}</h2></div>{video_card(vids[0])}{more}'
-            f'<p class="micro vid-note">{e(v["note"])}</p></div></section>')
+            f'</div></section>')
 
 
 CASES_PFLEGE = [
