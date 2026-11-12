@@ -746,3 +746,22 @@
   if (!window.matchMedia('(max-width:860px)').matches) return;
   document.querySelectorAll('details.cs2-before').forEach(function (d) { d.open = false; });
 })();
+
+/* Pflege-YouTube-Player: privacy-aware thumbnail first, video only after click. */
+(function(){
+  var player=document.getElementById('pflegeYoutube');
+  if(!player)return;
+  var button=player.querySelector('button');
+  if(!button)return;
+  button.addEventListener('click',function(){
+    var frame=document.createElement('iframe');
+    frame.src='https://www.youtube-nocookie.com/embed/S1Yc5U5_0YY?autoplay=1&rel=0&playsinline=1';
+    frame.title='Pflege-Recruiting – Erklärvideo';
+    frame.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    frame.allowFullscreen=true;
+    frame.referrerPolicy='strict-origin-when-cross-origin';
+    player.replaceChildren(frame);
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({event:'video_play',video:'pflege-youtube-S1Yc5U5_0YY'});
+  });
+})();
