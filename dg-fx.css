@@ -1,0 +1,40 @@
+/* DG FX – Startseite */
+@property --dg-ra{syntax:"<angle>";inherits:false;initial-value:210deg}
+.hero{isolation:isolate}
+.dg-flow{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.9;mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.hero>.container{position:relative;z-index:1}
+.ring:before{background:conic-gradient(from var(--dg-ra),transparent 0 18%,#F0C97A 36%,#FFF2C8 44%,#A8E4FF 50%,#D8A64B 58%,transparent 74%) border-box!important;animation:dgRing 11s linear infinite}
+@keyframes dgRing{to{--dg-ra:570deg}}
+.hero-visual{perspective:1200px}
+.hero-photo{transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d;will-change:transform}
+.hero-visual.dg-live .hero-photo{transition:transform .08s linear}
+.hero-visual .float{transform:translate3d(var(--fx,0px),var(--fy,0px),0);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.hero-visual.dg-live .float{transition:transform .08s linear}
+.hero-visual .ring{transform:translate3d(calc(var(--fx,0px)*-.5),calc(var(--fy,0px)*-.5),0)}
+.dg-glare{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;background:radial-gradient(420px circle at var(--gx,50%) var(--gy,0%),rgba(255,242,200,.22),transparent 60%);opacity:0;transition:opacity .4s;mix-blend-mode:screen}
+.hero-visual.dg-live .dg-glare{opacity:1}
+.dg-spot{position:relative}
+.dg-spot>.dg-spot-l{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(240,201,122,.16),rgba(168,228,255,.05) 40%,transparent 65%);z-index:0}
+.dg-spot:hover>.dg-spot-l{opacity:1}
+.dg-spot:hover{border-color:rgba(240,201,122,.5)}
+.dg-strike{position:relative;display:inline-block}
+.dg-strike:after{content:"";position:absolute;left:-3%;right:-3%;top:54%;height:.09em;border-radius:99px;background:linear-gradient(90deg,#F0C97A,#D8A64B);box-shadow:0 0 18px rgba(216,166,75,.7);transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.8,.2,1) .55s}
+.statement.visible .dg-strike:after{transform:scaleX(1)}
+.statement.visible .dg-strike{color:#8d8f97;transition:color .6s .9s}
+.statement p{opacity:0;transform:translateY(14px);transition:opacity .7s 1.25s,transform .7s 1.25s}
+.statement.visible p{opacity:1;transform:none}
+.laptop{transform:perspective(1400px) rotateX(var(--lx,0deg)) scale(var(--ls,1));transform-origin:50% 100%;will-change:transform}
+.chart .dg-line{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 2s cubic-bezier(.3,.7,.2,1) .2s}
+.chart .dg-area{opacity:0;transition:opacity 1.2s 1.3s}
+.chart circle{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.chart.dg-in .dg-line{stroke-dashoffset:0}.chart.dg-in .dg-area{opacity:1}
+.chart.dg-in circle{transform:scale(1)}.chart.dg-in circle:nth-child(1){transition-delay:1s}.chart.dg-in circle:nth-child(2){transition-delay:1.5s}.chart.dg-in circle:nth-child(3){transition-delay:2s}
+.dg-toast{position:absolute;right:18px;bottom:-20px;z-index:3;display:flex;align-items:center;gap:11px;padding:11px 15px 11px 11px;border-radius:14px;background:rgba(13,13,16,.92);border:1px solid rgba(168,228,255,.35);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 30px rgba(168,228,255,.12);backdrop-filter:blur(14px);font-size:.78rem;line-height:1.25;opacity:0;transform:translateY(14px) scale(.96);transition:opacity .45s,transform .45s cubic-bezier(.3,1.4,.5,1);pointer-events:none}
+.dg-toast.on{opacity:1;transform:none}
+.dg-toast i{width:30px;height:30px;border-radius:50%;background:#A8E4FF;color:#0B0B0D;display:grid;place-items:center;font-style:normal;font-weight:800;box-shadow:0 0 16px rgba(168,228,255,.6)}
+.dg-toast b{display:block;color:#fff}.dg-toast span{color:#A6A8B0}
+.laptop{overflow:visible}
+.world{transform:perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.sys-list>div>div{display:block;border:0;padding:0;background:none;border-radius:0}
+@media(max-width:640px){.dg-toast{right:8px;bottom:-16px}}
+@media(prefers-reduced-motion:reduce){.dg-flow,.dg-toast{display:none}.ring:before{animation:none}.statement p{opacity:1;transform:none}.chart .dg-line{stroke-dashoffset:0}.chart .dg-area{opacity:1}.chart circle{transform:none}.dg-strike:after{transition:none}.laptop,.world,.hero-photo{transform:none}}

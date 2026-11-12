@@ -49,6 +49,8 @@ publish_assets = (
     'case-overview.js',
     'fx.css',
     'fx.js',
+    'dg-fx.css',
+    'dg-fx.js',
     'pflege-tracking.js',
     'chat-widget.css',
     'chat-widget.js',
