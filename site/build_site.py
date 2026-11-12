@@ -317,15 +317,14 @@ def hero_case():
 
 def video_section():
     return f'''<section class="section video-sec" id="video" aria-labelledby="video-h"><div class="container">
-<div class="video-head"><span class="eyebrow" data-r>In 80 Sekunden erklärt · für Pflegeeinrichtungen</span>
+<div class="video-head"><span class="eyebrow" data-r>Pflege-Recruiting erklärt · für Pflegeeinrichtungen</span>
 <h2 class="h2" id="video-h" data-r>Eine Website war gestern. <span class="gold it">Ein Websystem arbeitet für Sie.</span></h2>
 <p class="lead" data-r>Sehen Sie, wie aus einer Seite zum Anschauen ein System wird, das Ihnen wiederkehrende Arbeit abnimmt – und Sie behalten die Gespräche.</p></div>
-<figure class="vid" data-r><div class="vid-frame">
-<video id="expl" controls preload="none" playsinline poster="/assets/video/websystem-erklaervideo-poster.webp" width="1280" height="720">
-<source src="/assets/video/websystem-erklaervideo.mp4" type="video/mp4">
-Ihr Browser kann das Video nicht abspielen. <a href="/assets/video/websystem-erklaervideo.mp4">Video herunterladen</a>.</video>
-<button class="vid-play" type="button" aria-label="Erklärvideo abspielen (80 Sekunden, mit Untertiteln)"><span class="vid-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></span><span class="vid-lab">Video ansehen<small>80 Sek. · mit Untertiteln</small></span></button></div>
-</figure>
+<figure class="vid" data-r><div class="vid-frame yt-frame" id="pflegeYoutube" data-video-id="S1Yc5U5_0YY">
+<button class="yt-preview-trigger" type="button" aria-label="Pflege-Erklärvideo auf YouTube abspielen">
+<img src="https://i.ytimg.com/vi/S1Yc5U5_0YY/hqdefault.jpg" alt="Pflege-Recruiting Erklärvideo – Digitale Gewinner" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/assets/video/websystem-erklaervideo-poster.webp'">
+<span class="yt-play-icon" aria-hidden="true"></span><span class="yt-preview-caption">Erklärvideo ansehen</span></button>
+</div></figure>
 <div class="btns vid-cta" data-r><a class="btn btn-gold" href="#analyse" data-cta="video-analyse">Kostenlose 15-Min-Analyse {ARROW}</a><a class="btn" href="#unterschied" data-cta="video-mehr">Wie das System funktioniert</a></div>
 </div></section>'''
 
