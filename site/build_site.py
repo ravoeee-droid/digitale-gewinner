@@ -1046,7 +1046,7 @@ def main():
     pages.pop('index.html', None)
     for name, content in pages.items():
         (OUT / name).write_text(content, encoding='utf-8')
-    for name in ('impressum', 'datenschutz'):  # neue Optik; beide URL-Varianten bedienen (/impressum.html und /impressum/)
+    for name in ('impressum', 'datenschutz', 'verlosung'):  # neue Optik; beide URL-Varianten bedienen (/impressum.html und /impressum/)
         html_ = legal_page(name)
         (OUT / f'{name}.html').write_text(html_, encoding='utf-8')
         (OUT / name).mkdir(exist_ok=True)
