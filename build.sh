@@ -50,6 +50,8 @@ publish_assets = (
     'fx.css',
     'fx.js',
     'dg-fx.css',
+    'dg-brand.css',
+    'dg-brand.js',
     'dg-fx.js',
     'pflege-tracking.js',
     'chat-widget.css',
@@ -246,3 +248,5 @@ shutil.copy2(root / 'social/rechner/kosten-pro-auftrag.html', out / 'rechner.htm
 shutil.rmtree(tmp, ignore_errors=True)
 print('Digitale Gewinner built with 10 individually presented case studies.')
 PY
+
+python3 brand-skin.py dist

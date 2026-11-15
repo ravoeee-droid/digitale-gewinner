@@ -1269,3 +1269,4 @@ body.hero-dark .nav:not(.scrolled) .burger{border-color:rgba(255,255,255,.3);bac
 /* Keep the Pflege explainer compact on desktop, centered at all sizes. */
 .video-sec .vid{max-width:min(100%,760px);margin-left:auto;margin-right:auto}
 .video-sec .vid-frame{width:100%}
+h1,h2,h3{overflow-wrap:break-word}

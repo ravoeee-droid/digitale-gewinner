@@ -935,11 +935,11 @@ BRANCH = {
     'handwerk-mitarbeiter': dict(title='Mehr Bewerbungen von Fachkräften für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                                  h1=['Mehr Bewerbungen von', 'Fachkräften', '<span class="gold it">aus Ihrer Region.</span>'],
                                  lead='Wir machen Ihren Betrieb als Arbeitgeber sichtbar, zeigen verständlich, was Sie auszeichnet, und erleichtern den ersten Kontakt.',
-                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_MIT, loop='elektriker', demo='hw-mit', band=('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte, die zu Ihrem Betrieb passen.')),
+                                 btn='Fachkräftegewinnung prüfen lassen', goal='Mitarbeiter', ticks=TICKS_MIT, head='Mitarbeiter gewinnen', theme='theme-dg', tc='#111315', vis=VIS_HW_MIT, loop='elektriker', demo='hw-mit', band=('hw-werkstatt', 'Handwerker-Team lacht gemeinsam in der Werkstatt', 'Fachkräfte, die zu Ihrem Betrieb passen.')),
     'handwerk-kunden': dict(title='Mehr Anfragen für Handwerksbetriebe – Digitale Gewinner', eyebrow='Für Handwerksbetriebe',
                             h1=['Mehr Anfragen für die Aufträge,', '<span class="gold it">die zu Ihrem Betrieb passen.</span>'],
                             lead='Wir machen Ihre Leistungen verständlich, erreichen passende Menschen aus Ihrer Region und führen sie strukturiert bis zur Anfrage.',
-                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-handwerk', tc='#111315', vis=VIS_HW_KUN, loop='paar', demo='hw-kun', band=('kunden-beratung', 'Handwerker zeigt einem Paar einen Plan auf dem Tablet', 'Kunden, die Ihr Angebot verstehen und anfragen.')),
+                            btn='Kundengewinnung prüfen lassen', goal='Kunden', ticks=TICKS_KUN, head='Kunden gewinnen', theme='theme-dg', tc='#111315', vis=VIS_HW_KUN, loop='paar', demo='hw-kun', band=('kunden-beratung', 'Handwerker zeigt einem Paar einen Plan auf dem Tablet', 'Kunden, die Ihr Angebot verstehen und anfragen.')),
 }
 
 
